@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  apache:
+    environment:
+      - APP_DOMAIN=vhost-app-name
+      - APP_DOC_ROOT=/var/www/public
+      - APACHE_SERVERNAME=apache-servername
+  mysql:
+    environment:
+      - MYSQL_ROOT_PASSWORD=root-passwd
+      - MYSQL_DATABASE=db-name
+      - MYSQL_USER=db-user
+      - MYSQL_PASSWORD=db-user-passwd

@@ -1,0 +1,87 @@
+version: '3'
+
+volumes:
+  jira_custom_dashboard-mysql_data:
+    driver: local
+
+networks:
+  jira_custom_dashboard-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.72.0.0/24
+
+services:
+  apache:
+    build: docker/apache
+    working_dir: /var/www/
+    environment:
+      - APACHE_RUN_USER=www-data
+      - APACHE_RUN_GROUP=www-data
+      - APACHE_PID_FILE=/var/run/apache2/apache2.pid
+      - APACHE_RUN_DIR=/var/run/apache2
+      - APACHE_LOCK_DIR=/var/lock/apache2
+      - APACHE_LOG_DIR=/var/log/apache2
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      jira_custom_dashboard-network:
+        aliases:
+          - apache
+    volumes:
+      - .:/var/www
+    tty: true
+
+  mysql:
+    container_name: mysql
+    image: mysql:5.7
+    ports:
+      - 3306:3306
+    networks:
+      jira_custom_dashboard-network:
+        aliases:
+          - mysql
+        ipv4_address: 172.72.0.101
+    volumes:
+      - jira_custom_dashboard-mysql_data:/var/lib/mysql
+
+  php:
+    build: docker/php
+    working_dir: /var/www/
+    expose:
+      - 9000
+    networks:
+      jira_custom_dashboard-network:
+        aliases:
+          - php
+    volumes:
+      - .:/var/www
+
+  # container usage:
+  #  docker-compose run testing /var/www/vendor/bin/phpunit
+  cli:
+    build: docker/php-cli
+    working_dir: /var/www/
+    ports:
+      - 9090:9090
+    networks:
+      jira_custom_dashboard-network:
+        aliases:
+          - cli
+    volumes:
+      - .:/var/www
+
+  # container usage:
+  #  docker-compose run composer [command]
+  composer:
+    build: docker/composer
+    working_dir: /var/www/
+    networks:
+      jira_custom_dashboard-network:
+        aliases:
+          - composer
+    volumes:
+      - .:/var/www
+    command: -q
