@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "815261efe86d659bbc2aa6b2e67d1c50",
+    "content-hash": "b15ab8d68b732edbc38b7088b81df84f",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -2141,6 +2141,28 @@
                 "mailer"
             ],
             "time": "2018-03-17T22:18:35+00:00"
+        },
+        {
+            "name": "symfony/apache-pack",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/apache-pack.git",
+                "reference": "3aa5818d73ad2551281fc58a75afd9ca82622e6c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/apache-pack/zipball/3aa5818d73ad2551281fc58a75afd9ca82622e6c",
+                "reference": "3aa5818d73ad2551281fc58a75afd9ca82622e6c",
+                "shasum": ""
+            },
+            "type": "symfony-pack",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A pack for Apache support in Symfony",
+            "time": "2017-12-12T01:46:35+00:00"
         },
         {
             "name": "symfony/asset",
@@ -7028,6 +7050,7 @@
         "league/tactician": 20,
         "ramsey/uuid": 20,
         "sensio/framework-extra-bundle": 20,
+        "symfony/apache-pack": 20,
         "symfony/lts": 20,
         "symfony/maker-bundle": 20,
         "symfony/orm-pack": 20,

@@ -33,6 +33,7 @@
     "league/tactician": "^2.0@dev",
     "ramsey/uuid": "^3.0@dev",
     "sensio/framework-extra-bundle": "^5.2@dev",
+    "symfony/apache-pack": "dev-master",
     "symfony/asset": "^4.0",
     "symfony/console": "^4.0",
     "symfony/debug-pack": "*",
