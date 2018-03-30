@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b15ab8d68b732edbc38b7088b81df84f",
+    "content-hash": "046c1fdf99b1625362b119001500477e",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -7051,6 +7051,7 @@
         "ramsey/uuid": 20,
         "sensio/framework-extra-bundle": 20,
         "symfony/apache-pack": 20,
+        "symfony/flex": 20,
         "symfony/lts": 20,
         "symfony/maker-bundle": 20,
         "symfony/orm-pack": 20,
