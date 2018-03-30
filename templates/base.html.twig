@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html style="border: 0px; height: 95%; margin: 0px; padding: 15px; ">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
     </head>
-    <body>
-        {% block body %}{% endblock %}
+    <body style="background-color: black; border: 0px; height: 100%; margin: 0px; ">
+        <div style="border: 1px solid blue; color: blue; height: 100%; width: 100%;">
+            {% block body %}{% endblock %}
+        </div>
         {% block javascripts %}{% endblock %}
     </body>
 </html>
