@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Werkspot\SharedKernel\Infrastructure\Messaging\EventBus\InMemory;
+namespace Werkspot\JiraDashboard\SharedKernel\Infrastructure\Messaging\EventBus\InMemory;
 
 use League\Event\EmitterInterface;
 use League\Event\EventInterface;

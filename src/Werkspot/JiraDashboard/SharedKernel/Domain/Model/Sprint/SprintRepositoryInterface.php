@@ -4,13 +4,14 @@ declare(strict_types=1);
 namespace Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint;
 
 use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException;
+use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\Id;
 
 interface SprintRepositoryInterface
 {
     /**
      * @throws EntityNotFoundException
      */
-    public function find(SprintId $id): Sprint;
+    public function find(Id $id): Sprint;
 
     /**
      * @return Sprint[]|null

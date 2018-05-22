@@ -4,10 +4,13 @@ declare(strict_types=1);
 namespace Werkspot\JiraDashboard\ConfidenceWidget\Infrastructure\Persistence\Doctrine\Confidence;
 
 use Doctrine\ORM\EntityManagerInterface;
-//use Werkspot\Domain\User\User;
-//use Werkspot\Domain\ValueObject\Email;
+use Doctrine\ORM\Query;
+use Werkspot\JiraDashboard\ConfidenceWidget\Domain\Confidence;
+use Werkspot\JiraDashboard\ConfidenceWidget\Domain\ConfidenceRepositoryInterface;
+use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException;
+use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
 
-final class ConfidenceRepositoryDoctrineAdapter implements \Werkspot\Domain\User\UserRepositoryInterface
+final class ConfidenceRepositoryDoctrineAdapter implements ConfidenceRepositoryInterface
 {
     /** @var EntityManagerInterface */
     private $em;
@@ -17,28 +20,28 @@ final class ConfidenceRepositoryDoctrineAdapter implements \Werkspot\Domain\User
         $this->em = $em;
     }
 
-    public function find(Email $email):? User
+    /**
+     * @throws EntityNotFoundException
+     * @return Confidence[]
+     */
+    public function findBySprint(Sprint $sprint): array
     {
-        $userCollection = $this->em->getRepository(User::class)->findByEmail($email);
+        $queryBuilder = $this->em->createQueryBuilder()
+            ->select('c')
+            ->from(Confidence::class, 'c')
+            ->where('c.date >= :startDate')
+            ->andWhere('c.date <= :endDate')
+            ->setParameter('startDate', $sprint->getStartDate())
+            ->setParameter('endDate', $sprint->getEndDate())
+            ->orderBy('c.date', 'ASC')
+            ->getQuery();
 
-        if ($userCollection) {
-            return $userCollection[0];
+        $confidenceCollection = $queryBuilder->execute(null, Query::HYDRATE_ARRAY);
+
+        if (empty($confidenceCollection)) {
+            throw new EntityNotFoundException();
         }
 
-        return null;
-    }
-
-    /**
-     * @return User[]
-     */
-    public function findAll(): array
-    {
-        return $this->em->getRepository(User::class)->findAll();
-    }
-
-    public function save(User $user):void
-    {
-        $this->em->persist($user);
-        $this->em->flush();
+        return $confidenceCollection;
     }
 }

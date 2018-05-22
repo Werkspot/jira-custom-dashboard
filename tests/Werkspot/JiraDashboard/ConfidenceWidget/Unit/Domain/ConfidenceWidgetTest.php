@@ -10,11 +10,9 @@ use Werkspot\JiraDashboard\ConfidenceWidget\Domain\ConfidenceValueEnum;
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\ConfidenceWidget;
 use Werkspot\JiraDashboard\ConfidenceWidget\Infrastructure\Persistence\InMemory\Confidence\ConfidenceRepositoryInMemoryAdapter;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
-use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintId;
-use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintTitle;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team\Team;
-use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team\TeamId;
-use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team\TeamName;
+use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\Id;
+use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\ShortText;
 use Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\InMemory\Sprint\SprintRepositoryInMemoryAdapter;
 
 class ConfidenceWidgetTest extends TestCase
@@ -22,15 +20,15 @@ class ConfidenceWidgetTest extends TestCase
     /**
      * @test
      */
-    public function getConfidenceByLastSprint_whenThereIsAnSprint_shouldReturnConfidenceCollectionOrderedByDate()
+    public function getConfidenceByLastSprint_whenThereIsASprint_shouldReturnConfidenceCollectionOrderedByDate()
     {
         $sprintRepository = new SprintRepositoryInMemoryAdapter([
             new Sprint(
-                SprintId::create(),
-                SprintTitle::create('Sprint title'),
+                Id::create(),
+                ShortText::create('Sprint title'),
                 new Team(
-                    TeamId::create(),
-                    TeamName::create('Team name')
+                    Id::create(),
+                    ShortText::create('Team name')
                 ),
                 new DateTimeImmutable('today - 4 days'),
                 new DateTimeImmutable('today + 4 days')
@@ -60,26 +58,64 @@ class ConfidenceWidgetTest extends TestCase
 
     /**
      * @test
+     * @expectedException \Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException
      */
-    public function getConfidenceByLastSprint_whenThereIsNotAnSprint_shouldReturnAnEmptyCollection()
+    public function getConfidenceByLastSprint_whenThereIsNotASprint_shouldThrowAnException()
     {
-        $this->assertTrue(true);
+        $sprintRepository = new SprintRepositoryInMemoryAdapter([]);
+
+        $confidenceRepository = new ConfidenceRepositoryInMemoryAdapter([
+            new Confidence(new DateTimeImmutable('today - 4 days'), ConfidenceValueEnum::five()),
+            new Confidence(new DateTimeImmutable('today - 3 days'), ConfidenceValueEnum::four()),
+            new Confidence(new DateTimeImmutable('today - 2 days'), ConfidenceValueEnum::three()),
+            new Confidence(new DateTimeImmutable('today - 1 days'), ConfidenceValueEnum::three()),
+            new Confidence(new DateTimeImmutable('today - 0 days'), ConfidenceValueEnum::two()),
+            new Confidence(new DateTimeImmutable('today + 1 days'), ConfidenceValueEnum::two()),
+            new Confidence(new DateTimeImmutable('today + 2 days'), ConfidenceValueEnum::four()),
+            new Confidence(new DateTimeImmutable('today + 3 days'), ConfidenceValueEnum::four()),
+            new Confidence(new DateTimeImmutable('today + 4 days'), ConfidenceValueEnum::five()),
+        ]);
+
+        $confidenceWidget = new ConfidenceWidget($sprintRepository, $confidenceRepository);
+        $confidenceWidget->getConfidenceBySprint($sprintRepository->findActive());
     }
 
     /**
      * @test
+     * @expectedException \Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException
      */
-    public function getConfidenceBySprint_whenSprintExists_shouldReturnConfidenceCollectionOrderedByDate()
+    public function getConfidenceBySprint_whenNotExistingSprint_shouldThrowAnException()
     {
-        $this->assertTrue(true);
-    }
+        $existingSprintId = Id::create();
+        $notExistingSprintId = Id::create();
 
-    /**
-     * @test
-     */
-    public function getConfidenceBySprint_whenSprintNotExists_shouldReturnAnEmptyCollection()
-    {
-        $this->assertTrue(true);
+        $sprintRepository = new SprintRepositoryInMemoryAdapter([
+            new Sprint(
+                $existingSprintId,
+                ShortText::create('Sprint title'),
+                new Team(
+                    Id::create(),
+                    ShortText::create('Team name')
+                ),
+                new DateTimeImmutable('today - 4 days'),
+                new DateTimeImmutable('today + 4 days')
+            ),
+        ]);
+
+        $confidenceRepository = new ConfidenceRepositoryInMemoryAdapter([
+            new Confidence(new DateTimeImmutable('today - 4 days'), ConfidenceValueEnum::five()),
+            new Confidence(new DateTimeImmutable('today - 3 days'), ConfidenceValueEnum::four()),
+            new Confidence(new DateTimeImmutable('today - 2 days'), ConfidenceValueEnum::three()),
+            new Confidence(new DateTimeImmutable('today - 1 days'), ConfidenceValueEnum::three()),
+            new Confidence(new DateTimeImmutable('today - 0 days'), ConfidenceValueEnum::two()),
+            new Confidence(new DateTimeImmutable('today + 1 days'), ConfidenceValueEnum::two()),
+            new Confidence(new DateTimeImmutable('today + 2 days'), ConfidenceValueEnum::four()),
+            new Confidence(new DateTimeImmutable('today + 3 days'), ConfidenceValueEnum::four()),
+            new Confidence(new DateTimeImmutable('today + 4 days'), ConfidenceValueEnum::five()),
+        ]);
+
+        $confidenceWidget = new ConfidenceWidget($sprintRepository, $confidenceRepository);
+        $confidenceWidget->getConfidenceBySprint($sprintRepository->find($notExistingSprintId));
     }
 
     /**

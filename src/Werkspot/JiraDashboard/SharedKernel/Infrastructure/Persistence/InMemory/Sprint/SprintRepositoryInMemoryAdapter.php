@@ -8,6 +8,7 @@ use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintId;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintRepositoryInterface;
+use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\Id;
 
 class SprintRepositoryInMemoryAdapter implements SprintRepositoryInterface
 {
@@ -27,7 +28,7 @@ class SprintRepositoryInMemoryAdapter implements SprintRepositoryInterface
     /**
      * @throws EntityNotFoundException
      */
-    public function find(SprintId $id): Sprint
+    public function find(Id $id): Sprint
     {
         $sprintIdString = $id->id();
 

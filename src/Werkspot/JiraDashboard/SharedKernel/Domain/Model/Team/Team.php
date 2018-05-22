@@ -3,26 +3,29 @@ declare(strict_types=1);
 
 namespace Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team;
 
-final class Team
+use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\Id;
+use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\ShortText;
+
+class Team
 {
-    /** @var TeamId */
+    /** @var Id */
     private $id;
 
-    /** @var TeamName */
+    /** @var ShortText */
     private $name;
 
-    public function __construct(TeamId $teamId, TeamName $name)
+    public function __construct(Id $teamId, ShortText $name)
     {
         $this->id = $teamId;
         $this->name = $name;
     }
 
-    public function getId(): TeamId
+    public function getId(): Id
     {
         return $this->id;
     }
 
-    public function getName(): TeamName
+    public function getName(): ShortText
     {
         return $this->name;
     }

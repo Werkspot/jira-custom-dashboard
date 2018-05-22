@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Werkspot\SharedKernel\Infrastructure\Persistence\Doctrine;
+namespace Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\Doctrine;
 
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\DBAL\DBALException;
@@ -9,9 +9,8 @@ use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Tools\Setup;
-use Werkspot\Infrastructure\Persistence\Doctrine\CustomType\DoctrineEmail;
-use Werkspot\Infrastructure\Persistence\Doctrine\CustomType\DoctrinePassword;
-use Werkspot\Infrastructure\Persistence\Doctrine\CustomType\DoctrineUserId;
+use Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\Doctrine\CustomType\DoctrineId;
+use Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\Doctrine\CustomType\DoctrineShortText;
 
 final class DoctrineEntityManagerFactory
 {
@@ -29,16 +28,12 @@ final class DoctrineEntityManagerFactory
         $this->entityPaths      = $entityPaths;
         $this->connectionParams = $connectionParams;
 
-        if (!Type::hasType('UserId')) {
-            Type::addType('UserId', DoctrineUserId::class);
+        if (!Type::hasType('Id')) {
+            Type::addType('Id', DoctrineId::class);
         }
 
-        if (!Type::hasType('Email')) {
-            Type::addType('Email', DoctrineEmail::class);
-        }
-
-        if (!Type::hasType('Password')) {
-            Type::addType('Password', DoctrinePassword::class);
+        if (!Type::hasType('ShortText')) {
+            Type::addType('ShortText', DoctrineShortText::class);
         }
     }
 

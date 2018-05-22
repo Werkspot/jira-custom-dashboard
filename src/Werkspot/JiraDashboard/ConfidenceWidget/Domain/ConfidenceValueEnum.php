@@ -55,4 +55,9 @@ final class ConfidenceValueEnum
     {
         return $this->value;
     }
+
+    public function __toString(): string
+    {
+        return (string)$this->value();
+    }
 }

@@ -5,16 +5,18 @@ namespace Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint;
 
 use DateTimeImmutable;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team\Team;
+use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\Id;
+use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\ShortText;
 
-final class Sprint
+class Sprint
 {
-    /** @var SprintId */
+    /** @var Id */
     private $id;
 
     /** @var string */
     private $name;
 
-    /** @var SprintTitle */
+    /** @var ShortText */
     private $title;
 
     /** @var Team */
@@ -26,9 +28,9 @@ final class Sprint
     /** @var DateTimeImmutable */
     private $endDate;
 
-    public function __construct(SprintId $sprintId, SprintTitle $title, Team $team, DateTimeImmutable $startDate, DateTimeImmutable $endDate)
+    public function __construct(Id $id, ShortText $title, Team $team, DateTimeImmutable $startDate, DateTimeImmutable $endDate)
     {
-        $this->id = $sprintId;
+        $this->id = $id;
         $this->name = strtolower(str_replace(' ', '-', $title));
         $this->title = $title;
         $this->team = $team;
@@ -36,7 +38,7 @@ final class Sprint
         $this->endDate = $endDate;
     }
 
-    public function getId(): SprintId
+    public function getId(): Id
     {
         return $this->id;
     }
@@ -46,7 +48,7 @@ final class Sprint
         return $this->name;
     }
 
-    public function getTitle(): SprintTitle
+    public function getTitle(): ShortText
     {
         return $this->title;
     }

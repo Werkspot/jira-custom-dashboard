@@ -4,19 +4,19 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
         https://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
-    <entity name="Werkspot\Domain\User\User" table="users">
+    <entity name="Werkspot\JiraDashboard\ConfidenceWidget\Domain\Confidence" table="confidence">
         <id
                 name="id"
                 column="id"
-                type="UserId"
+                type="Id"
         />
         <field
-                name="email"
-                type="Email"
+                name="date"
+                type="datetime_immutable"
         />
         <field
-                name="password"
-                type="Password"
+                name="value"
+                type="integer"
         />
     </entity>
 </doctrine-mapping>

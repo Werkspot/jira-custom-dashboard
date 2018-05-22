@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Werkspot\SharedKernel\Infrastructure\Persistence\Doctrine\CustomType;
+namespace Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\Doctrine\CustomType;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\GuidType;
-//use Werkspot\Domain\User\UserId;
+use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\Id;
 
 class DoctrineId extends GuidType
 {
@@ -14,11 +14,11 @@ class DoctrineId extends GuidType
      */
     public function getName()
     {
-        return 'UserId';
+        return 'Id';
     }
 
     /**
-     * @param UserId $value
+     * @param Id $value
      * @param AbstractPlatform $platform
      *
      * @return string
@@ -32,10 +32,10 @@ class DoctrineId extends GuidType
      * @param string $value
      * @param AbstractPlatform $platform
      *
-     * @return UserId
+     * @return Id
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        return UserId::create($value);
+        return Id::create($value);
     }
 }
