@@ -15,7 +15,10 @@ interface ConfidenceRepositoryInterface
      */
     public function findBySprint(Sprint $sprint): array;
 
-    public function findByDate(DateTimeImmutable $confidenceDate): ?Confidence;
+    /**
+     * @throws EntityNotFoundException
+     */
+    public function findByDate(DateTimeImmutable $date): Confidence;
 
     public function upsert(Confidence $confidence): void;
 }

@@ -22,4 +22,6 @@ interface SprintRepositoryInterface
      * @throws EntityNotFoundException
      */
     public function findActive(): Sprint;
+
+    public function upsert(Sprint $sprint): void;
 }

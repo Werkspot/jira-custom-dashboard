@@ -11,6 +11,7 @@ use Werkspot\JiraDashboard\ConfidenceWidget\Domain\ConfidenceWidget;
 use Werkspot\JiraDashboard\ConfidenceWidget\Infrastructure\Persistence\InMemory\Confidence\ConfidenceRepositoryInMemoryAdapter;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team\Team;
+use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\AbsoluteNumber;
 use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\Id;
 use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\ShortText;
 use Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\InMemory\Sprint\SprintRepositoryInMemoryAdapter;
@@ -22,31 +23,10 @@ class ConfidenceWidgetTest extends TestCase
      */
     public function getConfidenceByLastSprint_whenThereIsASprint_shouldReturnConfidenceCollectionOrderedByDate()
     {
-        $sprintRepository = new SprintRepositoryInMemoryAdapter([
-            new Sprint(
-                Id::create(),
-                ShortText::create('Sprint title'),
-                new Team(
-                    Id::create(),
-                    ShortText::create('Team name')
-                ),
-                new DateTimeImmutable('today - 4 days'),
-                new DateTimeImmutable('today + 4 days')
-            ),
-        ]);
+        $sprintRepository = $this->getSprintRepository();
         $activeSprint = $sprintRepository->findActive();
 
-        $confidenceRepository = new ConfidenceRepositoryInMemoryAdapter([
-            new Confidence(new DateTimeImmutable('today - 4 days'), ConfidenceValueEnum::five()),
-            new Confidence(new DateTimeImmutable('today - 3 days'), ConfidenceValueEnum::four()),
-            new Confidence(new DateTimeImmutable('today - 2 days'), ConfidenceValueEnum::three()),
-            new Confidence(new DateTimeImmutable('today - 1 days'), ConfidenceValueEnum::three()),
-            new Confidence(new DateTimeImmutable('today - 0 days'), ConfidenceValueEnum::two()),
-            new Confidence(new DateTimeImmutable('today + 1 days'), ConfidenceValueEnum::two()),
-            new Confidence(new DateTimeImmutable('today + 2 days'), ConfidenceValueEnum::four()),
-            new Confidence(new DateTimeImmutable('today + 3 days'), ConfidenceValueEnum::four()),
-            new Confidence(new DateTimeImmutable('today + 4 days'), ConfidenceValueEnum::five()),
-        ]);
+        $confidenceRepository = $this->getConfidenceRepository();
 
         $confidenceWidget = new ConfidenceWidget($sprintRepository, $confidenceRepository);
         $confidenceCollection = $confidenceWidget->getConfidenceBySprint($activeSprint);
@@ -58,99 +38,22 @@ class ConfidenceWidgetTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException
      */
-    public function getConfidenceByLastSprint_whenThereIsNotASprint_shouldThrowAnException()
+    public function saveNewConfidence_whenDataIsValid_shouldSaveNewConfidenceDataToPersistence()
     {
         $sprintRepository = new SprintRepositoryInMemoryAdapter([]);
-
-        $confidenceRepository = new ConfidenceRepositoryInMemoryAdapter([
-            new Confidence(new DateTimeImmutable('today - 4 days'), ConfidenceValueEnum::five()),
-            new Confidence(new DateTimeImmutable('today - 3 days'), ConfidenceValueEnum::four()),
-            new Confidence(new DateTimeImmutable('today - 2 days'), ConfidenceValueEnum::three()),
-            new Confidence(new DateTimeImmutable('today - 1 days'), ConfidenceValueEnum::three()),
-            new Confidence(new DateTimeImmutable('today - 0 days'), ConfidenceValueEnum::two()),
-            new Confidence(new DateTimeImmutable('today + 1 days'), ConfidenceValueEnum::two()),
-            new Confidence(new DateTimeImmutable('today + 2 days'), ConfidenceValueEnum::four()),
-            new Confidence(new DateTimeImmutable('today + 3 days'), ConfidenceValueEnum::four()),
-            new Confidence(new DateTimeImmutable('today + 4 days'), ConfidenceValueEnum::five()),
-        ]);
-
-        $confidenceWidget = new ConfidenceWidget($sprintRepository, $confidenceRepository);
-        $confidenceWidget->getConfidenceBySprint($sprintRepository->findActive());
-    }
-
-    /**
-     * @test
-     * @expectedException \Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException
-     */
-    public function getConfidenceBySprint_whenNotExistingSprint_shouldThrowAnException()
-    {
-        $existingSprintId = Id::create();
-        $notExistingSprintId = Id::create();
-
-        $sprintRepository = new SprintRepositoryInMemoryAdapter([
-            new Sprint(
-                $existingSprintId,
-                ShortText::create('Sprint title'),
-                new Team(
-                    Id::create(),
-                    ShortText::create('Team name')
-                ),
-                new DateTimeImmutable('today - 4 days'),
-                new DateTimeImmutable('today + 4 days')
-            ),
-        ]);
-
-        $confidenceRepository = new ConfidenceRepositoryInMemoryAdapter([
-            new Confidence(new DateTimeImmutable('today - 4 days'), ConfidenceValueEnum::five()),
-            new Confidence(new DateTimeImmutable('today - 3 days'), ConfidenceValueEnum::four()),
-            new Confidence(new DateTimeImmutable('today - 2 days'), ConfidenceValueEnum::three()),
-            new Confidence(new DateTimeImmutable('today - 1 days'), ConfidenceValueEnum::three()),
-            new Confidence(new DateTimeImmutable('today - 0 days'), ConfidenceValueEnum::two()),
-            new Confidence(new DateTimeImmutable('today + 1 days'), ConfidenceValueEnum::two()),
-            new Confidence(new DateTimeImmutable('today + 2 days'), ConfidenceValueEnum::four()),
-            new Confidence(new DateTimeImmutable('today + 3 days'), ConfidenceValueEnum::four()),
-            new Confidence(new DateTimeImmutable('today + 4 days'), ConfidenceValueEnum::five()),
-        ]);
-
-        $confidenceWidget = new ConfidenceWidget($sprintRepository, $confidenceRepository);
-        $confidenceWidget->getConfidenceBySprint($sprintRepository->find($notExistingSprintId));
-    }
-
-    /**
-     * @test
-     */
-    public function saveConfidence_whenDataIsValid_shouldSaveNewConfidenceDataToPersistence()
-    {
         $confidenceRepository = new ConfidenceRepositoryInMemoryAdapter([]);
 
         $today = new DateTimeImmutable('today');
 
         $confidence = new Confidence($today, ConfidenceValueEnum::five());
 
-        $confidenceRepository->upsert($confidence);
+        $confidenceWidget = new ConfidenceWidget($sprintRepository, $confidenceRepository);
+        $confidenceWidget->saveConfidence($confidence);
 
         $savedConfidence = $confidenceRepository->findByDate($today);
 
-        $this->assertEquals($confidence->getDate(), $savedConfidence->getDate());
-        $this->assertEquals($confidence->getValue(), $savedConfidence->getValue());
-        $this->assertEquals($confidence->getId(), $savedConfidence->getId());
-    }
-
-    /**
-     * @test
-     * @expectedException \Werkspot\JiraDashboard\SharedKernel\Domain\Exception\InvalidDateException
-     */
-    public function saveConfidence_whenDataIsNotValid_shouldThrowAnException()
-    {
-        $confidenceRepository = new ConfidenceRepositoryInMemoryAdapter([]);
-
-        $yesterday = new DateTimeImmutable('yesterday');
-
-        $confidence = new Confidence($yesterday, ConfidenceValueEnum::five());
-
-        $confidenceRepository->upsert($confidence);
+        $this->assertEquals($confidence, $savedConfidence);
     }
 
     /**
@@ -158,21 +61,60 @@ class ConfidenceWidgetTest extends TestCase
      */
     public function saveConfidence_whenDateAlreadyExists_shouldUpdateConfidenceData()
     {
-        $confidenceRepository = new ConfidenceRepositoryInMemoryAdapter([]);
+        $sprintRepository = new SprintRepositoryInMemoryAdapter([]);
+        $confidenceRepository = $this->getConfidenceRepository();
 
         $today = new DateTimeImmutable('today');
 
-        $confidenceOne = new Confidence($today, ConfidenceValueEnum::five());
-        $confidenceTwo = new Confidence($today, ConfidenceValueEnum::one());
+        $updatedConfidence = new Confidence($today, ConfidenceValueEnum::five());
 
-        // same day, different value
-        $confidenceRepository->upsert($confidenceOne);
-        $confidenceRepository->upsert($confidenceTwo);
+        $confidenceWidget = new ConfidenceWidget($sprintRepository, $confidenceRepository);
+        $confidenceWidget->saveConfidence($updatedConfidence);
 
         $savedConfidence = $confidenceRepository->findByDate($today);
 
-        $this->assertEquals($confidenceTwo->getDate(), $savedConfidence->getDate());
-        $this->assertEquals($confidenceTwo->getValue(), $savedConfidence->getValue());
-        $this->assertEquals($confidenceTwo->getId(), $savedConfidence->getId());
+        $this->assertEquals($updatedConfidence, $savedConfidence);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    private function getSprintRepository(): SprintRepositoryInMemoryAdapter
+    {
+        $sprintRepository = new SprintRepositoryInMemoryAdapter([
+            new Sprint(
+                Id::create(),
+                ShortText::create('Sprint title'),
+                new Team(
+                    Id::create(),
+                    ShortText::create('Team name')
+                ),
+                new DateTimeImmutable('today - 4 days'),
+                new DateTimeImmutable('today + 4 days'),
+                AbsoluteNumber::create(1)
+            ),
+        ]);
+
+        return $sprintRepository;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    private function getConfidenceRepository(): ConfidenceRepositoryInMemoryAdapter
+    {
+        $confidenceRepository = new ConfidenceRepositoryInMemoryAdapter([
+            new Confidence(new DateTimeImmutable('today - 4 days'), ConfidenceValueEnum::five()),
+            new Confidence(new DateTimeImmutable('today - 3 days'), ConfidenceValueEnum::four()),
+            new Confidence(new DateTimeImmutable('today - 2 days'), ConfidenceValueEnum::three()),
+            new Confidence(new DateTimeImmutable('today - 1 days'), ConfidenceValueEnum::three()),
+            new Confidence(new DateTimeImmutable('today - 0 days'), ConfidenceValueEnum::two()),
+            new Confidence(new DateTimeImmutable('today + 1 days'), ConfidenceValueEnum::two()),
+            new Confidence(new DateTimeImmutable('today + 2 days'), ConfidenceValueEnum::four()),
+            new Confidence(new DateTimeImmutable('today + 3 days'), ConfidenceValueEnum::four()),
+            new Confidence(new DateTimeImmutable('today + 4 days'), ConfidenceValueEnum::five()),
+        ]);
+
+        return $confidenceRepository;
     }
 }

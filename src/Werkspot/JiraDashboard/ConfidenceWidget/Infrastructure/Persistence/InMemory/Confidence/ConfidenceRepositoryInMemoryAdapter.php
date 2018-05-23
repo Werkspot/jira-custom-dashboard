@@ -7,7 +7,6 @@ use DateTimeImmutable;
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\Confidence;
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\ConfidenceRepositoryInterface;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException;
-use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\InvalidDateException;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
 
 class ConfidenceRepositoryInMemoryAdapter implements ConfidenceRepositoryInterface
@@ -48,38 +47,24 @@ class ConfidenceRepositoryInMemoryAdapter implements ConfidenceRepositoryInterfa
         return $confidenceCollection;
     }
 
-    public function findByDate(DateTimeImmutable $confidenceDate): ?Confidence
+    /**
+     * @throws EntityNotFoundException
+     */
+    public function findByDate(DateTimeImmutable $date): Confidence
     {
-        $confidenceKey = $confidenceDate->format('Ymd');
+        $confidenceKey = $date->format('Ymd');
 
         if (!array_key_exists($confidenceKey, $this->inMemoryData)) {
-            return null;
+            throw new EntityNotFoundException();
         }
 
-        return clone $this->inMemoryData[$confidenceKey];
+        return $this->inMemoryData[$confidenceKey];
     }
 
-    /**
-     * @throws InvalidDateException
-     */
     public function upsert(Confidence $confidence): void
     {
         $confidenceKey = $confidence->getDate()->format('Ymd');
 
-        $today = new DateTimeImmutable('today');
-
-        if ($confidenceKey < $today->format('Ymd')) {
-            throw new InvalidDateException();
-        }
-
-        if (!$this->findByDate($confidence->getDate())) {
-            $this->inMemoryData[$confidenceKey] = clone $confidence; // save
-            return;
-        }
-
-        // replace with the new one
-        unset($this->inMemoryData[$confidenceKey]);
-
-        $this->inMemoryData[$confidenceKey] = clone $confidence;
+        $this->inMemoryData[$confidenceKey] = $confidence;
     }
 }

@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace Werkspot\JiraDashboard\ConfidenceWidget\Application\Confidence;
 
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\ConfidenceRepositoryInterface;
+use Werkspot\JiraDashboard\ConfidenceWidget\Domain\ConfidenceWidget;
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\GetConfidenceBySprintQuery;
+use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintRepositoryInterface;
 use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\Id;
 
@@ -26,12 +28,15 @@ class GetConfidenceBySprintQueryHandler
         $this->confidenceRepository = $confidenceRepository;
     }
 
+    /**
+     * @throws EntityNotFoundException
+     */
     public function handle(GetConfidenceBySprintQuery $confidenceBySprintQuery): ?array
     {
         $sprint = $this->sprintRepository->find(Id::create($confidenceBySprintQuery->sprintId()));
 
-        $confidenceCollection = $this->confidenceRepository->findBySprint($sprint);
+        $confidenceWidget = new ConfidenceWidget($this->sprintRepository, $this->confidenceRepository);
 
-        return $confidenceCollection;
+        return $confidenceWidget->getConfidenceBySprint($sprint);
     }
 }

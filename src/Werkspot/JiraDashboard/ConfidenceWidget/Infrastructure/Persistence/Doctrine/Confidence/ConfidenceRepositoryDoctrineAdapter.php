@@ -47,31 +47,29 @@ final class ConfidenceRepositoryDoctrineAdapter implements ConfidenceRepositoryI
         return $confidenceCollection;
     }
 
-    public function findByDate(DateTimeImmutable $confidenceDate): ?Confidence
+    /**
+     * @throws EntityNotFoundException
+     */
+    public function findByDate(DateTimeImmutable $date): Confidence
     {
-        $confidenceByDate = $this->em->getRepository(Confidence::class)->findByDate($confidenceDate);
+        $confidenceByDate = $this->em->getRepository(Confidence::class)->findByDate($date);
+
+        if (empty($confidenceByDate)) {
+            throw new EntityNotFoundException();
+        }
 
         return $confidenceByDate[0];
     }
 
     public function upsert(Confidence $confidence): void
     {
-        $today = new DateTimeImmutable('today');
-
-        if ($confidence->getDate()->format('Ymd') < $today->format('Ymd')) {
-            throw new InvalidDateException();
+        try {
+            $existingConfidence = $this->findByDate($confidence->getDate());
+            $existingConfidence->setValue($confidence->getValue());
+        } catch (EntityNotFoundException $e) {
         }
 
-        $foundConfidence = $this->findByDate($confidence->getDate());
-
-        if (is_null($foundConfidence)) {
-            $this->em->persist($confidence); // save
-            $this->em->flush();
-            return;
-        }
-
-        $this->em->remove($foundConfidence); // replace with the new one
-        $this->em->persist($confidence); // replace with the new one
+        $this->em->persist($confidence);
         $this->em->flush();
     }
 }

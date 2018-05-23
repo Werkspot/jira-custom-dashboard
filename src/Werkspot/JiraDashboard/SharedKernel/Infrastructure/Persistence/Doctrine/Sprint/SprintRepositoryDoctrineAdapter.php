@@ -64,4 +64,9 @@ final class SprintRepositoryDoctrineAdapter implements SprintRepositoryInterface
 
         return $sprintCollection[0];
     }
+
+    public function upsert(Sprint $sprint): void
+    {
+        // TODO: Implement upsert() method.
+    }
 }

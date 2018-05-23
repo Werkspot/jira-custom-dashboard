@@ -53,7 +53,7 @@ final class TacticianCommandBusFactory
 
         // register commands/queries
         $getConfidenceBySprintQueryHandler = new GetConfidenceBySprintQueryHandler($this->sprintRepository, $this->confidenceRepository);
-        $saveConfidenceCommandHandler = new SaveConfidenceCommandHandler($this->confidenceRepository);
+        $saveConfidenceCommandHandler = new SaveConfidenceCommandHandler($this->sprintRepository, $this->confidenceRepository);
 
         $locator = new InMemoryLocator();
         $locator->addHandler($getConfidenceBySprintQueryHandler, GetConfidenceBySprintQuery::class);

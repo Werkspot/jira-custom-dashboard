@@ -62,4 +62,9 @@ class SprintRepositoryInMemoryAdapter implements SprintRepositoryInterface
 
         throw new EntityNotFoundException();
     }
+
+    public function upsert(Sprint $sprint): void
+    {
+       // TODO
+    }
 }

@@ -29,9 +29,21 @@ class Confidence
         return $this->id;
     }
 
+    public function setDate(DateTimeImmutable $date): Confidence
+    {
+        $this->date = $date;
+        return $this;
+    }
+
     public function getDate(): DateTimeImmutable
     {
         return $this->date;
+    }
+
+    public function setValue(ConfidenceValueEnum $value): Confidence
+    {
+        $this->value = $value;
+        return $this;
     }
 
     public function getValue(): ConfidenceValueEnum

@@ -26,6 +26,10 @@
                 name="endDate"
                 type="datetime_immutable"
         />
+        <field
+                name="number"
+                type="AbsoluteNumber"
+        />
         <many-to-one
                 field="team"
                 target-entity="Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team\Team"

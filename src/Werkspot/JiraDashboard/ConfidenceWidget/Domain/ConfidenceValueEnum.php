@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace Werkspot\JiraDashboard\ConfidenceWidget\Domain;
 
-use InvalidArgumentException;
-
 final class ConfidenceValueEnum
 {
     private const ONE = 1;

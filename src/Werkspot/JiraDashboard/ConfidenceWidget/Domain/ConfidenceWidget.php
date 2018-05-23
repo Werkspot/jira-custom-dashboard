@@ -32,6 +32,11 @@ final class ConfidenceWidget implements WidgetInterface
         return $this->confidenceRepository->findBySprint($sprint);
     }
 
+    public function saveConfidence(Confidence $confidence): void
+    {
+        $this->confidenceRepository->upsert($confidence);
+    }
+
     public function render(): Response
     {
         return new Response('Confidence Widget');
