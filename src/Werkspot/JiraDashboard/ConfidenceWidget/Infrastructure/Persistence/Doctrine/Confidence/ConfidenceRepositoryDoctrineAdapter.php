@@ -9,6 +9,7 @@ use Doctrine\ORM\Query;
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\Confidence;
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\ConfidenceRepositoryInterface;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException;
+use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\InvalidDateException;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
 
 final class ConfidenceRepositoryDoctrineAdapter implements ConfidenceRepositoryInterface
@@ -48,11 +49,29 @@ final class ConfidenceRepositoryDoctrineAdapter implements ConfidenceRepositoryI
 
     public function findByDate(DateTimeImmutable $confidenceDate): ?Confidence
     {
-        // TODO: Implement find() method.
+        $confidenceByDate = $this->em->getRepository(Confidence::class)->findByDate($confidenceDate);
+
+        return $confidenceByDate[0];
     }
 
     public function upsert(Confidence $confidence): void
     {
-        // TODO: Implement upsert() method.
+        $today = new DateTimeImmutable('today');
+
+        if ($confidence->getDate()->format('Ymd') < $today->format('Ymd')) {
+            throw new InvalidDateException();
+        }
+
+        $foundConfidence = $this->findByDate($confidence->getDate());
+
+        if (is_null($foundConfidence)) {
+            $this->em->persist($confidence); // save
+            $this->em->flush();
+            return;
+        }
+
+        $this->em->remove($foundConfidence); // replace with the new one
+        $this->em->persist($confidence); // replace with the new one
+        $this->em->flush();
     }
 }

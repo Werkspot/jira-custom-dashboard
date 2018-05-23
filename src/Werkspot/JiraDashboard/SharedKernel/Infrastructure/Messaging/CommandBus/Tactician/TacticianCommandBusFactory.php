@@ -10,8 +10,10 @@ use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
 use League\Tactician\Handler\Locator\InMemoryLocator;
 use League\Tactician\Handler\MethodNameInflector\HandleInflector;
 use Werkspot\JiraDashboard\ConfidenceWidget\Application\Confidence\GetConfidenceBySprintQueryHandler;
+use Werkspot\JiraDashboard\ConfidenceWidget\Application\Confidence\SaveConfidenceCommandHandler;
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\ConfidenceRepositoryInterface;
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\GetConfidenceBySprintQuery;
+use Werkspot\JiraDashboard\ConfidenceWidget\Domain\SaveConfidenceCommand;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintRepositoryInterface;
 
 final class TacticianCommandBusFactory
@@ -51,9 +53,11 @@ final class TacticianCommandBusFactory
 
         // register commands/queries
         $getConfidenceBySprintQueryHandler = new GetConfidenceBySprintQueryHandler($this->sprintRepository, $this->confidenceRepository);
+        $saveConfidenceCommandHandler = new SaveConfidenceCommandHandler($this->confidenceRepository);
 
         $locator = new InMemoryLocator();
         $locator->addHandler($getConfidenceBySprintQueryHandler, GetConfidenceBySprintQuery::class);
+        $locator->addHandler($saveConfidenceCommandHandler, SaveConfidenceCommand::class);
 
         $commandHandlerMiddleware = new CommandHandlerMiddleware($nameExtractor, $locator, $inflector);
 

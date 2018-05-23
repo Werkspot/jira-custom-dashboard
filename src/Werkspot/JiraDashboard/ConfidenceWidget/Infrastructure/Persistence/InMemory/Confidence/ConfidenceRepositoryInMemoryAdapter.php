@@ -77,6 +77,9 @@ class ConfidenceRepositoryInMemoryAdapter implements ConfidenceRepositoryInterfa
             return;
         }
 
-        $this->inMemoryData[$confidenceKey] = clone $confidence; // update
+        // replace with the new one
+        unset($this->inMemoryData[$confidenceKey]);
+
+        $this->inMemoryData[$confidenceKey] = clone $confidence;
     }
 }

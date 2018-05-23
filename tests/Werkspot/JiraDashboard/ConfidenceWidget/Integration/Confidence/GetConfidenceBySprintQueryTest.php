@@ -11,7 +11,7 @@ class GetConfidenceBySprintQueryTest extends IntegrationTestAbstract
     /**
      * @test
      */
-    public function getConfidenceByLastSprint_whenThereIsAnSprint_shouldReturnOrderedByDateConfidenceData(): void
+    public function getConfidenceByLastSprint_whenThereIsASprint_shouldReturnConfidenceCollectionOrderedByDate(): void
     {
         $sprint = $this->sprintRepositoryDoctrineAdapter->findActive();
 
