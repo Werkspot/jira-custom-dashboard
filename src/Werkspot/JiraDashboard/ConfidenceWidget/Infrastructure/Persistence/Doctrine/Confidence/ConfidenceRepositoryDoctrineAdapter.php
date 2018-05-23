@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Werkspot\JiraDashboard\ConfidenceWidget\Infrastructure\Persistence\Doctrine\Confidence;
 
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\Confidence;
@@ -43,5 +44,15 @@ final class ConfidenceRepositoryDoctrineAdapter implements ConfidenceRepositoryI
         }
 
         return $confidenceCollection;
+    }
+
+    public function findByDate(DateTimeImmutable $confidenceDate): ?Confidence
+    {
+        // TODO: Implement find() method.
+    }
+
+    public function upsert(Confidence $confidence): void
+    {
+        // TODO: Implement upsert() method.
     }
 }

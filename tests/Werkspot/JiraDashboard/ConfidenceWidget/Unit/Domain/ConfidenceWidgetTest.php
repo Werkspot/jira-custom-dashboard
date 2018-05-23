@@ -123,15 +123,34 @@ class ConfidenceWidgetTest extends TestCase
      */
     public function saveConfidence_whenDataIsValid_shouldSaveNewConfidenceDataToPersistence()
     {
-        $this->assertTrue(true);
+        $confidenceRepository = new ConfidenceRepositoryInMemoryAdapter([]);
+
+        $today = new DateTimeImmutable('today');
+
+        $confidence = new Confidence($today, ConfidenceValueEnum::five());
+
+        $confidenceRepository->upsert($confidence);
+
+        $savedConfidence = $confidenceRepository->findByDate($today);
+
+        $this->assertEquals($confidence->getDate(), $savedConfidence->getDate());
+        $this->assertEquals($confidence->getValue(), $savedConfidence->getValue());
+        $this->assertEquals($confidence->getId(), $savedConfidence->getId());
     }
 
     /**
      * @test
+     * @expectedException \Werkspot\JiraDashboard\SharedKernel\Domain\Exception\InvalidDateException
      */
     public function saveConfidence_whenDataIsNotValid_shouldThrowAnException()
     {
-        $this->assertTrue(true);
+        $confidenceRepository = new ConfidenceRepositoryInMemoryAdapter([]);
+
+        $yesterday = new DateTimeImmutable('yesterday');
+
+        $confidence = new Confidence($yesterday, ConfidenceValueEnum::five());
+
+        $confidenceRepository->upsert($confidence);
     }
 
     /**
@@ -139,6 +158,21 @@ class ConfidenceWidgetTest extends TestCase
      */
     public function saveConfidence_whenDateAlreadyExists_shouldUpdateConfidenceData()
     {
-        $this->assertTrue(true);
+        $confidenceRepository = new ConfidenceRepositoryInMemoryAdapter([]);
+
+        $today = new DateTimeImmutable('today');
+
+        $confidenceOne = new Confidence($today, ConfidenceValueEnum::five());
+        $confidenceTwo = new Confidence($today, ConfidenceValueEnum::one());
+
+        // same day, different value
+        $confidenceRepository->upsert($confidenceOne);
+        $confidenceRepository->upsert($confidenceTwo);
+
+        $savedConfidence = $confidenceRepository->findByDate($today);
+
+        $this->assertEquals($confidenceTwo->getDate(), $savedConfidence->getDate());
+        $this->assertEquals($confidenceTwo->getValue(), $savedConfidence->getValue());
+        $this->assertEquals($confidenceTwo->getId(), $savedConfidence->getId());
     }
 }
