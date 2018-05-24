@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Werkspot\JiraDashboard\ConfidenceWidget\Domain;
 
-final class string
+final class ConfidenceValueEnum
 {
     private const ONE = 1;
     private const TWO = 2;
