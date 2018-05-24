@@ -25,6 +25,9 @@ doctrine:
             ShortText:
                 class: Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\Doctrine\CustomType\DoctrineShortText
                 commented: true
+            AbsoluteNumber:
+                class: Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\Doctrine\CustomType\DoctrineAbsoluteNumber
+                commented: true
 
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
@@ -35,11 +38,17 @@ doctrine:
                 is_bundle: false
                 type: xml
                 dir: '%kernel.project_dir%/src/Werkspot/JiraDashboard/ConfidenceWidget/Infrastructure/Persistence/Doctrine/Confidence/Mapping'
-                prefix: 'Werkspot\JiraDashBoard\ConfidenceWidget\Domain\Confidence'
+                prefix: 'Werkspot\JiraDashBoard\ConfidenceWidget\Domain'
                 alias: Confidence
             Sprint:
                 is_bundle: false
                 type: xml
-                dir: '%kernel.project_dir%/src/Werkspot/JiraDashboard/SharedKernel/Infrastructure/Persistence/Doctrine/Confidence/Mapping'
-                prefix: 'Werkspot\JiraDashBoard\ConfidenceWidget\Domain\Confidence'
-                alias: Confidence
+                dir: '%kernel.project_dir%/src/Werkspot/JiraDashboard/SharedKernel/Infrastructure/Persistence/Doctrine/Sprint/Mapping'
+                prefix: 'Werkspot\JiraDashBoard\SharedKernel\Domain\Model\Sprint'
+                alias: Sprint
+            Team:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.project_dir%/src/Werkspot/JiraDashboard/SharedKernel/Infrastructure/Persistence/Doctrine/Team/Mapping'
+                prefix: 'Werkspot\JiraDashBoard\SharedKernel\Domain\Model\Team'
+                alias: Team

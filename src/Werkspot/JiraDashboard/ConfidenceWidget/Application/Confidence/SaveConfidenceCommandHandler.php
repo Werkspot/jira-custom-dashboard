@@ -5,6 +5,7 @@ namespace Werkspot\JiraDashboard\ConfidenceWidget\Application\Confidence;
 
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\Confidence;
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\ConfidenceRepositoryInterface;
+use Werkspot\JiraDashboard\ConfidenceWidget\Domain\ConfidenceValueEnum;
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\ConfidenceWidget;
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\SaveConfidenceCommand;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintRepositoryInterface;
@@ -30,8 +31,9 @@ class SaveConfidenceCommandHandler
     public function handle(SaveConfidenceCommand $command): void
     {
         $confidence = new Confidence(
-            $command->date(),
-            $command->value()
+            \DateTimeImmutable::createFromMutable($command->date()),
+            ConfidenceValueEnum::five() // $command->value()
+        // TODO arreglar esto
         );
 
         $confidenceWidget = new ConfidenceWidget($this->sprintRepository, $this->confidenceRepository);

@@ -14,15 +14,33 @@ services:
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
-    Werkspot\:
-        resource: '../src/Werkspot/JiraDashboard/**/'
-        exclude: '../src/Werkspot/JiraDashboard/**/{Entity,Migrations},../src/Werkspot/Kernel.php'
+    Werkspot\JiraDashboard\ConfidenceWidget\:
+        resource: '../src/Werkspot/JiraDashboard/ConfidenceWidget/'
+        exclude: ''
+    Werkspot\JiraDashboard\SharedKernel\:
+        resource: '../src/Werkspot/JiraDashboard/SharedKernel/'
+        exclude: ''
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
-    Werkspot\JiraDashboard\:
-        resource: '../src/Werkspot/JiraDashboard/**/Controller'
+#    Werkspot\JiraDashboard\SharedKernel\Infrastructure\Symfony\Controller\:
+#        resource: '../src/Growonic/Infrastructure/Symfony/Controller'
+#        tags: ['controller.service_arguments']
+    Werkspot\JiraDashboard\ConfidenceWidget\Infrastructure\Symfony\Controller\:
+        resource: '../src/Werkspot/JiraDashboard/ConfidenceWidget/Infrastructure/Symfony/Controller'
         tags: ['controller.service_arguments']
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    # service aliases
+    Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintRepositoryInterface: '@Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\Doctrine\Sprint\SprintRepositoryDoctrineAdapter'
+    Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team\TeamRepositoryInterface: '@Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\Doctrine\Team\TeamRepositoryDoctrineAdapter'
+    Werkspot\JiraDashboard\ConfidenceWidget\Domain\ConfidenceRepositoryInterface: '@Werkspot\JiraDashboard\ConfidenceWidget\Infrastructure\Persistence\Doctrine\Confidence\ConfidenceRepositoryDoctrineAdapter'
+
+    # service factories
+    League\Tactician\CommandBus:
+        factory: 'Werkspot\JiraDashboard\SharedKernel\Infrastructure\Messaging\CommandBus\Tactician\TacticianCommandBusFactory:create'
+
+    League\Event\EmitterInterface:
+        factory: 'Werkspot\JiraDashboard\SharedKernel\Infrastructure\Messaging\EventBus\League\LeagueEventBusFactory:create'

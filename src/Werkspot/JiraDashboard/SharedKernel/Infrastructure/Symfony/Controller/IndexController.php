@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Werkspot\JiraDashboard\SharedKernel\Controller;
+namespace Werkspot\JiraDashboard\SharedKernel\Infrastructure\Symfony\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
