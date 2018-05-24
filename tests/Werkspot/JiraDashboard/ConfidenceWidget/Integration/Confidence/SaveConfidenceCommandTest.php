@@ -17,7 +17,7 @@ class SaveConfidenceCommandTest extends IntegrationTestAbstract
     {
         $today = new DateTimeImmutable('today');
 
-        $saveConfidenceCommand = new SaveConfidenceCommand($today, ConfidenceValueEnum::five());
+        $saveConfidenceCommand = new SaveConfidenceCommand($today, 'five'); // TODO: fix this
 
         $this->commandBus->handle($saveConfidenceCommand);
 
@@ -34,8 +34,8 @@ class SaveConfidenceCommandTest extends IntegrationTestAbstract
     {
         $today = new DateTimeImmutable('today');
 
-        $savedConfidenceOneCommand = new SaveConfidenceCommand($today, ConfidenceValueEnum::five());
-        $savedConfidenceTwoCommand = new SaveConfidenceCommand($today, ConfidenceValueEnum::one());
+        $savedConfidenceOneCommand = new SaveConfidenceCommand($today, 'five');
+        $savedConfidenceTwoCommand = new SaveConfidenceCommand($today, 'one');
 
         $this->commandBus->handle($savedConfidenceOneCommand); // try 1
         $this->commandBus->handle($savedConfidenceTwoCommand); // try 2

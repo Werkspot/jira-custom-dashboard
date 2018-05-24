@@ -3,23 +3,23 @@ declare(strict_types=1);
 
 namespace Werkspot\JiraDashboard\ConfidenceWidget\Domain;
 
-use DateTime;
+use DateTimeImmutable;
 
 class SaveConfidenceCommand
 {
-    /** @var DateTime */
+    /** @var DateTimeImmutable */
     private $date;
 
     /** @var string */
     private $value;
 
-    public function __construct(DateTime $date, string $value)
+    public function __construct(DateTimeImmutable $date, string $value)
     {
         $this->date = $date;
         $this->value = $value;
     }
 
-    public function date(): DateTime
+    public function date(): DateTimeImmutable
     {
         return $this->date;
     }

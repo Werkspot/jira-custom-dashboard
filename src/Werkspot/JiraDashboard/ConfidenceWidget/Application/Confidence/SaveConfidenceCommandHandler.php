@@ -30,10 +30,12 @@ class SaveConfidenceCommandHandler
 
     public function handle(SaveConfidenceCommand $command): void
     {
+        $value = $command->value(); // TODO borrar este apaño temporal
+
         $confidence = new Confidence(
-            \DateTimeImmutable::createFromMutable($command->date()),
-            ConfidenceValueEnum::five() // $command->value()
-        // TODO arreglar esto
+            $command->date(),
+            // TODO arreglar esto
+            ConfidenceValueEnum::$value()
         );
 
         $confidenceWidget = new ConfidenceWidget($this->sprintRepository, $this->confidenceRepository);
