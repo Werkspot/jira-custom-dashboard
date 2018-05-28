@@ -17,6 +17,9 @@ services:
     Werkspot\JiraDashboard\ConfidenceWidget\:
         resource: '../src/Werkspot/JiraDashboard/ConfidenceWidget/'
         exclude: ''
+    Werkspot\JiraDashboard\SprintWidget\:
+            resource: '../src/Werkspot/JiraDashboard/SprintWidget/'
+            exclude: ''
     Werkspot\JiraDashboard\SharedKernel\:
         resource: '../src/Werkspot/JiraDashboard/SharedKernel/'
         exclude: ''
@@ -29,6 +32,9 @@ services:
     Werkspot\JiraDashboard\ConfidenceWidget\Infrastructure\Symfony\Controller\:
         resource: '../src/Werkspot/JiraDashboard/ConfidenceWidget/Infrastructure/Symfony/Controller'
         tags: ['controller.service_arguments']
+    Werkspot\JiraDashboard\SprintWidget\Infrastructure\Symfony\Controller\:
+            resource: '../src/Werkspot/JiraDashboard/SprintWidget/Infrastructure/Symfony/Controller'
+            tags: ['controller.service_arguments']
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

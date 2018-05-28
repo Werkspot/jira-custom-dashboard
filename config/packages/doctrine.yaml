@@ -25,13 +25,13 @@ doctrine:
             ShortText:
                 class: Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\Doctrine\CustomType\DoctrineShortText
                 commented: true
-            AbsoluteNumber:
-                class: Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\Doctrine\CustomType\DoctrineAbsoluteNumber
+            PositiveNumber:
+                class: Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\Doctrine\CustomType\DoctrinePositiveNumber
                 commented: true
 
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
-        naming_strategy: doctrine.orm.naming_strategy.underscore
+        naming_strategy: doctrine.orm.naming_strategy.default
         auto_mapping: true
         mappings:
             Confidence:

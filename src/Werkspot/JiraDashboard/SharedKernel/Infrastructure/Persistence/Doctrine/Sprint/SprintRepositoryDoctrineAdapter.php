@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\Doctrine\Sprint;
 
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException;
+use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\InvalidDateException;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintRepositoryInterface;
 use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\Id;
@@ -46,17 +48,16 @@ final class SprintRepositoryDoctrineAdapter implements SprintRepositoryInterface
      */
     public function findActive(): Sprint
     {
-        $today = new \DateTimeImmutable('today');
+        $today = new DateTimeImmutable('today');
 
-        $queryBuilder = $this->em->createQueryBuilder()
+        $sprintCollection = $queryBuilder = $this->em->createQueryBuilder()
             ->select('s')
             ->from(Sprint::class, 's')
             ->where('s.startDate <= :today')
             ->andWhere('s.endDate >= :today')
             ->setParameter('today', $today)
-            ->getQuery();
-
-        $sprintCollection = $queryBuilder->execute();
+            ->getQuery()
+            ->getResult();
 
         if (empty($sprintCollection)) {
             throw new EntityNotFoundException();
@@ -67,6 +68,26 @@ final class SprintRepositoryDoctrineAdapter implements SprintRepositoryInterface
 
     public function upsert(Sprint $sprint): void
     {
-        // TODO: Implement upsert() method.
+        $this->em->persist($sprint->getTeam()); // TODO this is temp
+        $this->em->persist($sprint);
+        $this->em->flush();
+    }
+
+    /**
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getNextSprintNumber(): int
+    {
+        $maxNumber = $this->em->createQueryBuilder()
+            ->select('MAX(s.number) + 1')
+            ->from(Sprint::class, 's')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        if (is_null($maxNumber)) {
+            return 0;
+        }
+
+        return (int)$maxNumber;
     }
 }

@@ -7,7 +7,7 @@ use DateTimeImmutable;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
-use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\AbsoluteNumber;
+use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\PositiveNumber;
 use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\Id;
 use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\ShortText;
 
@@ -22,11 +22,11 @@ class DoctrineSprintFixtureLoader extends AbstractFixture
     {
         $sprint = new Sprint(
             Id::create(),
-            ShortText::create('Sprint title'),
+            ShortText::create('Sprint 0'),
             $this->getReference(DoctrineTeamFixtureLoader::TEAM_NAME),
             new DateTimeImmutable('today -4 days'),
             new DateTimeImmutable('today +4 days'),
-            AbsoluteNumber::create(1)
+            PositiveNumber::create(0)
         );
 
         $manager->persist($sprint);

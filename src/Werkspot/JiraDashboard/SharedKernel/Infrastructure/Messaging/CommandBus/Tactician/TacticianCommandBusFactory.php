@@ -15,6 +15,10 @@ use Werkspot\JiraDashboard\ConfidenceWidget\Domain\ConfidenceRepositoryInterface
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\GetConfidenceBySprintQuery;
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\SaveConfidenceCommand;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintRepositoryInterface;
+use Werkspot\JiraDashboard\SprintWidget\Application\AddNewSprintCommandHandler;
+use Werkspot\JiraDashboard\SprintWidget\Application\GetActiveSprintQueryHandler;
+use Werkspot\JiraDashboard\SprintWidget\Domain\AddNewSprintCommand;
+use Werkspot\JiraDashboard\SprintWidget\Domain\GetActiveSprintQuery;
 
 final class TacticianCommandBusFactory
 {
@@ -54,10 +58,14 @@ final class TacticianCommandBusFactory
         // register commands/queries
         $getConfidenceBySprintQueryHandler = new GetConfidenceBySprintQueryHandler($this->sprintRepository, $this->confidenceRepository);
         $saveConfidenceCommandHandler = new SaveConfidenceCommandHandler($this->sprintRepository, $this->confidenceRepository);
+        $addNewSprintCommandHandler = new AddNewSprintCommandHandler($this->sprintRepository);
+        $getActiveSprintQueryHandler = new GetActiveSprintQueryHandler($this->sprintRepository);
 
         $locator = new InMemoryLocator();
         $locator->addHandler($getConfidenceBySprintQueryHandler, GetConfidenceBySprintQuery::class);
         $locator->addHandler($saveConfidenceCommandHandler, SaveConfidenceCommand::class);
+        $locator->addHandler($addNewSprintCommandHandler, AddNewSprintCommand::class);
+        $locator->addHandler($getActiveSprintQueryHandler, GetActiveSprintQuery::class);
 
         $commandHandlerMiddleware = new CommandHandlerMiddleware($nameExtractor, $locator, $inflector);
 

@@ -28,13 +28,16 @@
         />
         <field
                 name="number"
-                type="AbsoluteNumber"
+                type="PositiveNumber"
         />
         <many-to-one
                 field="team"
-                target-entity="Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team\Team"
-                inversed-by="sprints">
-            <join-column nullable="false"/>
+                target-entity="Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team\Team">
+            <cascade>
+                <cascade-persist/>
+                <cascade-remove/>
+            </cascade>
+            <join-column name="teamId" referenced-column-name="id"/>
         </many-to-one>
     </entity>
 </doctrine-mapping>

@@ -7,7 +7,7 @@ use InvalidArgumentException;
 
 class ShortText
 {
-    public const SHORT_TEXT_MIN_LENGTH = 8;
+    public const SHORT_TEXT_MIN_LENGTH = 5;
     public const SHORT_TEXT_MAX_LENGTH = 255;
 
     /** @var string */

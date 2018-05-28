@@ -5,6 +5,7 @@ namespace Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\InMemor
 
 use DateTimeImmutable;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException;
+use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\InvalidDateException;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintId;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintRepositoryInterface;
@@ -23,6 +24,8 @@ class SprintRepositoryInMemoryAdapter implements SprintRepositoryInterface
         foreach ($data as $sprint) {
             $this->inMemoryData[$sprint->getId()->id()] = $sprint;
         }
+
+        $this->sortInMemoryDataByDateAsc();
     }
 
     /**
@@ -63,8 +66,40 @@ class SprintRepositoryInMemoryAdapter implements SprintRepositoryInterface
         throw new EntityNotFoundException();
     }
 
+    /**
+     * @throws InvalidDateException
+     */
     public function upsert(Sprint $sprint): void
     {
-       // TODO
+        $this->inMemoryData[$sprint->getId()->id()] = $sprint;
+
+        $this->sortInMemoryDataByDateAsc();
+    }
+
+    public function getNextSprintNumber(): int
+    {
+        if ($lastPersisted = $this->getLastPersisted()) {
+            return $lastPersisted->getNumber()->number() + 1;
+        }
+
+        return 0;
+    }
+
+    private function sortInMemoryDataByDateAsc(): void
+    {
+        uasort($this->inMemoryData, function (Sprint $firstSprint, Sprint $secondSprint) {
+            return $firstSprint->getStartDate() < $secondSprint->getEndDate();
+        });
+    }
+
+    private function getLastPersisted(): ?Sprint
+    {
+        uasort($this->inMemoryData, function (Sprint $firstSprint, Sprint $secondSprint) {
+            return $firstSprint->getNumber()->number() < $secondSprint->getNumber()->number();
+        });
+
+        reset($this->inMemoryData);
+
+        return current($this->inMemoryData) ? current($this->inMemoryData) : null;
     }
 }

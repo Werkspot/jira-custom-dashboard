@@ -5,7 +5,7 @@ namespace Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint;
 
 use DateTimeImmutable;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team\Team;
-use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\AbsoluteNumber;
+use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\PositiveNumber;
 use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\Id;
 use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\ShortText;
 
@@ -29,10 +29,10 @@ class Sprint
     /** @var DateTimeImmutable */
     private $endDate;
 
-    /** @var AbsoluteNumber */
+    /** @var PositiveNumber */
     private $number;
 
-    public function __construct(Id $id, ShortText $title, Team $team, DateTimeImmutable $startDate, DateTimeImmutable $endDate, AbsoluteNumber $number)
+    public function __construct(Id $id, ShortText $title, Team $team, DateTimeImmutable $startDate, DateTimeImmutable $endDate, PositiveNumber $number)
     {
         $this->id = $id;
         $this->name = strtolower(str_replace(' ', '-', $title));
@@ -97,13 +97,13 @@ class Sprint
         return $this->endDate;
     }
 
-    public function setNumber(AbsoluteNumber $number): Sprint
+    public function setNumber(PositiveNumber $number): Sprint
     {
         $this->number = $number;
         return $this;
     }
 
-    public function getNumber(): AbsoluteNumber
+    public function getNumber(): PositiveNumber
     {
         return $this->number;
     }

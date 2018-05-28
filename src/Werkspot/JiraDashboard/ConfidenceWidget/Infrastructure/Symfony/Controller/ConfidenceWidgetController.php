@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\SaveConfidenceCommand;
 use Werkspot\JiraDashboard\ConfidenceWidget\Infrastructure\Symfony\Form\Type\AddConfidenceType;
 
-class ActiveSprintConfidenceController extends AbstractController
+class ConfidenceWidgetController extends AbstractController
 {
     /**
      * @var CommandBus
@@ -25,7 +25,6 @@ class ActiveSprintConfidenceController extends AbstractController
     private $emitter;
 
     /**
-     * RegisterUserController constructor.
      * @param CommandBus $commandBus
      * @param EmitterInterface $emitter
      */
@@ -36,7 +35,7 @@ class ActiveSprintConfidenceController extends AbstractController
     }
 
     /**
-     * @Route("/confidence", methods={"GET", "POST"}, name="home")
+     * @Route("/confidence", methods={"GET", "POST"}, name="confidence")
      * @Template("ConfidenceWidget/active-sprint-confidence.html.twig")
      */
     public function __invoke(Request $request)
@@ -49,7 +48,7 @@ class ActiveSprintConfidenceController extends AbstractController
             $formData = $form->getData();
 
             try {
-                $saveConfidenceCommand = new SaveConfidenceCommand($formData['date'], (string)$formData['value']);
+                $saveConfidenceCommand = new SaveConfidenceCommand($formData['date'], $formData['value']);
                 $this->commandBus->handle($saveConfidenceCommand);
             } catch (\Throwable $t) {
                 return [

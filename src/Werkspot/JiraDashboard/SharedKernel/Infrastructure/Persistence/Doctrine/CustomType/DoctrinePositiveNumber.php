@@ -5,20 +5,20 @@ namespace Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\Doctrin
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\GuidType;
-use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\AbsoluteNumber;
+use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\PositiveNumber;
 
-class DoctrineAbsoluteNumber extends GuidType
+class DoctrinePositiveNumber extends GuidType
 {
     /**
      * @return string
      */
     public function getName()
     {
-        return 'AbsoluteNumber';
+        return 'PositiveNumber';
     }
 
     /**
-     * @param AbsoluteNumber $value
+     * @param PositiveNumber $value
      * @param AbstractPlatform $platform
      *
      * @return int
@@ -32,10 +32,10 @@ class DoctrineAbsoluteNumber extends GuidType
      * @param int $value
      * @param AbstractPlatform $platform
      *
-     * @return AbsoluteNumber
+     * @return PositiveNumber
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        return AbsoluteNumber::create((int)$value);
+        return PositiveNumber::create((int)$value);
     }
 }

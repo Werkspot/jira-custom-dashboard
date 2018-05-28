@@ -11,12 +11,29 @@ final class ConfidenceValueEnum
     private const FOUR = 4;
     private const FIVE = 5;
 
+    private static $validValues = [
+        self::ONE,
+        self::TWO,
+        self::THREE,
+        self::FOUR,
+        self::FIVE,
+    ];
+
     /** @var int */
     private $value;
 
     private function __construct(int $value)
     {
         $this->value = $value;
+    }
+
+    public static function create(int $value): self
+    {
+        if (!in_array($value, self::$validValues)) {
+            throw new \InvalidArgumentException();
+        }
+
+        return new static($value);
     }
 
     public static function one(): self

@@ -10,10 +10,10 @@ class SaveConfidenceCommand
     /** @var DateTimeImmutable */
     private $date;
 
-    /** @var string */
+    /** @var int */
     private $value;
 
-    public function __construct(DateTimeImmutable $date, string $value)
+    public function __construct(DateTimeImmutable $date, int $value)
     {
         $this->date = $date;
         $this->value = $value;
@@ -24,7 +24,7 @@ class SaveConfidenceCommand
         return $this->date;
     }
 
-    public function value(): string
+    public function value(): int
     {
         return $this->value;
     }

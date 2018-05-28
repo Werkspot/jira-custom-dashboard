@@ -11,7 +11,7 @@ use Werkspot\JiraDashboard\ConfidenceWidget\Domain\ConfidenceWidget;
 use Werkspot\JiraDashboard\ConfidenceWidget\Infrastructure\Persistence\InMemory\Confidence\ConfidenceRepositoryInMemoryAdapter;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team\Team;
-use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\AbsoluteNumber;
+use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\PositiveNumber;
 use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\Id;
 use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\ShortText;
 use Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\InMemory\Sprint\SprintRepositoryInMemoryAdapter;
@@ -91,7 +91,7 @@ class ConfidenceWidgetTest extends TestCase
                 ),
                 new DateTimeImmutable('today - 4 days'),
                 new DateTimeImmutable('today + 4 days'),
-                AbsoluteNumber::create(1)
+                PositiveNumber::create(1)
             ),
         ]);
 

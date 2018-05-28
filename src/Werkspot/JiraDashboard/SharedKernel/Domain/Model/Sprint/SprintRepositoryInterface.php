@@ -24,4 +24,6 @@ interface SprintRepositoryInterface
     public function findActive(): Sprint;
 
     public function upsert(Sprint $sprint): void;
+
+    public function getNextSprintNumber(): int;
 }

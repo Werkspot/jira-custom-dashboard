@@ -9,7 +9,7 @@ use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Tools\Setup;
-use Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\Doctrine\CustomType\DoctrineAbsoluteNumber;
+use Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\Doctrine\CustomType\DoctrinePositiveNumber;
 use Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\Doctrine\CustomType\DoctrineId;
 use Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\Doctrine\CustomType\DoctrineShortText;
 
@@ -37,8 +37,8 @@ final class DoctrineEntityManagerFactory
             Type::addType('ShortText', DoctrineShortText::class);
         }
 
-        if (!Type::hasType('AbsoluteNumber')) {
-            Type::addType('AbsoluteNumber', DoctrineAbsoluteNumber::class);
+        if (!Type::hasType('PositiveNumber')) {
+            Type::addType('PositiveNumber', DoctrinePositiveNumber::class);
         }
     }
 

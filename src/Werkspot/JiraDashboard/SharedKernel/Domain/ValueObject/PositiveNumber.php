@@ -5,14 +5,14 @@ namespace Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject;
 
 use InvalidArgumentException;
 
-class AbsoluteNumber
+class PositiveNumber
 {
     /** @var int */
     protected $number;
 
     protected function __construct(int $number)
     {
-        if ($number <= 0) {
+        if ($number < 0) {
            throw new InvalidArgumentException();
         }
 

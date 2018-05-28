@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Werkspot\Tests\JiraDashboard\ConfidenceWidget\Integration\Confidence;
 
 use DateTimeImmutable;
-use Werkspot\JiraDashboard\ConfidenceWidget\Domain\ConfidenceValueEnum;
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\SaveConfidenceCommand;
 use Werkspot\Tests\JiraDashboard\SharedKernel\Integration\IntegrationTestAbstract;
 
@@ -17,7 +16,7 @@ class SaveConfidenceCommandTest extends IntegrationTestAbstract
     {
         $today = new DateTimeImmutable('today');
 
-        $saveConfidenceCommand = new SaveConfidenceCommand($today, 'five'); // TODO: fix this
+        $saveConfidenceCommand = new SaveConfidenceCommand($today, 5);
 
         $this->commandBus->handle($saveConfidenceCommand);
 
@@ -34,11 +33,11 @@ class SaveConfidenceCommandTest extends IntegrationTestAbstract
     {
         $today = new DateTimeImmutable('today');
 
-        $savedConfidenceOneCommand = new SaveConfidenceCommand($today, 'five');
-        $savedConfidenceTwoCommand = new SaveConfidenceCommand($today, 'one');
+        $savedConfidenceOneCommand = new SaveConfidenceCommand($today, 5);
+        $savedConfidenceTwoCommand = new SaveConfidenceCommand($today, 1);
 
-        $this->commandBus->handle($savedConfidenceOneCommand); // try 1
-        $this->commandBus->handle($savedConfidenceTwoCommand); // try 2
+        $this->commandBus->handle($savedConfidenceOneCommand);
+        $this->commandBus->handle($savedConfidenceTwoCommand);
 
         $savedConfidence = $this->confidenceRepositoryDoctrineAdapter->findByDate($today);
 
