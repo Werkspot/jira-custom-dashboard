@@ -14,7 +14,7 @@ use Werkspot\JiraDashboard\SprintWidget\Domain\AddNewSprintCommand;
 use Werkspot\JiraDashboard\SprintWidget\Domain\GetActiveSprintQuery;
 use Werkspot\JiraDashboard\SprintWidget\Infrastructure\Symfony\Form\Type\AddSprintType;
 
-class SprintController extends AbstractController
+class SprintWidgetController extends AbstractController
 {
     /**
      * @var CommandBus

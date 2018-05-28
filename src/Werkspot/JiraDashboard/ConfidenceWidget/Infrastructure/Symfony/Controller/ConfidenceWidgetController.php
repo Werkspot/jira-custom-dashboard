@@ -40,7 +40,10 @@ class ConfidenceWidgetController extends AbstractController
      */
     public function __invoke(Request $request)
     {
-        $form = $this->createForm(AddConfidenceType::class);
+        $form = $this->createForm(AddConfidenceType::class, null, [
+            'action' => $this->generateUrl('confidence'),
+
+        ]);
 
         $form->handleRequest($request);
 
@@ -50,6 +53,13 @@ class ConfidenceWidgetController extends AbstractController
             try {
                 $saveConfidenceCommand = new SaveConfidenceCommand($formData['date'], $formData['value']);
                 $this->commandBus->handle($saveConfidenceCommand);
+
+                $this->addFlash(
+                    'confidence',
+                    'Confidence added correctly!'
+                );
+
+                return $this->redirectToRoute('homepage');
             } catch (\Throwable $t) {
                 return [
                     'form' => $form->createView(),

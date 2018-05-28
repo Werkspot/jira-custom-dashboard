@@ -32,6 +32,9 @@ class Sprint
     /** @var PositiveNumber */
     private $number;
 
+    /** @var bool */
+    private $achieved;
+
     public function __construct(Id $id, ShortText $title, Team $team, DateTimeImmutable $startDate, DateTimeImmutable $endDate, PositiveNumber $number)
     {
         $this->id = $id;
@@ -41,6 +44,7 @@ class Sprint
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->number = $number;
+        $this->achieved = false;
     }
 
     public function getId(): Id
@@ -106,5 +110,16 @@ class Sprint
     public function getNumber(): PositiveNumber
     {
         return $this->number;
+    }
+
+    public function setAchieved(bool $achieved): Sprint
+    {
+        $this->achieved = $achieved;
+        return $this;
+    }
+
+    public function isAchieved(): bool
+    {
+        return $this->achieved;
     }
 }

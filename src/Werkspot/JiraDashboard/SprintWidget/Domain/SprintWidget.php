@@ -34,6 +34,6 @@ final class SprintWidget implements WidgetInterface
 
     public function render(): Response
     {
-        return new Response('Current Sprint Widget');
+        return new Response('Sprint Widget');
     }
 }

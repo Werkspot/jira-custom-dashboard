@@ -30,6 +30,10 @@
                 name="number"
                 type="PositiveNumber"
         />
+        <field
+                name="achieved"
+                type="boolean"
+        />
         <many-to-one
                 field="team"
                 target-entity="Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team\Team">

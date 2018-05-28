@@ -1,14 +1,53 @@
 <!DOCTYPE html>
-<html style="border: 0px; height: 95%; margin: 0px; padding: 15px; ">
+<html>
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
     </head>
-    <body style="background-color: black; border: 0px; height: 100%; margin: 0px; ">
-        <div style="border: 1px solid blue; color: whitesmoke; height: 100%; width: 100%;">
-            {% block body %}{% endblock %}
+    <body>
+        <div class="widget-row">
+            <div class="widget-container">
+                {{ render(controller('Werkspot\\JiraDashboard\\SprintWidget\\Infrastructure\\Symfony\\Controller\\SprintWidgetController')) }}
+            </div>
+            <div class="widget-container">
+                {{ render(controller('Werkspot\\JiraDashboard\\ConfidenceWidget\\Infrastructure\\Symfony\\Controller\\ConfidenceWidgetController')) }}
+            </div>
+            <div class="widget-container"></div>
         </div>
         {% block javascripts %}{% endblock %}
     </body>
+    <style type="text/css">
+        html {
+            border: 0px;
+            height: 95%;
+            margin: 0px;
+            padding: 0px;
+            width: 100%;
+        }
+
+        body {
+            background-color: black;
+            border: 0px;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+            width: 100%;
+        }
+
+        .widget-row {
+            height: 100%;
+            margin: auto;
+            padding: 0px;
+        }
+
+        .widget-container {
+            border: 1px solid blue;
+            display: inline-block;
+            height: 50%;
+            margin: 15px;
+            vertical-align: top;
+            width: 31%;
+        }
+    </style>
 </html>

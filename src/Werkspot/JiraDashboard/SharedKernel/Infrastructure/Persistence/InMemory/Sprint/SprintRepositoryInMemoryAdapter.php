@@ -85,6 +85,21 @@ class SprintRepositoryInMemoryAdapter implements SprintRepositoryInterface
         return 0;
     }
 
+    public function findAchieved(): ?array
+    {
+        $achieved = array_filter($this->inMemoryData, function (Sprint $sprint) {
+            if ($sprint->isAchieved()) {
+                return $sprint;
+            }
+        });
+
+        if (empty($achieved)) {
+            throw new EntityNotFoundException();
+        }
+
+        return $achieved;
+    }
+
     private function sortInMemoryDataByDateAsc(): void
     {
         uasort($this->inMemoryData, function (Sprint $firstSprint, Sprint $secondSprint) {

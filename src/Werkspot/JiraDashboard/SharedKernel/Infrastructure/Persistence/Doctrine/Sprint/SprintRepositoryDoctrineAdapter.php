@@ -90,4 +90,14 @@ final class SprintRepositoryDoctrineAdapter implements SprintRepositoryInterface
 
         return (int)$maxNumber;
     }
+
+    public function findAchieved(): ?array
+    {
+        return $this->em->createQueryBuilder()
+            ->select('s')
+            ->from(Sprint::class, 's')
+            ->where('s.achieved = 1')
+            ->getQuery()
+            ->getArrayResult();
+    }
 }

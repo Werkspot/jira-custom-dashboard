@@ -26,4 +26,6 @@ interface SprintRepositoryInterface
     public function upsert(Sprint $sprint): void;
 
     public function getNextSprintNumber(): int;
+
+    public function findAchieved(): ?array;
 }
