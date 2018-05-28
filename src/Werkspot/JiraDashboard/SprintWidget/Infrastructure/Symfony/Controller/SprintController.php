@@ -9,7 +9,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException;
 use Werkspot\JiraDashboard\SprintWidget\Domain\AddNewSprintCommand;
+use Werkspot\JiraDashboard\SprintWidget\Domain\GetActiveSprintQuery;
 use Werkspot\JiraDashboard\SprintWidget\Infrastructure\Symfony\Form\Type\AddSprintType;
 
 class SprintController extends AbstractController
@@ -36,10 +38,19 @@ class SprintController extends AbstractController
 
     /**
      * @Route("/sprint", methods={"GET", "POST"}, name="sprint")
-     * @Template("SprintWidget/add-new-sprint.html.twig")
+     * @Template("SprintWidget/sprint-widget.html.twig")
      */
     public function __invoke(Request $request)
     {
+        $getActiveSprintQuery = new GetActiveSprintQuery();
+
+        $activeSprint = null;
+
+        try {
+            $activeSprint = $this->commandBus->handle($getActiveSprintQuery);
+        } catch (EntityNotFoundException $e) {
+        }
+
         $form = $this->createForm(AddSprintType::class);
 
         $form->handleRequest($request);
@@ -52,6 +63,7 @@ class SprintController extends AbstractController
                 $this->commandBus->handle($addNewSprintCommand);
             } catch (\Throwable $t) {
                 return [
+                    'activeSprint' => $activeSprint,
                     'form' => $form->createView(),
                     'error' => $t->getMessage(),
                 ];
@@ -59,6 +71,7 @@ class SprintController extends AbstractController
         }
 
         return [
+            'activeSprint' => $activeSprint,
             'form' => $form->createView(),
             'error' => '',
         ];

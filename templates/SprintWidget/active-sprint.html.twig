@@ -1,0 +1,10 @@
+<div>
+{% if activeSprint.title is not null %}
+    {{ activeSprint.title }}
+{% endif %}
+</div>
+<div>
+    {% if activeSprint.startDate is not null and activeSprint.endDate is not null %}
+        {{ activeSprint.startDate|date('Y-m-d') }}  -  {{ activeSprint.endDate|date('Y-m-d') }}
+    {% endif %}
+</div>
