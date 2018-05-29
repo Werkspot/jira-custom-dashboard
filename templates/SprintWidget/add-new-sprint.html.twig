@@ -1,5 +1,11 @@
-Add a new Sprint...
-{% if error is not empty %}
-    {{ error }}
-{% endif %}
-{{ form(form) }}
+<div class="widget-module-box">
+    {% for message in app.flashes('sprint') %}
+        <div style="color: red">{{ message }}</div>
+    {% endfor %}
+
+    <h3>Add a new Sprint...</h3>
+    {% if error is not empty %}
+        {{ error }}
+    {% endif %}
+    {{ form(form) }}
+</div>

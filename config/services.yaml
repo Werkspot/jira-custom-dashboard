@@ -20,21 +20,24 @@ services:
     Werkspot\JiraDashboard\SprintWidget\:
             resource: '../src/Werkspot/JiraDashboard/SprintWidget/'
             exclude: ''
+    Werkspot\JiraDashboard\AchievedSprintsWidget\:
+            resource: '../src/Werkspot/JiraDashboard/AchievedSprintsWidget/'
+            exclude: ''
     Werkspot\JiraDashboard\SharedKernel\:
         resource: '../src/Werkspot/JiraDashboard/SharedKernel/'
         exclude: ''
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
-#    Werkspot\JiraDashboard\SharedKernel\Infrastructure\Symfony\Controller\:
-#        resource: '../src/Growonic/Infrastructure/Symfony/Controller'
-#        tags: ['controller.service_arguments']
     Werkspot\JiraDashboard\ConfidenceWidget\Infrastructure\Symfony\Controller\:
         resource: '../src/Werkspot/JiraDashboard/ConfidenceWidget/Infrastructure/Symfony/Controller'
         tags: ['controller.service_arguments']
     Werkspot\JiraDashboard\SprintWidget\Infrastructure\Symfony\Controller\:
             resource: '../src/Werkspot/JiraDashboard/SprintWidget/Infrastructure/Symfony/Controller'
             tags: ['controller.service_arguments']
+    Werkspot\JiraDashboard\AchievedSprintsWidget\Infrastructure\Symfony\Controller\:
+                resource: '../src/Werkspot/JiraDashboard/AchievedSprintsWidget/Infrastructure/Symfony/Controller'
+                tags: ['controller.service_arguments']
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

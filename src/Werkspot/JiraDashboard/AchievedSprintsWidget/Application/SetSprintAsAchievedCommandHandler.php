@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace Werkspot\JiraDashboard\AchievedSprintsWidget\Application;
 
 use Werkspot\JiraDashboard\AchievedSprintsWidget\Domain\AchievedSprintsWidget;
-use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException;
+use Werkspot\JiraDashboard\AchievedSprintsWidget\Domain\SetSprintAsAchievedCommand;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintRepositoryInterface;
 
-class GetAchievedSprintsQueryHandler
+class SetSprintAsAchievedCommandHandler
 {
     /**
      * @var SprintRepositoryInterface
@@ -19,13 +19,16 @@ class GetAchievedSprintsQueryHandler
         $this->sprintRepository = $sprintRepository;
     }
 
-    /**
-     * @throws EntityNotFoundException
-     */
-    public function handle(): ?array
+    public function handle(SetSprintAsAchievedCommand $achievedCommand): void
     {
         $achievedSprintsWidget = new AchievedSprintsWidget($this->sprintRepository);
 
-        return $achievedSprintsWidget->getAchievedSprints();
+        $sprint = $this->sprintRepository->find($achievedCommand->sprintId());
+
+        if (!is_null($sprint)) {
+            $sprint->setAchieved($achievedCommand->isAchieved());
+        }
+
+        $achievedSprintsWidget->setSprintAsAchieved($sprint);
     }
 }

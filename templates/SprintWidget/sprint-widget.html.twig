@@ -1,16 +1,8 @@
-{#{% extends 'base.html.twig' %}#}
-
-{% block body %}
-    <div style="margin: 15px; width: 300px; height: 100px; border: 1px solid blue;">
-        <h3>Active Sprint</h3>
-        {% if activeSprint is not null %}
-            {{ include('SprintWidget/active-sprint.html.twig', { 'sprint': activeSprint }) }}
-        {% else %}
-            There is not active sprint at this moment :(
-        {% endif %}
-    </div>
-
-    <div style="margin: 15px; width: 300px; height: 300px; border: 1px solid blue;">
-        {{ include('SprintWidget/add-new-sprint.html.twig', { 'form': form }) }}
-    </div>
-{% endblock %}
+<div>
+    {% if activeSprint is not null %}
+        {{ include('SprintWidget/active-sprint.html.twig', { 'sprint': activeSprint }) }}
+    {% else %}
+        There is not active sprint at this moment :(
+    {% endif %}
+</div>
+{{ include('SprintWidget/add-new-sprint.html.twig', { 'form': form }) }}

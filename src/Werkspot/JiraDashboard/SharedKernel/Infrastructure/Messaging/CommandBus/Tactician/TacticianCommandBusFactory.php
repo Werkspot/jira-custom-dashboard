@@ -10,7 +10,9 @@ use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
 use League\Tactician\Handler\Locator\InMemoryLocator;
 use League\Tactician\Handler\MethodNameInflector\HandleInflector;
 use Werkspot\JiraDashboard\AchievedSprintsWidget\Application\GetAchievedSprintsQueryHandler;
+use Werkspot\JiraDashboard\AchievedSprintsWidget\Application\SetSprintAsAchievedCommandHandler;
 use Werkspot\JiraDashboard\AchievedSprintsWidget\Domain\GetAchievedSprintsQuery;
+use Werkspot\JiraDashboard\AchievedSprintsWidget\Domain\SetSprintAsAchievedCommand;
 use Werkspot\JiraDashboard\ConfidenceWidget\Application\Confidence\GetConfidenceBySprintQueryHandler;
 use Werkspot\JiraDashboard\ConfidenceWidget\Application\Confidence\SaveConfidenceCommandHandler;
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\ConfidenceRepositoryInterface;
@@ -63,6 +65,7 @@ final class TacticianCommandBusFactory
         $addNewSprintCommandHandler = new AddNewSprintCommandHandler($this->sprintRepository);
         $getActiveSprintQueryHandler = new GetActiveSprintQueryHandler($this->sprintRepository);
         $getAchievedSprintsQueryHandler = new GetAchievedSprintsQueryHandler($this->sprintRepository);
+        $setSprintAsAchievedCommandHandler = new SetSprintAsAchievedCommandHandler($this->sprintRepository);
 
         $locator = new InMemoryLocator();
         $locator->addHandler($getConfidenceBySprintQueryHandler, GetConfidenceBySprintQuery::class);
@@ -70,6 +73,7 @@ final class TacticianCommandBusFactory
         $locator->addHandler($addNewSprintCommandHandler, AddNewSprintCommand::class);
         $locator->addHandler($getActiveSprintQueryHandler, GetActiveSprintQuery::class);
         $locator->addHandler($getAchievedSprintsQueryHandler, GetAchievedSprintsQuery::class);
+        $locator->addHandler($setSprintAsAchievedCommandHandler, SetSprintAsAchievedCommand::class);
 
         $commandHandlerMiddleware = new CommandHandlerMiddleware($nameExtractor, $locator, $inflector);
 

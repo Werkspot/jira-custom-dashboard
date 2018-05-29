@@ -1,10 +1,9 @@
-<div style="margin: 15px; width: 300px; height: 300px; border: 1px solid blue;">
-
+<div class="widget-module-box">
     {% for message in app.flashes('confidence') %}
         <div style="color: red">{{ message }}</div>
     {% endfor %}
 
-    Add a new Confidence
+    <h3>Add a new Confidence</h3>
 
     {% if error is not empty %}
         {{ error }}

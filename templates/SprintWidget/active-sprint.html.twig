@@ -1,9 +1,9 @@
-<div>
-{% if activeSprint.title is not null %}
-    {{ activeSprint.title }}
-{% endif %}
-</div>
-<div>
+<div class="widget-module-box">
+    <h3>Active Sprint</h3>
+    {% if activeSprint.title is not null %}
+        <h2>{{ activeSprint.title }}</h2>
+    {% endif %}
+
     {% if activeSprint.startDate is not null and activeSprint.endDate is not null %}
         {{ activeSprint.startDate|date('Y-m-d') }}  -  {{ activeSprint.endDate|date('Y-m-d') }}
     {% endif %}

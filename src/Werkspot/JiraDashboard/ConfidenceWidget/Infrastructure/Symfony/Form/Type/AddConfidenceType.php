@@ -27,7 +27,7 @@ class AddConfidenceType extends AbstractType
                     5 => 5,
                 ]
             ])
-            ->add('submit', SubmitType::class)
+            ->add('send', SubmitType::class)
         ;
     }
 }

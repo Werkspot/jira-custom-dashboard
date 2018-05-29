@@ -21,7 +21,7 @@ class AddSprintType extends AbstractType
                 'input' => 'datetime_immutable',
                 'required' => true,
             ])
-            ->add('submit', SubmitType::class)
+            ->add('send', SubmitType::class)
         ;
     }
 }

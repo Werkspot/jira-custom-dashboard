@@ -36,7 +36,7 @@ class ConfidenceWidgetController extends AbstractController
 
     /**
      * @Route("/confidence", methods={"GET", "POST"}, name="confidence")
-     * @Template("ConfidenceWidget/active-sprint-confidence.html.twig")
+     * @Template("ConfidenceWidget/confidences.html.twig")
      */
     public function __invoke(Request $request)
     {

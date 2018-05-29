@@ -1,0 +1,29 @@
+<div class="widget-module-box">
+
+
+    <h3>Achieved Sprints</h3>
+
+    <h1 class="widget-big-number">
+        {% if achievedSprints is not null %}
+            {{ achievedSprints }}
+        {% else %}
+            0
+        {% endif %}
+    </h1>
+</div>
+<div class="widget-module-box">
+    {% for message in app.flashes('result') %}
+        <div style="color: red">{{ message }}</div>
+    {% endfor %}
+
+    {% if activeSprint.title is not null %}
+        <h3>Set result of Active Sprint</h3>
+        <div>
+            <h4>{{ activeSprint.title }}</h4>
+
+            {{ include('AchievedSprintsWidget/set-active-sprint-result.html.twig', { 'form': form }) }}
+        </div>
+    {% else %}
+        There is not active sprint at this moment :(
+    {% endif %}
+</div>

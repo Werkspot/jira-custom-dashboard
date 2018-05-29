@@ -6,7 +6,6 @@ namespace Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\Doctrin
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException;
-use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\InvalidDateException;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintRepositoryInterface;
 use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\Id;

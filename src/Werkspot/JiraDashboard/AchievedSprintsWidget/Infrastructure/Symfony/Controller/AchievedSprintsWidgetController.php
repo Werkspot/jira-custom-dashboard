@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Werkspot\JiraDashboard\SprintWidget\Infrastructure\Symfony\Controller;
+namespace Werkspot\JiraDashboard\AchievedSprintsWidget\Infrastructure\Symfony\Controller;
 
 use League\Event\EmitterInterface;
 use League\Tactician\CommandBus;
@@ -9,12 +9,13 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Werkspot\JiraDashboard\AchievedSprintsWidget\Domain\GetAchievedSprintsQuery;
+use Werkspot\JiraDashboard\AchievedSprintsWidget\Domain\SetSprintAsAchievedCommand;
+use Werkspot\JiraDashboard\AchievedSprintsWidget\Infrastructure\Symfony\Form\Type\SetActiveSprintResultType;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException;
-use Werkspot\JiraDashboard\SprintWidget\Domain\AddNewSprintCommand;
 use Werkspot\JiraDashboard\SprintWidget\Domain\GetActiveSprintQuery;
-use Werkspot\JiraDashboard\SprintWidget\Infrastructure\Symfony\Form\Type\AddSprintType;
 
-class SprintWidgetController extends AbstractController
+class AchievedSprintsWidgetController extends AbstractController
 {
     /**
      * @var CommandBus
@@ -37,23 +38,29 @@ class SprintWidgetController extends AbstractController
     }
 
     /**
-     * @Route("/sprint", methods={"GET", "POST"}, name="sprint")
-     * @Template("SprintWidget/sprint-widget.html.twig")
+     * @Route("/achieved-sprints", methods={"GET", "POST"}, name="achieved_sprints")
+     * @Template("AchievedSprintsWidget/achieved-sprints-widget.html.twig")
      */
     public function __invoke(Request $request)
     {
-        $getActiveSprintQuery = new GetActiveSprintQuery();
+        $achievedSprints = null;
+
+        try {
+            $getAchievedSprintsQuery = new GetAchievedSprintsQuery();
+            $achievedSprints = $this->commandBus->handle($getAchievedSprintsQuery);
+        } catch (EntityNotFoundException $e) {
+        }
 
         $activeSprint = null;
 
         try {
+            $getActiveSprintQuery = new GetActiveSprintQuery();
             $activeSprint = $this->commandBus->handle($getActiveSprintQuery);
         } catch (EntityNotFoundException $e) {
         }
 
-        $form = $this->createForm(AddSprintType::class,  null, [
-            'action' => $this->generateUrl('sprint'),
-
+        $form = $this->createForm(SetActiveSprintResultType::class, null, [
+            'action' => $this->generateUrl('achieved_sprints'),
         ]);
 
         $form->handleRequest($request);
@@ -62,17 +69,21 @@ class SprintWidgetController extends AbstractController
             $formData = $form->getData();
 
             try {
-                $addNewSprintCommand = new AddNewSprintCommand($formData['startDate'], $formData['endDate']);
-                $this->commandBus->handle($addNewSprintCommand);
+                $setActiveSprintAsAchievedCommand = new SetSprintAsAchievedCommand($activeSprint->getId(), $formData['achieved']);
+                $this->commandBus->handle($setActiveSprintAsAchievedCommand);
 
                 $this->addFlash(
-                    'sprint',
-                    'Sprint added correctly!'
+                    'result',
+                    'Active Sprint updated correctly!'
                 );
 
-                return $this->redirectToRoute('homepage');
+                $getAchievedSprintsQuery = new GetAchievedSprintsQuery();
+                $achievedSprints = $this->commandBus->handle($getAchievedSprintsQuery);
+
+                return $this->redirectToRoute('homepage', ['achievedSprints' => $achievedSprints]);
             } catch (\Throwable $t) {
                 return [
+                    'achievedSprints' => count($achievedSprints),
                     'activeSprint' => $activeSprint,
                     'form' => $form->createView(),
                     'error' => $t->getMessage(),
@@ -81,6 +92,7 @@ class SprintWidgetController extends AbstractController
         }
 
         return [
+            'achievedSprints' => count($achievedSprints),
             'activeSprint' => $activeSprint,
             'form' => $form->createView(),
             'error' => '',
