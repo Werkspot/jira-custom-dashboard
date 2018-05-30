@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Werkspot\JiraDashboard\ConfidenceWidget\Infrastructure\Symfony\Controller;
 
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\LineChart;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
 use League\Event\EmitterInterface;
 use League\Tactician\CommandBus;
 use Symfony\Component\Routing\Annotation\Route;
@@ -36,13 +38,15 @@ class ConfidenceWidgetController extends AbstractController
 
     /**
      * @Route("/confidence", methods={"GET", "POST"}, name="confidence")
-     * @Template("ConfidenceWidget/confidences.html.twig")
+     * @Template("ConfidenceWidget/confidence-widget.html.twig")
      */
     public function __invoke(Request $request)
     {
+        // Confidence of the Active sprint
+        $confidenceOfActiveSprint = $this->confidenceLineChart();
+
         $form = $this->createForm(AddConfidenceType::class, null, [
             'action' => $this->generateUrl('confidence'),
-
         ]);
 
         $form->handleRequest($request);
@@ -62,6 +66,7 @@ class ConfidenceWidgetController extends AbstractController
                 return $this->redirectToRoute('homepage');
             } catch (\Throwable $t) {
                 return [
+                    'confidenceActiveSprint' => $confidenceOfActiveSprint,
                     'form' => $form->createView(),
                     'error' => $t->getMessage(),
                 ];
@@ -69,8 +74,42 @@ class ConfidenceWidgetController extends AbstractController
         }
 
         return [
+            'confidenceActiveSprint' => $confidenceOfActiveSprint,
             'form' => $form->createView(),
             'error' => '',
         ];
+    }
+
+    private function confidenceLineChart()
+    {
+        $line = new LineChart();
+        $line->getData()->setArrayToDataTable(
+            [
+                [
+                    ['label' => 'x', 'type' => 'number'],
+                    ['label' => 'Confidence', 'type' => 'number'],
+                ],
+                [1, 1], // dia 1
+                [2, 5], // dia 2
+                [3, 2], // dia 3
+                [4, 5], // dia 4
+                [5, 3], // dia 5
+                [6, 5], // dia 6
+                [7, 4], // dia 7
+                [8, 5], // dia 8
+            ]
+        );
+
+        $line->getOptions()->setLineWidth(2);
+        $line->getOptions()->setPointSize(5);
+        $line->getOptions()->setWidth(300);
+        $line->getOptions()->setHeight(120);
+
+        $line->getOptions()->getHAxis()->setFormat('0');
+        $line->getOptions()->getVAxis()->setFormat('0');
+        $line->getOptions()->getVAxis()->setMinValue(1);
+        $line->getOptions()->getVAxis()->setBaseline(1);
+
+        return $line;
     }
 }
