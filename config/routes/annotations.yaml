@@ -1,3 +1,0 @@
-controllers:
-    resource: ../../src/Werkspot/JiraDashboard/**/Infrastructure/Symfony/Controller/*
-    type: annotation
