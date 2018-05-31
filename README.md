@@ -1,43 +1,58 @@
-1. Installation
+## Installation
 
-- Install docker and docker-compose:
+##### 1. Install docker and docker-compose:
+
+  - Mac: Download the installer from [Docker](https://store.docker.com/editions/community/docker-ce-desktop-mac) 
+  - Linux:
 
         sudo apt update && sudo apt install docker docker-compose
 
-- To make docker run without sudo execute:
+    - To make docker run without sudo execute:
 
-    1. Create the docker group if it doesn't already exist:
+        - Create the docker group if it doesn't already exist:
     
-            sudo groupadd docker
+            `sudo groupadd docker`
         
-    2. Add your user to the docker group:
+        - Add your user to the docker group:
     
-            sudo usermod -aG docker $USER
+            `sudo usermod -aG docker $USER`
         
-    3. Logout and login again    
+        - Logout and login again    
 
-- Setup environment parameters:
-
-        cp ./docker-compose.override.yml.dist ./docker-compose.override.yml
+##### 2. Setup environment parameters:
+  - Copy the default docker-compose configuration and give custom values to the variables in the file.
+  
+        cp ./docker-compose.override.yml.dist ./docker-compose.override.yml   
     
-    Give custom values to the variables in the file.
+  - Update the `.env` file and replace the placeholders of the database settings with the right values:
     
-- Create the images and start the containers by:
+        DATABASE_URL=mysql://db_user:db_password@mysql:3306/db_name
+    
+    Note that the host is `mysql`, which matches the container network alias.
+    
+##### 3. Create the images and start the containers by:
     
         docker-compose up -d
         
-- Get dependencies:
+##### 4. Install the composer dependencies:
 
         docker-compose run composer install
         
-- Create database schema:        
+##### 5. Create the database schema:        
         
         docker-compose run cli bin/console doctrine:schema:create
+        
 
-2. Run tests
+## Run the tests
+
+- Create a local phpunit configuration and update the env variables:
+
+        cp phpunit.xml.dist phpunit.xml
+        
+- Run all the tests (with coverage):
 
         docker-compose run cli vendor/bin/phpunit --coverage-html var/coverage tests/Werkspot/JiraDashboard
 
-3. Run in the browser
+## Run the webapp
 
-    Just browse http://localhost
+Load [http://localhost](http://localhost) on your browser
