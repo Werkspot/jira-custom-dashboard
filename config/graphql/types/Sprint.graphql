@@ -1,0 +1,10 @@
+type Sprint {
+     id: ID!
+     name: String!
+     title: String!
+     startDate: String!
+     endDate: String!
+     number: Int!
+     achieved: Boolean!
+     team: Team!
+ }

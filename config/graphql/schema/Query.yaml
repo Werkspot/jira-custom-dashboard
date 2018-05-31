@@ -1,0 +1,12 @@
+Query:
+    type: object
+    config:
+        fields:
+            sprintWidget:
+                type: "SprintWidget"
+
+            confidenceWidget:
+                type: "ConfidenceWidget"
+
+            AchievedSprintsWidget:
+                type: "AchievedSprintsWidget!"

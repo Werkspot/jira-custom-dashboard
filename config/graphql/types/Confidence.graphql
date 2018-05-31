@@ -1,0 +1,5 @@
+type Confidence {
+    id: ID!
+    name: String!
+    value: Int!
+}

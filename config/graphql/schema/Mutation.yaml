@@ -1,0 +1,12 @@
+Mutation:
+    type: object
+    config:
+        fields:
+          setSprintAsAchieved:
+            type: Boolean
+
+          saveConfidence:
+            type: Boolean
+
+          addNewSprint:
+            type: Boolean

@@ -1,0 +1,5 @@
+type Team {
+    id: ID!
+    name: String!
+    sprints: [Sprint]
+}
