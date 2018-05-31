@@ -16,7 +16,7 @@
         <div style="color: red">{{ message }}</div>
     {% endfor %}
 
-    {% if activeSprint.title is not null %}
+    {% if activeSprint and activeSprint.title is not null %}
         <h3>Set result of Active Sprint</h3>
         <div>
             <h4>{{ activeSprint.title }}</h4>
