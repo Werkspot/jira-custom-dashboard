@@ -1,0 +1,6 @@
+ShortText:
+    type: custom-scalar
+    config:
+        serialize: ["Werkspot\\JiraDashboard\\SharedKernel\\Infrastructure\\GraphQL\\Type\\ShortTextType", "serialize"]
+        parseValue: ["Werkspot\\JiraDashboard\\SharedKernel\\Infrastructure\\GraphQL\\Type\\ShortTextType", "parseValue"]
+        parseLiteral: ["Werkspot\\JiraDashboard\\SharedKernel\\Infrastructure\\GraphQL\\Type\\ShortTextType", "parseLiteral"]
