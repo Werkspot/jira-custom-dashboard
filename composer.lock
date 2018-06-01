@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3da64f5a108fc0adefcdb5e06bd417c5",
+    "content-hash": "7f0abab4ce030399b99416a2540f58c6",
     "packages": [
         {
             "name": "cmen/google-charts-bundle",
@@ -1385,6 +1385,64 @@
             "time": "2017-06-19T01:22:40+00:00"
         },
         {
+            "name": "nelmio/cors-bundle",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nelmio/NelmioCorsBundle.git",
+                "reference": "4243c60a96f8b95d5f42a3e65b33a3eebc511491"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nelmio/NelmioCorsBundle/zipball/4243c60a96f8b95d5f42a3e65b33a3eebc511491",
+                "reference": "4243c60a96f8b95d5f42a3e65b33a3eebc511491",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/framework-bundle": "^2.7 || ^3.0 || ^4.0"
+            },
+            "require-dev": {
+                "matthiasnoback/symfony-dependency-injection-test": "^1.0 || ^2.0",
+                "mockery/mockery": "^0.9 || ^1.0",
+                "symfony/phpunit-bridge": "^2.7 || ^3.0 || ^4.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.5.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Nelmio\\CorsBundle\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nelmio",
+                    "homepage": "http://nelm.io"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://github.com/nelmio/NelmioCorsBundle/contributors"
+                }
+            ],
+            "description": "Adds CORS (Cross-Origin Resource Sharing) headers support in your Symfony2 application",
+            "keywords": [
+                "api",
+                "cors",
+                "crossdomain"
+            ],
+            "time": "2018-02-08T11:00:00+00:00"
+        },
+        {
             "name": "nikic/php-parser",
             "version": "dev-master",
             "source": {
@@ -2549,12 +2607,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "2d5d973bf9933d46802b01010bd25c800c87c242"
+                "reference": "70591cda56b4b47c55776ac78e157c4bb6c8b43f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/2d5d973bf9933d46802b01010bd25c800c87c242",
-                "reference": "2d5d973bf9933d46802b01010bd25c800c87c242",
+                "url": "https://api.github.com/repos/symfony/console/zipball/70591cda56b4b47c55776ac78e157c4bb6c8b43f",
+                "reference": "70591cda56b4b47c55776ac78e157c4bb6c8b43f",
                 "shasum": ""
             },
             "require": {
@@ -2609,7 +2667,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2018-05-30T07:26:09+00:00"
+            "time": "2018-05-31T10:17:53+00:00"
         },
         {
             "name": "symfony/debug",
@@ -3259,12 +3317,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/framework-bundle.git",
-                "reference": "e93974e78872d22cceebf401ce230363b192268e"
+                "reference": "5e401f621b251c525256617be41b4bdb89ff0aeb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/framework-bundle/zipball/e93974e78872d22cceebf401ce230363b192268e",
-                "reference": "e93974e78872d22cceebf401ce230363b192268e",
+                "url": "https://api.github.com/repos/symfony/framework-bundle/zipball/5e401f621b251c525256617be41b4bdb89ff0aeb",
+                "reference": "5e401f621b251c525256617be41b4bdb89ff0aeb",
                 "shasum": ""
             },
             "require": {
@@ -3366,7 +3424,7 @@
             ],
             "description": "Symfony FrameworkBundle",
             "homepage": "https://symfony.com",
-            "time": "2018-05-30T09:26:42+00:00"
+            "time": "2018-05-31T16:59:04+00:00"
         },
         {
             "name": "symfony/http-foundation",
@@ -3374,12 +3432,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "a916c88390fb861ee21f12a92b107d51bb68af99"
+                "reference": "726c89aecb32b926f55a98fef6b1053ccbde79ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/a916c88390fb861ee21f12a92b107d51bb68af99",
-                "reference": "a916c88390fb861ee21f12a92b107d51bb68af99",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/726c89aecb32b926f55a98fef6b1053ccbde79ff",
+                "reference": "726c89aecb32b926f55a98fef6b1053ccbde79ff",
                 "shasum": ""
             },
             "require": {
@@ -3420,7 +3478,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-            "time": "2018-05-25T14:55:38+00:00"
+            "time": "2018-05-31T10:17:53+00:00"
         },
         {
             "name": "symfony/http-kernel",
@@ -3428,12 +3486,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-kernel.git",
-                "reference": "1144dbf2c96f0c8a64c2d846f1489d01dde998b7"
+                "reference": "44a7e226aa06ae19dc371e74ad0771d49a038389"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/1144dbf2c96f0c8a64c2d846f1489d01dde998b7",
-                "reference": "1144dbf2c96f0c8a64c2d846f1489d01dde998b7",
+                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/44a7e226aa06ae19dc371e74ad0771d49a038389",
+                "reference": "44a7e226aa06ae19dc371e74ad0771d49a038389",
                 "shasum": ""
             },
             "require": {
@@ -3507,7 +3565,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "https://symfony.com",
-            "time": "2018-05-30T13:07:50+00:00"
+            "time": "2018-05-31T10:17:53+00:00"
         },
         {
             "name": "symfony/inflector",
@@ -3806,12 +3864,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/monolog-bridge.git",
-                "reference": "c0fe8631641b370f926c9dc54f9cac154a9e503b"
+                "reference": "0a7cac4e6f2eb72428367893d6d2fc2883b4aeba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/monolog-bridge/zipball/c0fe8631641b370f926c9dc54f9cac154a9e503b",
-                "reference": "c0fe8631641b370f926c9dc54f9cac154a9e503b",
+                "url": "https://api.github.com/repos/symfony/monolog-bridge/zipball/0a7cac4e6f2eb72428367893d6d2fc2883b4aeba",
+                "reference": "0a7cac4e6f2eb72428367893d6d2fc2883b4aeba",
                 "shasum": ""
             },
             "require": {
@@ -3864,7 +3922,7 @@
             ],
             "description": "Symfony Monolog Bridge",
             "homepage": "https://symfony.com",
-            "time": "2018-05-16T14:33:22+00:00"
+            "time": "2018-05-31T10:17:53+00:00"
         },
         {
             "name": "symfony/monolog-bundle",
@@ -3935,12 +3993,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/options-resolver.git",
-                "reference": "9b9ab6043c57c8c5571bc846e6ebfd27dff3b589"
+                "reference": "45cdcc8a96ef92b43a50723e6d1f5f83096e8cef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/9b9ab6043c57c8c5571bc846e6ebfd27dff3b589",
-                "reference": "9b9ab6043c57c8c5571bc846e6ebfd27dff3b589",
+                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/45cdcc8a96ef92b43a50723e6d1f5f83096e8cef",
+                "reference": "45cdcc8a96ef92b43a50723e6d1f5f83096e8cef",
                 "shasum": ""
             },
             "require": {
@@ -3981,7 +4039,7 @@
                 "configuration",
                 "options"
             ],
-            "time": "2018-05-30T07:26:09+00:00"
+            "time": "2018-05-31T10:17:53+00:00"
         },
         {
             "name": "symfony/orm-pack",
@@ -4247,12 +4305,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "73445bd33b0d337c060eef9652b94df72b6b3434"
+                "reference": "1d1677391ecf00d1c5b9482d6050c0c27aa3ac3a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/73445bd33b0d337c060eef9652b94df72b6b3434",
-                "reference": "73445bd33b0d337c060eef9652b94df72b6b3434",
+                "url": "https://api.github.com/repos/symfony/process/zipball/1d1677391ecf00d1c5b9482d6050c0c27aa3ac3a",
+                "reference": "1d1677391ecf00d1c5b9482d6050c0c27aa3ac3a",
                 "shasum": ""
             },
             "require": {
@@ -4288,7 +4346,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2018-05-30T07:26:09+00:00"
+            "time": "2018-05-31T10:17:53+00:00"
         },
         {
             "name": "symfony/profiler-pack",
@@ -4545,12 +4603,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security.git",
-                "reference": "2ba804b4af205c060094c28cece0b42a26a67537"
+                "reference": "533fd122f01f98336d791267d708c1ad33727f35"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security/zipball/2ba804b4af205c060094c28cece0b42a26a67537",
-                "reference": "2ba804b4af205c060094c28cece0b42a26a67537",
+                "url": "https://api.github.com/repos/symfony/security/zipball/533fd122f01f98336d791267d708c1ad33727f35",
+                "reference": "533fd122f01f98336d791267d708c1ad33727f35",
                 "shasum": ""
             },
             "require": {
@@ -4614,7 +4672,7 @@
             ],
             "description": "Symfony Security Component",
             "homepage": "https://symfony.com",
-            "time": "2018-05-30T07:26:09+00:00"
+            "time": "2018-05-31T10:17:53+00:00"
         },
         {
             "name": "symfony/security-bundle",
@@ -4703,12 +4761,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/serializer.git",
-                "reference": "db427d70438645789ffce6048d61b3992118a33a"
+                "reference": "c4464146e88849d9fd227e930aa4f274a6fec647"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/serializer/zipball/db427d70438645789ffce6048d61b3992118a33a",
-                "reference": "db427d70438645789ffce6048d61b3992118a33a",
+                "url": "https://api.github.com/repos/symfony/serializer/zipball/c4464146e88849d9fd227e930aa4f274a6fec647",
+                "reference": "c4464146e88849d9fd227e930aa4f274a6fec647",
                 "shasum": ""
             },
             "require": {
@@ -4775,7 +4833,7 @@
             ],
             "description": "Symfony Serializer Component",
             "homepage": "https://symfony.com",
-            "time": "2018-05-30T07:26:09+00:00"
+            "time": "2018-05-31T10:17:53+00:00"
         },
         {
             "name": "symfony/serializer-pack",
@@ -4994,12 +5052,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/twig-bridge.git",
-                "reference": "b2e4c10df6517d1fdbb053326387f8e1779ad76e"
+                "reference": "2d73281f1ba949e8ef6be3f38e436147bba607db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/twig-bridge/zipball/b2e4c10df6517d1fdbb053326387f8e1779ad76e",
-                "reference": "b2e4c10df6517d1fdbb053326387f8e1779ad76e",
+                "url": "https://api.github.com/repos/symfony/twig-bridge/zipball/2d73281f1ba949e8ef6be3f38e436147bba607db",
+                "reference": "2d73281f1ba949e8ef6be3f38e436147bba607db",
                 "shasum": ""
             },
             "require": {
@@ -5076,7 +5134,7 @@
             ],
             "description": "Symfony Twig Bridge",
             "homepage": "https://symfony.com",
-            "time": "2018-05-16T14:33:22+00:00"
+            "time": "2018-05-31T16:59:04+00:00"
         },
         {
             "name": "symfony/twig-bundle",
@@ -5390,12 +5448,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/web-profiler-bundle.git",
-                "reference": "8b3914ac388b2c560d4dc162c8136d136245718b"
+                "reference": "5dc7492f446ad37eb5613ae2ae003d330324ce27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/web-profiler-bundle/zipball/8b3914ac388b2c560d4dc162c8136d136245718b",
-                "reference": "8b3914ac388b2c560d4dc162c8136d136245718b",
+                "url": "https://api.github.com/repos/symfony/web-profiler-bundle/zipball/5dc7492f446ad37eb5613ae2ae003d330324ce27",
+                "reference": "5dc7492f446ad37eb5613ae2ae003d330324ce27",
                 "shasum": ""
             },
             "require": {
@@ -5448,7 +5506,7 @@
             ],
             "description": "Symfony WebProfilerBundle",
             "homepage": "https://symfony.com",
-            "time": "2018-05-23T13:33:23+00:00"
+            "time": "2018-05-31T10:17:53+00:00"
         },
         {
             "name": "symfony/webpack-encore-pack",
@@ -5818,12 +5876,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "478465659fd987669df0bd8a9bf22a8710e5f1b6"
+                "reference": "23273458016888baf2d2238a1937934b95abb924"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/478465659fd987669df0bd8a9bf22a8710e5f1b6",
-                "reference": "478465659fd987669df0bd8a9bf22a8710e5f1b6",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/23273458016888baf2d2238a1937934b95abb924",
+                "reference": "23273458016888baf2d2238a1937934b95abb924",
                 "shasum": ""
             },
             "require": {
@@ -5858,7 +5916,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2018-05-29T17:25:09+00:00"
+            "time": "2018-05-31T19:43:12+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -6031,12 +6089,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "956d29d8fbc570240ff8e2fc84bc7d39cd21324a"
+                "reference": "865662550c384bc1db7e51d29aeda1c2c161d69a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/956d29d8fbc570240ff8e2fc84bc7d39cd21324a",
-                "reference": "956d29d8fbc570240ff8e2fc84bc7d39cd21324a",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/865662550c384bc1db7e51d29aeda1c2c161d69a",
+                "reference": "865662550c384bc1db7e51d29aeda1c2c161d69a",
                 "shasum": ""
             },
             "require": {
@@ -6086,7 +6144,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2018-05-29T05:19:50+00:00"
+            "time": "2018-06-01T07:51:50+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -6280,12 +6338,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "4e1f807655e67fa17d7e35cd1f31bb67c9b52e3c"
+                "reference": "2629ff118897fc2af5b06338182fbea03bfd98b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/4e1f807655e67fa17d7e35cd1f31bb67c9b52e3c",
-                "reference": "4e1f807655e67fa17d7e35cd1f31bb67c9b52e3c",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/2629ff118897fc2af5b06338182fbea03bfd98b8",
+                "reference": "2629ff118897fc2af5b06338182fbea03bfd98b8",
                 "shasum": ""
             },
             "require": {
@@ -6300,7 +6358,7 @@
                 "phar-io/version": "^1.0",
                 "php": "^7.1",
                 "phpspec/prophecy": "^1.7",
-                "phpunit/php-code-coverage": "^6.0-dev",
+                "phpunit/php-code-coverage": "^6.0.7",
                 "phpunit/php-file-iterator": "^2.0",
                 "phpunit/php-text-template": "^1.2.1",
                 "phpunit/php-timer": "^2.0",
@@ -6330,7 +6388,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "7.2-dev"
+                    "dev-master": "7.3-dev"
                 }
             },
             "autoload": {
@@ -6356,7 +6414,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2018-05-30T05:06:19+00:00"
+            "time": "2018-06-01T07:55:36+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -7259,6 +7317,7 @@
         "league/event": 20,
         "league/tactician": 20,
         "overblog/graphql-bundle": 20,
+        "nelmio/cors-bundle": 20,
         "ramsey/uuid": 20,
         "sensio/framework-extra-bundle": 20,
         "symfony/apache-pack": 20,
