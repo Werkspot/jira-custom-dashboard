@@ -55,7 +55,7 @@ class SprintRepositoryInMemoryAdapter implements SprintRepositoryInterface
      */
     public function findActive(): Sprint
     {
-        $today = new DateTimeImmutable();
+        $today = new DateTimeImmutable((new DateTimeImmutable())->format('Y-m-d'));
 
         foreach ($this->inMemoryData as $sprint) {
             if ($sprint->getStartDate() <= $today && $sprint->getEndDate() >= $today) {
