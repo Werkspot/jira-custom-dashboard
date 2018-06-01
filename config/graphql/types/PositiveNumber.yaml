@@ -1,0 +1,6 @@
+PositiveNumber:
+    type: custom-scalar
+    config:
+        serialize: ["Werkspot\\JiraDashboard\\SharedKernel\\Infrastructure\\GraphQL\\Type\\PositiveNumberType", "serialize"]
+        parseValue: ["Werkspot\\JiraDashboard\\SharedKernel\\Infrastructure\\GraphQL\\Type\\PositiveNumberType", "parseValue"]
+        parseLiteral: ["Werkspot\\JiraDashboard\\SharedKernel\\Infrastructure\\GraphQL\\Type\\PositiveNumberType", "parseLiteral"]

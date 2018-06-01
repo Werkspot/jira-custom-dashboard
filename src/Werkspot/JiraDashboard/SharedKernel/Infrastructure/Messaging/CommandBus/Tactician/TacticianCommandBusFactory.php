@@ -9,6 +9,7 @@ use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
 use League\Tactician\Handler\Locator\InMemoryLocator;
 use League\Tactician\Handler\MethodNameInflector\HandleInflector;
+use Werkspot\JiraDashboard\SharedKernel\Infrastructure\Messaging\CommandBus\Tactician\GraphQLMiddleware;
 use Werkspot\JiraDashboard\AchievedSprintsWidget\Application\GetAchievedSprintsQueryHandler;
 use Werkspot\JiraDashboard\AchievedSprintsWidget\Application\SetSprintAsAchievedCommandHandler;
 use Werkspot\JiraDashboard\AchievedSprintsWidget\Domain\GetAchievedSprintsQuery;
@@ -97,9 +98,10 @@ final class TacticianCommandBusFactory
         $locator->addHandler($getRemainingPointsBySprintQueryHandler, GetRemainingPointsBySprintQuery::class);
         $locator->addHandler($saveRemainingPointsCommandHandler, SaveRemainingPointsCommand::class);
 
+        $graphqlMiddleware = new GraphQLMiddleware();
         $commandHandlerMiddleware = new CommandHandlerMiddleware($nameExtractor, $locator, $inflector);
 
-        $this->commandBus = new CommandBus([$commandHandlerMiddleware]);
+        $this->commandBus = new CommandBus([$graphqlMiddleware, $commandHandlerMiddleware]);
         $this->sprintRepository = $sprintRepository;
     }
 

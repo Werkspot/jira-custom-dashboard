@@ -1,0 +1,10 @@
+type Sprint {
+     id: Uuid!
+     name: String!
+     title: ShortText!
+     startDate: DateTime!
+     endDate: DateTime!
+     number: PositiveNumber!
+     achieved: Boolean!
+     team: Team!
+ }

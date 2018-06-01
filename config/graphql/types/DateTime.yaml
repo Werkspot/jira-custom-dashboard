@@ -1,0 +1,6 @@
+DateTime:
+    type: custom-scalar
+    config:
+        serialize: ["Werkspot\\JiraDashboard\\SharedKernel\\Infrastructure\\GraphQL\\Type\\DateTimeType", "serialize"]
+        parseValue: ["Werkspot\\JiraDashboard\\SharedKernel\\Infrastructure\\GraphQL\\Type\\DateTimeType", "parseValue"]
+        parseLiteral: ["Werkspot\\JiraDashboard\\SharedKernel\\Infrastructure\\GraphQL\\Type\\DateTimeType", "parseLiteral"]

@@ -1,0 +1,6 @@
+Uuid:
+    type: custom-scalar
+    config:
+        serialize: ["Werkspot\\JiraDashboard\\SharedKernel\\Infrastructure\\GraphQL\\Type\\UuidType", "serialize"]
+        parseValue: ["Werkspot\\JiraDashboard\\SharedKernel\\Infrastructure\\GraphQL\\Type\\UuidType", "parseValue"]
+        parseLiteral: ["Werkspot\\JiraDashboard\\SharedKernel\\Infrastructure\\GraphQL\\Type\\UuidType", "parseLiteral"]

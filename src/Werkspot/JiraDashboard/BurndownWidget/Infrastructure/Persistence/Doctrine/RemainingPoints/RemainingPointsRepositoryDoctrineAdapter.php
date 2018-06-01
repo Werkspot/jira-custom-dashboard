@@ -35,11 +35,7 @@ final class RemainingPointsRepositoryDoctrineAdapter implements RemainingPointsR
             ->orderBy('r.date', 'ASC')
             ->getQuery();
 
-        $remainingPointsCollection = $queryBuilder->execute(null, Query::HYDRATE_ARRAY);
-
-        if (empty($remainingPointsCollection)) {
-            throw new EntityNotFoundException();
-        }
+        $remainingPointsCollection = $queryBuilder->execute();
 
         return $remainingPointsCollection;
     }

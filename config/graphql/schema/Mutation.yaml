@@ -1,0 +1,66 @@
+Mutation:
+    type: object
+    config:
+        fields:
+            addNewSprint:
+                type: Boolean
+                args:
+                    startDate:
+                        type: DateTime!
+                    endDate:
+                        type: DateTime!
+                resolve: >
+                    @=service("League\\Tactician\\CommandBus").handle(
+                        newObject("Werkspot\\JiraDashboard\\SprintWidget\\Domain\\AddNewSprintCommand", [
+                            args["startDate"],
+                            args["endDate"]
+                        ])
+                    )
+
+            saveRemainingPoints:
+                type: Boolean
+                args:
+                    sprintId:
+                        type: String!
+                    date:
+                        type: DateTime!
+                    value:
+                        type: Int!
+                resolve: >
+                    @=service("League\\Tactician\\CommandBus").handle(
+                        newObject("Werkspot\\JiraDashboard\\BurndownWidget\\Domain\\SaveRemainingPointsCommand", [
+                            args["sprintId"],
+                            args["date"],
+                            args["value"]
+                        ])
+                    )
+
+            saveConfidence:
+                type: Boolean
+                args:
+                    date:
+                        type: DateTime!
+                    value:
+                        type: Int!
+                resolve: >
+                    @=service("League\\Tactician\\CommandBus").handle(
+                        newObject("Werkspot\\JiraDashboard\\ConfidenceWidget\\Domain\\SaveConfidenceCommand", [
+                            args["date"],
+                            args["value"]
+                        ])
+                    )
+
+            setSprintAsAchieved:
+                type: Boolean
+                args:
+                    sprintId:
+                        type: Uuid!
+                    achieved:
+                        type: Boolean!
+                resolve: >
+                    @=service("League\\Tactician\\CommandBus").handle(
+                        newObject("Werkspot\\JiraDashboard\\AchievedSprintsWidget\\Domain\\SetSprintAsAchievedCommand", [
+                            args["sprintId"],
+                            args["achieved"]
+                        ])
+                    )

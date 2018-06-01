@@ -22,7 +22,6 @@ final class ConfidenceRepositoryDoctrineAdapter implements ConfidenceRepositoryI
     }
 
     /**
-     * @throws EntityNotFoundException
      * @return Confidence[]
      */
     public function findBySprint(Sprint $sprint): array
@@ -38,10 +37,6 @@ final class ConfidenceRepositoryDoctrineAdapter implements ConfidenceRepositoryI
             ->getQuery();
 
         $confidenceCollection = $queryBuilder->execute(null, Query::HYDRATE_ARRAY);
-
-        if (empty($confidenceCollection)) {
-            throw new EntityNotFoundException();
-        }
 
         return $confidenceCollection;
     }

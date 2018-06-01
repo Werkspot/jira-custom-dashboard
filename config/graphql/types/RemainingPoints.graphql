@@ -1,0 +1,6 @@
+type RemainingPoints {
+    id: Uuid!
+    sprint: Sprint!
+    date: DateTime!
+    value: PositiveNumber!
+}

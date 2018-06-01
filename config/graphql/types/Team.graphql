@@ -1,0 +1,4 @@
+type Team {
+    id: Uuid!
+    name: ShortText!
+}

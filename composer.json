@@ -28,11 +28,12 @@
   "require": {
     "php": "^7.1.3",
     "ext-iconv": "*",
+    "cmen/google-charts-bundle": "^3.0.1",
     "doctrine/orm": "^2.6@dev",
     "league/event": "^2.2@dev",
     "league/tactician": "^2.0@dev",
+    "overblog/graphql-bundle": "^0.12.0@dev",
     "ramsey/uuid": "^3.0@dev",
-    "cmen/google-charts-bundle": "^3.0.1",
     "sensio/framework-extra-bundle": "^5.2@dev",
     "symfony/apache-pack": "dev-master",
     "symfony/asset": "^4.0",
