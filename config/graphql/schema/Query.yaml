@@ -13,10 +13,22 @@ Query:
                 type: "[Confidence]"
                 args:
                     sprintId:
-                        type: String
+                        type: String!
                 resolve: >
                     @=service("League\\Tactician\\CommandBus").handle(
                         newObject("Werkspot\\JiraDashboard\\ConfidenceWidget\\Domain\\GetConfidenceBySprintQuery", [
+                          args["sprintId"]
+                        ])
+                    )
+
+            burndownWidget:
+                type: "[RemainingPoints]"
+                args:
+                    sprintId:
+                        type: String!
+                resolve: >
+                    @=service("League\\Tactician\\CommandBus").handle(
+                        newObject("Werkspot\\JiraDashboard\\BurndownWidget\\Domain\\GetRemainingPointsBySprintQuery", [
                           args["sprintId"]
                         ])
                     )
