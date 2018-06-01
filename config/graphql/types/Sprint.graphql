@@ -1,10 +1,10 @@
 type Sprint {
-     id: ID!
+     id: Uuid!
      name: String!
-     title: String!
-     startDate: String!
-     endDate: String!
-     number: Int!
+     title: ShortText!
+     startDate: DateTime!
+     endDate: DateTime!
+     number: PositiveNumber!
      achieved: Boolean!
      team: Team!
  }

@@ -1,5 +1,5 @@
 type Confidence {
-    id: ID!
-    name: String!
+    id: Uuid!
+    date: DateTime!
     value: Int!
 }

@@ -1,5 +1,4 @@
 type Team {
-    id: ID!
-    name: String!
-    sprints: [Sprint]
+    id: Uuid!
+    name: ShortText!
 }

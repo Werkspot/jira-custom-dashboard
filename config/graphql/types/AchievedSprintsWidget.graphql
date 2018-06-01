@@ -1,3 +1,0 @@
-type AchievedSprintsWidget {
-    count: Int!
-}

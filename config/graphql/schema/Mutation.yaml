@@ -2,11 +2,47 @@ Mutation:
     type: object
     config:
         fields:
-          setSprintAsAchieved:
-            type: Boolean
+            addNewSprint:
+                type: Boolean
+                args:
+                    startDate:
+                        type: DateTime!
+                    endDate:
+                        type: DateTime!
+                resolve: >
+                    @=service("League\\Tactician\\CommandBus").handle(
+                        newObject("Werkspot\\JiraDashboard\\SprintWidget\\Domain\\AddNewSprintCommand", [
+                            args["startDate"],
+                            args["endDate"]
+                        ])
+                    )
 
-          saveConfidence:
-            type: Boolean
+            saveConfidence:
+                type: Boolean
+                args:
+                    date:
+                        type: DateTime!
+                    value:
+                        type: Int!
+                resolve: >
+                    @=service("League\\Tactician\\CommandBus").handle(
+                        newObject("Werkspot\\JiraDashboard\\ConfidenceWidget\\Domain\\SaveConfidenceCommand", [
+                            args["date"],
+                            args["value"]
+                        ])
+                    )
 
-          addNewSprint:
-            type: Boolean
+            setSprintAsAchieved:
+                type: Boolean
+                args:
+                    sprintId:
+                        type: Uuid!
+                    achieved:
+                        type: Boolean!
+                resolve: >
+                    @=service("League\\Tactician\\CommandBus").handle(
+                        newObject("Werkspot\\JiraDashboard\\AchievedSprintsWidget\\Domain\\SetSprintAsAchievedCommand", [
+                            args["sprintId"],
+                            args["achieved"]
+                        ])
+                    )

@@ -1,3 +1,0 @@
-type SprintWidget {
-    activeSprint: Sprint!
-}

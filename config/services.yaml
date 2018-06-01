@@ -54,6 +54,7 @@ services:
     # service factories
     League\Tactician\CommandBus:
         factory: 'Werkspot\JiraDashboard\SharedKernel\Infrastructure\Messaging\CommandBus\Tactician\TacticianCommandBusFactory:create'
+        public: true
 
     League\Event\EmitterInterface:
         factory: 'Werkspot\JiraDashboard\SharedKernel\Infrastructure\Messaging\EventBus\League\LeagueEventBusFactory:create'

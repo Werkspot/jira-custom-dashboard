@@ -3,10 +3,27 @@ Query:
     config:
         fields:
             sprintWidget:
-                type: "SprintWidget"
+                type: Sprint
+                resolve: >
+                    @=service("League\\Tactician\\CommandBus").handle(
+                        newObject("Werkspot\\JiraDashboard\\SprintWidget\\Domain\\GetActiveSprintQuery")
+                    )
 
             confidenceWidget:
-                type: "ConfidenceWidget"
+                type: "[Confidence]"
+                args:
+                    sprintId:
+                        type: String
+                resolve: >
+                    @=service("League\\Tactician\\CommandBus").handle(
+                        newObject("Werkspot\\JiraDashboard\\ConfidenceWidget\\Domain\\GetConfidenceBySprintQuery", [
+                          args["sprintId"]
+                        ])
+                    )
 
-            AchievedSprintsWidget:
-                type: "AchievedSprintsWidget!"
+            achievedSprintsWidget:
+                type: "[Sprint]"
+                resolve: >
+                    @=service("League\\Tactician\\CommandBus").handle(
+                        newObject("Werkspot\\JiraDashboard\\AchievedSprintsWidget\\Domain\\GetAchievedSprintsQuery")
+                    )
