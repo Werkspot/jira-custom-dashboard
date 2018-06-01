@@ -6,6 +6,8 @@ namespace Werkspot\Tests\JiraDashboard\SharedKernel\Integration;
 use League\Event\EmitterInterface;
 use League\Tactician\CommandBus;
 use PHPUnit\Framework\TestCase;
+use Werkspot\JiraDashboard\BurndownWidget\Domain\RemainingPointsRepositoryInterface;
+use Werkspot\JiraDashboard\BurndownWidget\Infrastructure\Persistence\Doctrine\RemainingPoints\RemainingPointsRepositoryDoctrineAdapter;
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\ConfidenceRepositoryInterface;
 use Werkspot\JiraDashboard\ConfidenceWidget\Infrastructure\Persistence\Doctrine\Confidence\ConfidenceRepositoryDoctrineAdapter;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintRepositoryInterface;
@@ -27,6 +29,11 @@ class IntegrationTestAbstract extends TestCase
      * @var SprintRepositoryInterface
      */
     protected $sprintRepositoryDoctrineAdapter;
+
+    /**
+     * @var RemainingPointsRepositoryInterface
+     */
+    protected $remainingPointsRepositoryDoctrineAdapter;
 
     /**
      * @var CommandBus
@@ -51,6 +58,7 @@ class IntegrationTestAbstract extends TestCase
 
         $this->sprintRepositoryDoctrineAdapter = new SprintRepositoryDoctrineAdapter($this->entityManager);
         $this->confidenceRepositoryDoctrineAdapter = new ConfidenceRepositoryDoctrineAdapter($this->entityManager);
+        $this->remainingPointsRepositoryDoctrineAdapter = new RemainingPointsRepositoryDoctrineAdapter($this->entityManager);
 
         $this->setupEventBus();
 
@@ -69,6 +77,7 @@ class IntegrationTestAbstract extends TestCase
         $commandBusFactory = new TacticianCommandBusFactory(
             $this->sprintRepositoryDoctrineAdapter,
             $this->confidenceRepositoryDoctrineAdapter,
+            $this->remainingPointsRepositoryDoctrineAdapter,
             $this->eventBus
         );
 

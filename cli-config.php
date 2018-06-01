@@ -9,6 +9,7 @@ $entityPaths = [
     __DIR__ . '/src/Werkspot/JiraDashboard/SharedKernel/Infrastructure/Persistence/Doctrine/Team/Mapping' => 'Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team',
     __DIR__ . '/src/Werkspot/JiraDashboard/SharedKernel/Infrastructure/Persistence/Doctrine/Sprint/Mapping' => 'Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint',
     __DIR__ . '/src/Werkspot/JiraDashboard/ConfidenceWidget/Infrastructure/Persistence/Doctrine/Confidence/Mapping' => 'Werkspot\JiraDashboard\ConfidenceWidget\Domain',
+    __DIR__ . '/src/Werkspot/JiraDashboard/BurndownWidget/Infrastructure/Persistence/Doctrine/RemainingPoints/Mapping' => 'Werkspot\JiraDashboard\BurndownWidget\Domain',
 ];
 
 $dbParams = [

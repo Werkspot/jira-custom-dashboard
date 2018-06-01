@@ -34,21 +34,27 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.default
         auto_mapping: true
         mappings:
-            Confidence:
-                is_bundle: false
-                type: xml
-                dir: '%kernel.project_dir%/src/Werkspot/JiraDashboard/ConfidenceWidget/Infrastructure/Persistence/Doctrine/Confidence/Mapping'
-                prefix: 'Werkspot\JiraDashboard\ConfidenceWidget\Domain'
-                alias: Confidence
-            Sprint:
-                is_bundle: false
-                type: xml
-                dir: '%kernel.project_dir%/src/Werkspot/JiraDashboard/SharedKernel/Infrastructure/Persistence/Doctrine/Sprint/Mapping'
-                prefix: 'Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint'
-                alias: Sprint
             Team:
                 is_bundle: false
                 type: xml
                 dir: '%kernel.project_dir%/src/Werkspot/JiraDashboard/SharedKernel/Infrastructure/Persistence/Doctrine/Team/Mapping'
                 prefix: 'Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team'
                 alias: Team
+            Sprint:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.project_dir%/src/Werkspot/JiraDashboard/SharedKernel/Infrastructure/Persistence/Doctrine/Sprint/Mapping'
+                prefix: 'Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint'
+                alias: Sprint
+            Confidence:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.project_dir%/src/Werkspot/JiraDashboard/ConfidenceWidget/Infrastructure/Persistence/Doctrine/Confidence/Mapping'
+                prefix: 'Werkspot\JiraDashboard\ConfidenceWidget\Domain'
+                alias: Confidence
+            RemainingPoints:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.project_dir%/src/Werkspot/JiraDashboard/BurndownWidget/Infrastructure/Persistence/Doctrine/RemainingPoints/Mapping'
+                prefix: 'Werkspot\JiraDashboard\BurndownWidget\Domain'
+                alias: RemainingPoints

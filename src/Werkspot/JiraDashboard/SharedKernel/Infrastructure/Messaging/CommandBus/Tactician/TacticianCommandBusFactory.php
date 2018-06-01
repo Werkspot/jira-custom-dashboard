@@ -13,6 +13,11 @@ use Werkspot\JiraDashboard\AchievedSprintsWidget\Application\GetAchievedSprintsQ
 use Werkspot\JiraDashboard\AchievedSprintsWidget\Application\SetSprintAsAchievedCommandHandler;
 use Werkspot\JiraDashboard\AchievedSprintsWidget\Domain\GetAchievedSprintsQuery;
 use Werkspot\JiraDashboard\AchievedSprintsWidget\Domain\SetSprintAsAchievedCommand;
+use Werkspot\JiraDashboard\BurndownWidget\Application\RemainingPoints\GetRemainingPointsBySprintQueryHandler;
+use Werkspot\JiraDashboard\BurndownWidget\Application\RemainingPoints\SaveRemainingPointsCommandHandler;
+use Werkspot\JiraDashboard\BurndownWidget\Domain\GetRemainingPointsBySprintQuery;
+use Werkspot\JiraDashboard\BurndownWidget\Domain\RemainingPointsRepositoryInterface;
+use Werkspot\JiraDashboard\BurndownWidget\Domain\SaveRemainingPointsCommand;
 use Werkspot\JiraDashboard\ConfidenceWidget\Application\Confidence\GetConfidenceBySprintQueryHandler;
 use Werkspot\JiraDashboard\ConfidenceWidget\Application\Confidence\SaveConfidenceCommandHandler;
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\ConfidenceRepositoryInterface;
@@ -46,13 +51,20 @@ final class TacticianCommandBusFactory
      */
     private $eventBus;
 
+    /**
+     * @var RemainingPointsRepositoryInterface
+     */
+    private $remainingPointsRepository;
+
     public function __construct(
         SprintRepositoryInterface $sprintRepository,
         ConfidenceRepositoryInterface $confidenceRepository,
+        RemainingPointsRepositoryInterface $remainingPointsRepository,
         EmitterInterface $eventBus
     ) {
         $this->sprintRepository = $sprintRepository;
         $this->confidenceRepository = $confidenceRepository;
+        $this->remainingPointsRepository = $remainingPointsRepository;
         $this->eventBus = $eventBus;
 
         $nameExtractor = new ClassNameExtractor();
@@ -62,18 +74,28 @@ final class TacticianCommandBusFactory
         // register commands/queries
         $getConfidenceBySprintQueryHandler = new GetConfidenceBySprintQueryHandler($this->sprintRepository, $this->confidenceRepository);
         $saveConfidenceCommandHandler = new SaveConfidenceCommandHandler($this->sprintRepository, $this->confidenceRepository);
+
         $addNewSprintCommandHandler = new AddNewSprintCommandHandler($this->sprintRepository);
         $getActiveSprintQueryHandler = new GetActiveSprintQueryHandler($this->sprintRepository);
+
         $getAchievedSprintsQueryHandler = new GetAchievedSprintsQueryHandler($this->sprintRepository);
         $setSprintAsAchievedCommandHandler = new SetSprintAsAchievedCommandHandler($this->sprintRepository);
+
+        $getRemainingPointsBySprintQueryHandler = new GetRemainingPointsBySprintQueryHandler($this->sprintRepository, $this->remainingPointsRepository);
+        $saveRemainingPointsCommandHandler = new SaveRemainingPointsCommandHandler($this->sprintRepository, $this->remainingPointsRepository);
 
         $locator = new InMemoryLocator();
         $locator->addHandler($getConfidenceBySprintQueryHandler, GetConfidenceBySprintQuery::class);
         $locator->addHandler($saveConfidenceCommandHandler, SaveConfidenceCommand::class);
+
         $locator->addHandler($addNewSprintCommandHandler, AddNewSprintCommand::class);
         $locator->addHandler($getActiveSprintQueryHandler, GetActiveSprintQuery::class);
+
         $locator->addHandler($getAchievedSprintsQueryHandler, GetAchievedSprintsQuery::class);
         $locator->addHandler($setSprintAsAchievedCommandHandler, SetSprintAsAchievedCommand::class);
+
+        $locator->addHandler($getRemainingPointsBySprintQueryHandler, GetRemainingPointsBySprintQuery::class);
+        $locator->addHandler($saveRemainingPointsCommandHandler, SaveRemainingPointsCommand::class);
 
         $commandHandlerMiddleware = new CommandHandlerMiddleware($nameExtractor, $locator, $inflector);
 

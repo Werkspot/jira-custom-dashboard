@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Werkspot\JiraDashboard\BurndownWidget\Infrastructure\Persistence\InMemory\RemainingPoints;
 
+use DateTimeImmutable;
 use Werkspot\JiraDashboard\BurndownWidget\Domain\RemainingPoints;
 use Werkspot\JiraDashboard\BurndownWidget\Domain\RemainingPointsRepositoryInterface;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException;
@@ -26,7 +27,6 @@ class RemainingPointsRepositoryInMemoryAdapter implements RemainingPointsReposit
     }
 
     /**
-     * @throws EntityNotFoundException
      * @return RemainingPoints[]
      */
     public function findBySprint(Sprint $sprint): array
@@ -43,11 +43,18 @@ class RemainingPointsRepositoryInMemoryAdapter implements RemainingPointsReposit
             )
         );
 
-        if (empty($remainingPointsCollection)) {
-            throw new EntityNotFoundException();
+        return $remainingPointsCollection;
+    }
+
+    public function findByDate(DateTimeImmutable $date): ?RemainingPoints
+    {
+        $confidenceKey = $date->format('Ymd');
+
+        if (!array_key_exists($confidenceKey, $this->inMemoryData)) {
+            return null;
         }
 
-        return $remainingPointsCollection;
+        return $this->inMemoryData[$confidenceKey];
     }
 
     public function upsert(RemainingPoints $remainingPoints): void

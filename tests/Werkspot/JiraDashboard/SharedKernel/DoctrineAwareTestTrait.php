@@ -8,6 +8,7 @@ use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
 use Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\Doctrine\DoctrineEntityManagerFactory;
+use Werkspot\Tests\JiraDashboard\BurndownWidget\Integration\Fixture\DoctrineRemainingPointsFixtureLoader;
 use Werkspot\Tests\JiraDashboard\ConfidenceWidget\Integration\Fixture\DoctrineConfidenceFixtureLoader;
 use Werkspot\Tests\JiraDashboard\SharedKernel\Integration\Fixture\DoctrineSprintFixtureLoader;
 use Werkspot\Tests\JiraDashboard\SharedKernel\Integration\Fixture\DoctrineTeamFixtureLoader;
@@ -27,6 +28,7 @@ trait DoctrineAwareTestTrait
             __DIR__ . '/../../../../src/Werkspot/JiraDashboard/SharedKernel/Infrastructure/Persistence/Doctrine/Team/Mapping' => 'Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team',
             __DIR__ . '/../../../../src/Werkspot/JiraDashboard/SharedKernel/Infrastructure/Persistence/Doctrine/Sprint/Mapping' => 'Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint',
             __DIR__ . '/../../../../src/Werkspot/JiraDashboard/ConfidenceWidget/Infrastructure/Persistence/Doctrine/Confidence/Mapping' => 'Werkspot\JiraDashboard\ConfidenceWidget\Domain',
+            __DIR__ . '/../../../../src/Werkspot/JiraDashboard/BurndownWidget/Infrastructure/Persistence/Doctrine/RemainingPoints/Mapping' => 'Werkspot\JiraDashboard\BurndownWidget\Domain',
         ];
 
         $dbParams = [
@@ -45,6 +47,7 @@ trait DoctrineAwareTestTrait
         $loader->addFixture(new DoctrineTeamFixtureLoader());
         $loader->addFixture(new DoctrineSprintFixtureLoader());
         $loader->addFixture(new DoctrineConfidenceFixtureLoader());
+        $loader->addFixture(new DoctrineRemainingPointsFixtureLoader());
 
         $purger   = new ORMPurger();
         $executor = new ORMExecutor($this->entityManager, $purger);

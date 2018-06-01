@@ -6,7 +6,6 @@ namespace Werkspot\JiraDashboard\ConfidenceWidget\Infrastructure\Persistence\InM
 use DateTimeImmutable;
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\Confidence;
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\ConfidenceRepositoryInterface;
-use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
 
 class ConfidenceRepositoryInMemoryAdapter implements ConfidenceRepositoryInterface
@@ -27,7 +26,6 @@ class ConfidenceRepositoryInMemoryAdapter implements ConfidenceRepositoryInterfa
     }
 
     /**
-     * @throws EntityNotFoundException
      * @return Confidence[]
      */
     public function findBySprint(Sprint $sprint): array
@@ -40,22 +38,15 @@ class ConfidenceRepositoryInMemoryAdapter implements ConfidenceRepositoryInterfa
             }
         }
 
-        if (empty($confidenceCollection)) {
-            throw new EntityNotFoundException();
-        }
-
         return $confidenceCollection;
     }
 
-    /**
-     * @throws EntityNotFoundException
-     */
-    public function findByDate(DateTimeImmutable $date): Confidence
+    public function findByDate(DateTimeImmutable $date): ?Confidence
     {
         $confidenceKey = $date->format('Ymd');
 
         if (!array_key_exists($confidenceKey, $this->inMemoryData)) {
-            throw new EntityNotFoundException();
+            return null;
         }
 
         return $this->inMemoryData[$confidenceKey];

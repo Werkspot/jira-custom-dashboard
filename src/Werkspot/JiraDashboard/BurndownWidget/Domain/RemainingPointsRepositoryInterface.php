@@ -3,16 +3,17 @@ declare(strict_types=1);
 
 namespace Werkspot\JiraDashboard\BurndownWidget\Domain;
 
-use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException;
+use DateTimeImmutable;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
 
 interface RemainingPointsRepositoryInterface
 {
     /**
-     * @throws EntityNotFoundException
      * @return RemainingPoints[]
      */
-    public function findBySprint(Sprint $sprint): array;
+    public function findBySprint(Sprint $sprint): ?array;
+
+    public function findByDate(DateTimeImmutable $date): ?RemainingPoints;
 
     public function upsert(RemainingPoints $confidence): void;
 }
