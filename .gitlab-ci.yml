@@ -1,0 +1,32 @@
+stages:
+  - build
+  - test
+  - release
+  - deploy
+
+variables:
+  VAR1: var1
+
+build:
+  stage: build
+  image: docker:latest
+  script:
+    - exit 0
+
+test:
+  stage: test
+  image: docker:latest
+  script:
+    - exit 0
+
+release:
+  stage: release
+  image: docker:latest
+  script:
+    - exit 0
+
+deploy:
+  stage: deploy
+  image: docker:latest
+  script:
+    - exit 0
