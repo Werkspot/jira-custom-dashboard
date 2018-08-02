@@ -33,7 +33,7 @@ class GetConfidenceBySprintQueryHandler
      */
     public function handle(GetConfidenceBySprintQuery $confidenceBySprintQuery): ?array
     {
-        $sprint = $this->sprintRepository->find(Id::create($confidenceBySprintQuery->sprintId()));
+        $sprint = $this->sprintRepository->findActive();
 
         $confidenceWidget = new ConfidenceWidget($this->sprintRepository, $this->confidenceRepository);
 

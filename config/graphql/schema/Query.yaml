@@ -11,14 +11,9 @@ Query:
 
             confidenceWidget:
                 type: "[Confidence]"
-                args:
-                    sprintId:
-                        type: String!
                 resolve: >
                     @=service("League\\Tactician\\CommandBus").handle(
-                        newObject("Werkspot\\JiraDashboard\\ConfidenceWidget\\Domain\\GetConfidenceBySprintQuery", [
-                          args["sprintId"]
-                        ])
+                        newObject("Werkspot\\JiraDashboard\\ConfidenceWidget\\Domain\\GetConfidenceBySprintQuery")
                     )
 
             burndownWidget:
