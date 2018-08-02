@@ -1,5 +1,5 @@
 type Confidence {
-    id: Uuid!
+    id: Uuid
     date: DateTime!
     value: Int!
 }

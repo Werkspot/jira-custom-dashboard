@@ -15,10 +15,10 @@ class GetConfidenceBySprintQueryTest extends IntegrationTestAbstract
     {
         $sprint = $this->sprintRepositoryDoctrineAdapter->findActive();
 
-        $getConfidenceBySprintQuery = new GetConfidenceBySprintQuery($sprint->getId()->id());
+        $getConfidenceBySprintQuery = new GetConfidenceBySprintQuery();
         $confidenceData = $this->commandBus->handle($getConfidenceBySprintQuery);
 
-        $this->assertCount(9, $confidenceData);
+        $this->assertCount(8, $confidenceData);
         $this->assertTrue($confidenceData[0]['date'] < $confidenceData[1]['date']);
     }
 }

@@ -109,10 +109,6 @@ class ConfidenceWidgetTest extends TestCase
             new Confidence(new DateTimeImmutable('today - 2 days'), ConfidenceValueEnum::three()),
             new Confidence(new DateTimeImmutable('today - 1 days'), ConfidenceValueEnum::three()),
             new Confidence(new DateTimeImmutable('today - 0 days'), ConfidenceValueEnum::two()),
-            new Confidence(new DateTimeImmutable('today + 1 days'), ConfidenceValueEnum::two()),
-            new Confidence(new DateTimeImmutable('today + 2 days'), ConfidenceValueEnum::four()),
-            new Confidence(new DateTimeImmutable('today + 3 days'), ConfidenceValueEnum::four()),
-            new Confidence(new DateTimeImmutable('today + 4 days'), ConfidenceValueEnum::five()),
         ]);
 
         return $confidenceRepository;

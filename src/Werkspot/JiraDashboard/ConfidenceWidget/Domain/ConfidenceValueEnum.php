@@ -5,6 +5,7 @@ namespace Werkspot\JiraDashboard\ConfidenceWidget\Domain;
 
 final class ConfidenceValueEnum
 {
+    private const ZERO = 0;
     private const ONE = 1;
     private const TWO = 2;
     private const THREE = 3;
@@ -12,6 +13,7 @@ final class ConfidenceValueEnum
     private const FIVE = 5;
 
     private static $validValues = [
+        self::ZERO,
         self::ONE,
         self::TWO,
         self::THREE,
@@ -34,6 +36,11 @@ final class ConfidenceValueEnum
         }
 
         return new static($value);
+    }
+
+    public static function zero(): self
+    {
+        return new self(self::ZERO);
     }
 
     public static function one(): self

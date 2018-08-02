@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\Confidence;
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\ConfidenceRepositoryInterface;
+use Werkspot\JiraDashboard\ConfidenceWidget\Domain\ConfidenceValueEnum;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
 
@@ -38,7 +39,19 @@ final class ConfidenceRepositoryDoctrineAdapter implements ConfidenceRepositoryI
 
         $confidenceCollection = $queryBuilder->execute(null, Query::HYDRATE_ARRAY);
 
-        return $confidenceCollection;
+        $sprintPeriod = new \DatePeriod(
+            new \DateTime($sprint->getStartDate()->format('Y-m-d')),
+            new \DateInterval('P1D'),
+            new \DateTime($sprint->getEndDate()->format('Y-m-d'))
+        );
+
+        $confidenceArray = [];
+        /** @var \DateTime $day */
+        foreach ($sprintPeriod as $day) {
+            $confidenceArray[] = $this->getConfidenceByDay($confidenceCollection, $day);
+        }
+
+        return $confidenceArray;
     }
 
     /**
@@ -65,5 +78,19 @@ final class ConfidenceRepositoryDoctrineAdapter implements ConfidenceRepositoryI
 
         $this->em->persist($confidence);
         $this->em->flush();
+    }
+
+    private function getConfidenceByDay(array $confidenceCollection, \DateTime $day): array
+    {
+        foreach ($confidenceCollection as $confidence) {
+            if ($confidence['date']->format('Y-m-d') == $day->format('Y-m-d')) {
+                return $confidence;
+            }
+        }
+
+        return [
+            'date' => new \DateTimeImmutable($day->format('Y-m-d')),
+            'value' => ConfidenceValueEnum::zero()->value(),
+        ];
     }
 }
