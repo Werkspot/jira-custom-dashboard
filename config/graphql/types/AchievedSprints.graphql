@@ -1,0 +1,4 @@
+type AchievedSprints {
+    total: PositiveNumber!
+    achieved: PositiveNumber!
+}

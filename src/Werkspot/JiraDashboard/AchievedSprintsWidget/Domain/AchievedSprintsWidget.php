@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintRepositoryInterface;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Widget\WidgetInterface;
+use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\PositiveNumber;
 
 class AchievedSprintsWidget implements WidgetInterface
 {
@@ -20,9 +21,12 @@ class AchievedSprintsWidget implements WidgetInterface
         $this->sprintRepository = $sprintRepository;
     }
 
-    public function getAchievedSprints(): ?array
+    public function getAchievedSprints(): AchievedSprints
     {
-        return $this->sprintRepository->findAchieved();
+        return new AchievedSprints(
+            PositiveNumber::create(count($this->sprintRepository->findAchieved())), // @todo refactor to repository method
+            PositiveNumber::create(count($this->sprintRepository->findAll())) // @todo refactor to repository method
+        );
     }
 
     public function setSprintAsAchieved(Sprint $sprint): void

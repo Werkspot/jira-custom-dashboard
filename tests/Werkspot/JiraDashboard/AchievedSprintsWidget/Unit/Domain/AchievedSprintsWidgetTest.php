@@ -44,9 +44,9 @@ class AchievedSprintsWidgetTest extends TestCase
         $sprint->setAchieved(self::ACHIEVED);
 
         $achievedSprintWidget = new AchievedSprintsWidget($this->sprintRepository);
-        $achievedSprintCollection = $achievedSprintWidget->getAchievedSprints();
+        $achievedSprints = $achievedSprintWidget->getAchievedSprints();
 
-        $this->assertCount(1, $achievedSprintCollection);
+        $this->assertEquals(1, $achievedSprints->getAchieved()->number());
         $this->assertEquals(true, $sprint->isAchieved());
     }
 

@@ -25,7 +25,12 @@ class GetAchievedSprintsQueryHandler
     public function handle(): ?array
     {
         $achievedSprintsWidget = new AchievedSprintsWidget($this->sprintRepository);
+        $achievedSprints = $achievedSprintsWidget->getAchievedSprints();
 
-        return $achievedSprintsWidget->getAchievedSprints();
+        // @todo refactor to serialize on a GraphQLType
+        return [
+            'achieved' => $achievedSprints->getAchieved(),
+            'total' => $achievedSprints->getTotal()
+        ];
     }
 }

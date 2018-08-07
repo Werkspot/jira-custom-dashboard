@@ -29,7 +29,7 @@ Query:
                     )
 
             achievedSprintsWidget:
-                type: "[Sprint]"
+                type: "AchievedSprints"
                 resolve: >
                     @=service("League\\Tactician\\CommandBus").handle(
                         newObject("Werkspot\\JiraDashboard\\AchievedSprintsWidget\\Domain\\GetAchievedSprintsQuery")
