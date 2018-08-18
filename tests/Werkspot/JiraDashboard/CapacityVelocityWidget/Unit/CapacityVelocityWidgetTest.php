@@ -30,7 +30,7 @@ class CapacityVelocityWidgetTest extends TestCase
     /**
      * @test
      */
-    public function getCapacityOrderedBySprintNumber_whenNoneSprintHasCapacitySetup_shouldReturnAnEmptyArray()
+    public function getCapacityOrderedBySprintNumber_whenSprintCapacitySprintIsNotSet_shouldReturnZeroAsCapacity()
     {
         $startDate = new \DateTimeImmutable('today - 4 days');
         $endDate   = new \DateTimeImmutable('today + 4 days');
@@ -41,15 +41,24 @@ class CapacityVelocityWidgetTest extends TestCase
 
         $capacityCollection = $capacityVelocityWidget->getCapacityOrderedBySprintNumber();
 
-        $this->assertCount(1, $capacityCollection);
+        $this->assertEquals(0, $capacityCollection[0][0]);
     }
 
-    public function getVelocityOrderedBySprintNumber_whenSomeSprintHasCapacitySetup_shouldReturnCapacityBySprintNumber()
+    /**
+     * @test
+     */
+    public function getCapacityOrderedBySprintNumber_whenSprintCapacitySprintIsSet_shouldReturnGivenCapacityValue()
     {
         $startDate = new \DateTimeImmutable('today - 4 days');
         $endDate   = new \DateTimeImmutable('today + 4 days');
 
-        $this->populateSprintRepository($startDate, $endDate, 1.5);
+        $this->populateSprintRepository($startDate, $endDate, 1.2);
+
+        $capacityVelocityWidget = new CapacityVelocityWidget($this->sprintRepository);
+
+        $capacityCollection = $capacityVelocityWidget->getCapacityOrderedBySprintNumber();
+
+        $this->assertEquals(1.2, $capacityCollection[0][0]);
     }
 
     private function populateSprintRepository(\DateTimeImmutable $startDate, \DateTimeImmutable $endDate, float $capacity = null): void
