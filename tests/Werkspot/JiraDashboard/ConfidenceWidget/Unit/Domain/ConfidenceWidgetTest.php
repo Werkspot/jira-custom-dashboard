@@ -31,7 +31,7 @@ class ConfidenceWidgetTest extends TestCase
         $confidenceWidget = new ConfidenceWidget($sprintRepository, $confidenceRepository);
         $confidenceCollection = $confidenceWidget->getConfidenceBySprint($activeSprint);
 
-        $this->assertCount(9, $confidenceCollection);
+        $this->assertCount(5, $confidenceCollection);
         $this->assertInstanceOf(Confidence::class, $confidenceCollection[0]);
         $this->assertTrue(($confidenceCollection[0])->getDate() < ($confidenceCollection[1])->getDate());
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Werkspot\Tests\JiraDashboard\RemainingPointsWidget\Integration\RemainingPoints;
 
 use Werkspot\JiraDashboard\BurndownWidget\Domain\GetRemainingPointsBySprintQuery;
+use Werkspot\JiraDashboard\BurndownWidget\Domain\RemainingPoints;
 use Werkspot\Tests\JiraDashboard\SharedKernel\Integration\IntegrationTestAbstract;
 
 class GetRemainingPointsBySprintQueryTest extends IntegrationTestAbstract
@@ -19,6 +20,10 @@ class GetRemainingPointsBySprintQueryTest extends IntegrationTestAbstract
         $remainingPointsData = $this->commandBus->handle($getRemainingPointsBySprintQuery);
 
         $this->assertCount(10, $remainingPointsData);
-        $this->assertTrue($remainingPointsData[0]['date'] < $remainingPointsData[1]['date']);
+        /** @var RemainingPoints $remainingPointsDataOne */
+        $remainingPointsDataOne = $remainingPointsData[0];
+        /** @var RemainingPoints $remainingPointsDataTwo */
+        $remainingPointsDataTwo = $remainingPointsData[1];
+        $this->assertTrue( $remainingPointsDataOne->getDate() < $remainingPointsDataTwo->getDate());
     }
 }
