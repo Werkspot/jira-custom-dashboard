@@ -122,4 +122,15 @@ class Sprint
     {
         return $this->achieved;
     }
+
+    public function getPeriod(): \DatePeriod
+    {
+        $sprintPeriod = new \DatePeriod(
+            new \DateTime($this->getStartDate()->format('Y-m-d')),
+            new \DateInterval('P1D'),
+            new \DateTime($this->getEndDate()->format('Y-m-d'))
+        );
+
+        return $sprintPeriod;
+    }
 }

@@ -39,15 +39,9 @@ final class ConfidenceRepositoryDoctrineAdapter implements ConfidenceRepositoryI
 
         $confidenceCollection = $queryBuilder->execute(null, Query::HYDRATE_ARRAY);
 
-        $sprintPeriod = new \DatePeriod(
-            new \DateTime($sprint->getStartDate()->format('Y-m-d')),
-            new \DateInterval('P1D'),
-            new \DateTime($sprint->getEndDate()->format('Y-m-d'))
-        );
-
         $confidenceArray = [];
         /** @var \DateTime $day */
-        foreach ($sprintPeriod as $day) {
+        foreach ($sprint->getPeriod() as $day) {
             $weekday = $day->format('N');
             if ($weekday !== '6' && $weekday !== '7') { // all except Saturday and Sunday
                 $confidenceArray[] = $this->getConfidenceByDay($confidenceCollection, $day);
