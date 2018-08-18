@@ -32,6 +32,12 @@ class Sprint
     /** @var PositiveNumber */
     private $number;
 
+    /** @var float */
+    private $capacity;
+
+    /** @var int */
+    private $velocity;
+
     /** @var bool */
     private $achieved;
 
@@ -44,6 +50,8 @@ class Sprint
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->number = $number;
+        $this->capacity = null;
+        $this->velocity = null;
         $this->achieved = false;
     }
 
@@ -115,6 +123,28 @@ class Sprint
     public function setAchieved(bool $achieved): Sprint
     {
         $this->achieved = $achieved;
+        return $this;
+    }
+
+    public function getCapacity(): float
+    {
+        return $this->capacity;
+    }
+
+    public function setCapacity(float $capacity): Sprint
+    {
+        $this->capacity = $capacity;
+        return $this;
+    }
+
+    public function getVelocity(): int
+    {
+        return $this->velocity;
+    }
+
+    public function setVelocity(int $velocity): Sprint
+    {
+        $this->velocity = $velocity;
         return $this;
     }
 
