@@ -48,7 +48,10 @@ final class ConfidenceRepositoryDoctrineAdapter implements ConfidenceRepositoryI
         $confidenceArray = [];
         /** @var \DateTime $day */
         foreach ($sprintPeriod as $day) {
-            $confidenceArray[] = $this->getConfidenceByDay($confidenceCollection, $day);
+            $weekday = $day->format('N');
+            if ($weekday !== '6' && $weekday !== '7') { // all except Saturday and Sunday
+                $confidenceArray[] = $this->getConfidenceByDay($confidenceCollection, $day);
+            }
         }
 
         return $confidenceArray;
