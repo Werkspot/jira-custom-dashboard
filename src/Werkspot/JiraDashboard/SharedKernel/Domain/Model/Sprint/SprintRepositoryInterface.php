@@ -38,4 +38,6 @@ interface SprintRepositoryInterface
      * @throws EntityNotFoundException
      */
     public function findAchievedByTeam(Id $teamId): ?array;
+
+    public function findAllByTeamOrderByNumber(): ?array;
 }

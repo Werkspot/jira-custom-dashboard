@@ -5,7 +5,6 @@ namespace Werkspot\JiraDashboard\CapacityVelocityWidget\Domain;
 
 use function array_filter;
 use Symfony\Component\HttpFoundation\Response;
-use function usort;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintRepositoryInterface;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Widget\WidgetInterface;
@@ -24,16 +23,13 @@ class CapacityVelocityWidget implements WidgetInterface
 
     public function getCapacityOrderedBySprintNumber(): ?array
     {
-        $sprints = $this->sprintRepository->findAll();
+        $allSprints = $this->sprintRepository->findAllOrderByNumber();
 
-        /** @var array $capacityCollection */
-        $capacityCollection = array_filter($sprints, function ($sprint) {
-            /** @var Sprint $sprint */
+        $capacityCollection = array_filter($allSprints, function (Sprint $sprint) {
             return [
                 $sprint->getNumber()->number() => $sprint->getCapacity()
             ];
         });
-        usort($capacityCollection);
 
         return $capacityCollection;
     }

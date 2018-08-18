@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Werkspot\Tests\JiraDashboard\CapacityVelocityWidget\Unit;
 
-use function array_filter;
 use PHPUnit\Framework\TestCase;
 use Werkspot\JiraDashboard\CapacityVelocityWidget\Domain\CapacityVelocityWidget;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
@@ -28,6 +27,9 @@ class CapacityVelocityWidgetTest extends TestCase
         $this->sprintRepository = new SprintRepositoryInMemoryAdapter([]);
     }
 
+    /**
+     * @test
+     */
     public function getCapacityOrderedBySprintNumber_whenNoneSprintHasCapacitySetup_shouldReturnAnEmptyArray()
     {
         $startDate = new \DateTimeImmutable('today - 4 days');
@@ -38,6 +40,8 @@ class CapacityVelocityWidgetTest extends TestCase
         $capacityVelocityWidget = new CapacityVelocityWidget($this->sprintRepository);
 
         $capacityCollection = $capacityVelocityWidget->getCapacityOrderedBySprintNumber();
+
+        $this->assertCount(1, $capacityCollection);
     }
 
     public function getVelocityOrderedBySprintNumber_whenSomeSprintHasCapacitySetup_shouldReturnCapacityBySprintNumber()
@@ -62,7 +66,9 @@ class CapacityVelocityWidgetTest extends TestCase
             PositiveNumber::create(0)
         );
 
-        $sprint->setCapacity($capacity);
+        if (null !== $capacity) {
+            $sprint->setCapacity($capacity);
+        }
 
         $this->sprintRepository = new SprintRepositoryInMemoryAdapter([$sprint]);
     }

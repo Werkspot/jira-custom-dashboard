@@ -124,6 +124,13 @@ class SprintRepositoryInMemoryAdapter implements SprintRepositoryInterface
         return $achieved;
     }
 
+    public function findAllOrderByNumber(): ?array
+    {
+        $this->sortInMemoryDataByNumberAsc();
+
+        return $this->inMemoryData;
+    }
+
     private function sortInMemoryDataByDateAsc(): void
     {
         uasort($this->inMemoryData, function (Sprint $firstSprint, Sprint $secondSprint) {
@@ -144,5 +151,12 @@ class SprintRepositoryInMemoryAdapter implements SprintRepositoryInterface
         reset($this->inMemoryData);
 
         return current($this->inMemoryData) ? current($this->inMemoryData) : null;
+    }
+
+    private function sortInMemoryDataByNumberAsc()
+    {
+        uasort($this->inMemoryData, function (Sprint $firstSprint, Sprint $secondSprint) {
+            return $firstSprint->getNumber() < $secondSprint->getNumber();
+        });
     }
 }

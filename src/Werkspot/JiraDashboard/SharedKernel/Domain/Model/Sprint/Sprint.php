@@ -50,8 +50,8 @@ class Sprint
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->number = $number;
-        $this->capacity = null;
-        $this->velocity = null;
+        $this->capacity = 0;
+        $this->velocity = 0;
         $this->achieved = false;
     }
 

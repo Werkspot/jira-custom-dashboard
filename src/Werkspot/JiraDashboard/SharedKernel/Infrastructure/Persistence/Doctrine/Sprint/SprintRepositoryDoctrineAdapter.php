@@ -78,6 +78,11 @@ final class SprintRepositoryDoctrineAdapter implements SprintRepositoryInterface
         return $sprint;
     }
 
+    public function findAllOrderByNumber(): ?array
+    {
+        // TODO: Implement findAllOrderByNumber() method.
+    }
+
     public function upsert(Sprint $sprint): void
     {
         $this->em->persist($sprint->getTeam()); // TODO this is temp
