@@ -3,11 +3,9 @@ declare(strict_types=1);
 
 namespace Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\InMemory\Sprint;
 
-use DateTimeImmutable;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\InvalidDateException;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
-use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintId;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintRepositoryInterface;
 use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\Id;
 
@@ -51,14 +49,33 @@ class SprintRepositoryInMemoryAdapter implements SprintRepositoryInterface
     }
 
     /**
+     * @return Sprint[]|null
+     */
+    public function findAllByTeam(Id $teamId): ?array
+    {
+        $sprintArray = array_filter($this->inMemoryData, function (Sprint $sprint) use ($teamId) {
+            if ($sprint->getTeam()->getId() == $teamId) {
+                return $sprint;
+            }
+
+            return false;
+        });
+
+        return $sprintArray;
+    }
+
+    /**
      * @throws EntityNotFoundException
      */
-    public function findActive(): Sprint
+    public function findActiveByTeam(Id $teamId): Sprint
     {
-        $today = new DateTimeImmutable((new DateTimeImmutable())->format('Y-m-d'));
+        $today = new \DateTimeImmutable((new \DateTimeImmutable())->format('Y-m-d'));
 
         foreach ($this->inMemoryData as $sprint) {
-            if ($sprint->getStartDate() <= $today && $sprint->getEndDate() >= $today) {
+            if ($sprint->getTeam()->getId() == $teamId
+                && $sprint->getStartDate() <= $today
+                && $sprint->getEndDate() >= $today
+            ) {
                 return $sprint;
             }
         }
@@ -85,12 +102,18 @@ class SprintRepositoryInMemoryAdapter implements SprintRepositoryInterface
         return 0;
     }
 
-    public function findAchieved(): ?array
+    /**
+     * @return Sprint[]|null
+     * @throws EntityNotFoundException
+     */
+    public function findAchievedByTeam(Id $teamId): ?array
     {
-        $achieved = array_filter($this->inMemoryData, function (Sprint $sprint) {
-            if ($sprint->isAchieved()) {
+        $achieved = array_filter($this->inMemoryData, function (Sprint $sprint) use ($teamId) {
+            if ($sprint->getTeam()->getId() == $teamId && $sprint->isAchieved()) {
                 return $sprint;
             }
+
+            return false;
         });
 
         if (empty($achieved)) {

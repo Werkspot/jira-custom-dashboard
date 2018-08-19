@@ -3,8 +3,7 @@ declare(strict_types=1);
 
 namespace Werkspot\Tests\JiraDashboard\SprintWidget\Integration\Sprint;
 
-use DateTimeImmutable;
-use Werkspot\JiraDashboard\SprintWidget\Domain\GetActiveSprintQuery;
+use Werkspot\JiraDashboard\SprintWidget\Domain\GetActiveSprintByTeamQuery;
 use Werkspot\Tests\JiraDashboard\SharedKernel\Integration\IntegrationTestAbstract;
 
 class GetActiveSprintQueryTest extends IntegrationTestAbstract
@@ -14,9 +13,12 @@ class GetActiveSprintQueryTest extends IntegrationTestAbstract
      */
     public function getActiveSprintQuery_whenThereIsAnActiveSprint_shouldReturnActiveSprintData()
     {
-        $today = new DatetimeImmutable('today');
+        $allTeams = $this->teamRepositoryDoctrineAdapter->findAll();
+        $teamId = $allTeams[0]->getId();
 
-        $getActiveSprintQuery = new GetActiveSprintQuery();
+        $today = new \DatetimeImmutable('today');
+
+        $getActiveSprintQuery = new GetActiveSprintByTeamQuery($teamId->id());
         $activeSprint = $this->commandBus->handle($getActiveSprintQuery);
 
         $this->assertTrue($today >= $activeSprint->getStartDate());

@@ -7,12 +7,11 @@ use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintRepositoryInterface;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team\TeamRepositoryInterface;
 use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\Id;
-use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\PositiveNumber;
-use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\ShortText;
-use Werkspot\JiraDashboard\SprintWidget\Domain\AddNewSprintCommand;
+use Werkspot\JiraDashboard\SprintWidget\Domain\GetActiveSprintByTeamQuery;
 use Werkspot\JiraDashboard\SprintWidget\Domain\SprintWidget;
+use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException;
 
-class AddNewSprintCommandHandler
+class GetActiveSprintByTeamQueryHandler
 {
     /**
      * @var SprintRepositoryInterface
@@ -30,23 +29,15 @@ class AddNewSprintCommandHandler
         $this->teamRepository = $teamRepository;
     }
 
-    public function handle(AddNewSprintCommand $command): void
+    /**
+     * @throws EntityNotFoundException
+     */
+    public function handle(GetActiveSprintByTeamQuery $activeSprintByTeamQuery): Sprint
     {
-        $team = $this->teamRepository->find(Id::create($command->teamId()));
-
-        $nextSprintNumber = $this->sprintRepository->getNextSprintNumber();
-        $title = ShortText::create('Sprint ' . $nextSprintNumber);
-
-        $sprint = new Sprint(
-            Id::create(),
-            $title,
-            $team,
-            $command->startDate(),
-            $command->endDate(),
-            PositiveNumber::create($nextSprintNumber)
-        );
-
         $sprintWidget = new SprintWidget($this->sprintRepository);
-        $sprintWidget->addNewSprint($sprint);
+
+        $team = $this->teamRepository->find(Id::create($activeSprintByTeamQuery->teamId()));
+
+        return $sprintWidget->getActiveSprintByTeam($team );
     }
 }

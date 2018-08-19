@@ -13,8 +13,10 @@ class GetConfidenceBySprintQueryTest extends IntegrationTestAbstract
      */
     public function getConfidenceByLastSprint_whenThereIsASprint_shouldReturnConfidenceCollectionOrderedByDate(): void
     {
+        $allSprints = $this->sprintRepositoryDoctrineAdapter->findAll();
+        $sprintId = $allSprints[0]->getId();
 
-        $getConfidenceBySprintQuery = new GetConfidenceBySprintQuery();
+        $getConfidenceBySprintQuery = new GetConfidenceBySprintQuery($sprintId->id());
         $confidenceData = $this->commandBus->handle($getConfidenceBySprintQuery);
 
         $this->assertCount(6, $confidenceData);

@@ -18,7 +18,6 @@
                 name="value"
                 type="PositiveNumber"
         />
-
         <many-to-one
                 field="sprint"
                 target-entity="Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint">

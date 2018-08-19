@@ -7,13 +7,19 @@ use DateTimeImmutable;
 
 class SaveRemainingPointsCommand
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     private $sprintId;
 
-    /** @var DateTimeImmutable */
+    /**
+     * @var DateTimeImmutable
+     */
     private $date;
 
-    /** @var int */
+    /**
+     * @var int
+     */
     private $value;
 
     public function __construct(string $sprintId, DateTimeImmutable $date, int $value)

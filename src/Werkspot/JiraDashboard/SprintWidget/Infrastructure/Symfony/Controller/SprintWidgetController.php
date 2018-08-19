@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException;
 use Werkspot\JiraDashboard\SprintWidget\Domain\AddNewSprintCommand;
-use Werkspot\JiraDashboard\SprintWidget\Domain\GetActiveSprintQuery;
+use Werkspot\JiraDashboard\SprintWidget\Domain\GetActiveSprintByTeamQuery;
 use Werkspot\JiraDashboard\SprintWidget\Infrastructure\Symfony\Form\Type\AddSprintType;
 
 class SprintWidgetController extends AbstractController
@@ -42,7 +42,7 @@ class SprintWidgetController extends AbstractController
      */
     public function __invoke(Request $request)
     {
-        $getActiveSprintQuery = new GetActiveSprintQuery();
+        $getActiveSprintQuery = new GetActiveSprintByTeamQuery();
 
         $activeSprint = null;
 

@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintRepositoryInterface;
+use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team\Team;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Widget\WidgetInterface;
 
 final class SprintWidget implements WidgetInterface
@@ -22,9 +23,9 @@ final class SprintWidget implements WidgetInterface
     /**
      * @throws EntityNotFoundException
      */
-    public function getActiveSprint(): Sprint
+    public function getActiveSprintByTeam(Team $team): Sprint
     {
-        return $this->sprintRepository->findActive();
+        return $this->sprintRepository->findActiveByTeam($team->getId());
     }
 
     public function addNewSprint(Sprint $sprint): void

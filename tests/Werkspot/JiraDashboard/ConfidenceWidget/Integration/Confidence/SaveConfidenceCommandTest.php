@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Werkspot\Tests\JiraDashboard\ConfidenceWidget\Integration\Confidence;
 
-use DateTimeImmutable;
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\SaveConfidenceCommand;
 use Werkspot\Tests\JiraDashboard\SharedKernel\Integration\IntegrationTestAbstract;
 
@@ -14,9 +13,11 @@ class SaveConfidenceCommandTest extends IntegrationTestAbstract
      */
     public function saveNewConfidence_whenDataIsValid_shouldSaveNewConfidenceDataToPersistence(): void
     {
-        $today = new DateTimeImmutable('today');
+        $allSprints = $this->sprintRepositoryDoctrineAdapter->findAll();
+        $sprintId = $allSprints[0]->getId();
+        $today = new \DateTimeImmutable('today');
 
-        $saveConfidenceCommand = new SaveConfidenceCommand($today, 5);
+        $saveConfidenceCommand = new SaveConfidenceCommand($sprintId->id(), $today, 5);
 
         $this->commandBus->handle($saveConfidenceCommand);
 
@@ -31,10 +32,12 @@ class SaveConfidenceCommandTest extends IntegrationTestAbstract
      */
     public function saveConfidence_whenDateAlreadyExists_shouldUpdateConfidenceData(): void
     {
-        $today = new DateTimeImmutable('today');
+        $allSprints = $this->sprintRepositoryDoctrineAdapter->findAll();
+        $sprintId = $allSprints[0]->getId();
+        $today = new \DateTimeImmutable('today');
 
-        $savedConfidenceOneCommand = new SaveConfidenceCommand($today, 5);
-        $savedConfidenceTwoCommand = new SaveConfidenceCommand($today, 1);
+        $savedConfidenceOneCommand = new SaveConfidenceCommand($sprintId->id(), $today, 5);
+        $savedConfidenceTwoCommand = new SaveConfidenceCommand($sprintId->id(), $today, 1);
 
         $this->commandBus->handle($savedConfidenceOneCommand);
         $this->commandBus->handle($savedConfidenceTwoCommand);

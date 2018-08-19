@@ -3,48 +3,50 @@ declare(strict_types=1);
 
 namespace Werkspot\Tests\JiraDashboard\AchievedSprintsWidget\Unit\Domain;
 
-use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use Werkspot\JiraDashboard\AchievedSprintsWidget\Domain\AchievedSprintsWidget;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintRepositoryInterface;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team\Team;
+use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team\TeamRepositoryInterface;
 use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\Id;
 use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\PositiveNumber;
 use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\ShortText;
 use Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\InMemory\Sprint\SprintRepositoryInMemoryAdapter;
+use Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\InMemory\Team\TeamRepositoryInMemoryAdapter;
 
 class AchievedSprintsWidgetTest extends TestCase
 {
     private const ACHIEVED = true;
 
     /**
+     * @var TeamRepositoryInterface
+     */
+    private $teamRepository;
+
+    /**
      * @var SprintRepositoryInterface
      */
     private $sprintRepository;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->sprintRepository = new SprintRepositoryInMemoryAdapter([]);
-    }
 
     /**
      * @test
      */
     public function getAchievedSprints_whenAtLeastOneSprintHasBeenAchieved_shouldReturnAListOfAchievedSprints()
     {
-        $startDate = new DateTimeImmutable('today - 4 days');
-        $endDate   = new DateTimeImmutable('today + 4 days');
+        $startDate = new \DateTimeImmutable('today - 4 days');
+        $endDate   = new \DateTimeImmutable('today + 4 days');
 
-        $this->populateSprintRepository($startDate, $endDate);
+        $this->populateTeamRepository();
+        $teams = $this->teamRepository->findAll();
+        $team = array_shift($teams);
+        $this->populateSprintRepository($team, $startDate, $endDate);
 
-        $sprint = $this->sprintRepository->findActive();
+        $sprint = $this->sprintRepository->findActiveByTeam($team->getId());
         $sprint->setAchieved(self::ACHIEVED);
 
         $achievedSprintWidget = new AchievedSprintsWidget($this->sprintRepository);
-        $achievedSprints = $achievedSprintWidget->getAchievedSprints();
+        $achievedSprints = $achievedSprintWidget->getAchievedSprints($team->getId());
 
         $this->assertEquals(1, $achievedSprints->getAchieved()->number());
         $this->assertEquals(true, $sprint->isAchieved());
@@ -56,25 +58,35 @@ class AchievedSprintsWidgetTest extends TestCase
      */
     public function getAchievedSprints_whenNoneOfTheSprintsHasBeenAchieved_shouldThrowAnException()
     {
-        $startDate = new DateTimeImmutable('today - 4 days');
-        $endDate   = new DateTimeImmutable('today + 4 days');
+        $startDate = new \DateTimeImmutable('today - 4 days');
+        $endDate   = new \DateTimeImmutable('today + 4 days');
 
-        $this->populateSprintRepository($startDate, $endDate);
+        $this->populateTeamRepository();
+        $teams = $this->teamRepository->findAll();
+        $team = array_shift($teams);
+        $this->populateSprintRepository($team, $startDate, $endDate);
 
         $achievedSprintWidget = new AchievedSprintsWidget($this->sprintRepository);
-        $achievedSprintWidget->getAchievedSprints();
+        $achievedSprintWidget->getAchievedSprints($team->getId());
     }
 
-    private function populateSprintRepository(DateTimeImmutable $startDate, DateTimeImmutable $endDate): void
+    private function populateTeamRepository(): void
+    {
+        $this->teamRepository = new TeamRepositoryInMemoryAdapter([
+            new Team(
+                Id::create(),
+                ShortText::create('Team 1')
+            ),
+        ]);
+    }
+
+    private function populateSprintRepository(Team $team, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate): void
     {
         $this->sprintRepository = new SprintRepositoryInMemoryAdapter([
             new Sprint(
                 Id::create(),
                 ShortText::create('Sprint title 1'),
-                new Team(
-                    Id::create(),
-                    ShortText::create('Team name')
-                ),
+                $team,
                 $startDate,
                 $endDate,
                 PositiveNumber::create(0)

@@ -19,13 +19,22 @@ interface SprintRepositoryInterface
     public function findAll(): ?array;
 
     /**
+     * @return Sprint[]|null
+     */
+    public function findAllByTeam(Id $teamId): ?array;
+
+    /**
      * @throws EntityNotFoundException
      */
-    public function findActive(): Sprint;
+    public function findActiveByTeam(Id $teamId): Sprint;
 
     public function upsert(Sprint $sprint): void;
 
     public function getNextSprintNumber(): int;
 
-    public function findAchieved(): ?array;
+    /**
+     * @return Sprint[]|null
+     * @throws EntityNotFoundException
+     */
+    public function findAchievedByTeam(Id $teamId): ?array;
 }

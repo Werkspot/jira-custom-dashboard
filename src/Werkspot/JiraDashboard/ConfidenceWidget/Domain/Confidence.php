@@ -4,24 +4,37 @@ declare(strict_types=1);
 namespace Werkspot\JiraDashboard\ConfidenceWidget\Domain;
 
 use DateTimeImmutable;
+use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
 use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\Id;
 
 class Confidence
 {
-    /** @var Id */
+    /**
+     * @var Id
+     */
     private $id;
 
-    /** @var DateTimeImmutable */
+    /**
+     * @var DateTimeImmutable
+     */
     private $date;
 
-    /** @var ConfidenceValueEnum */
+    /**
+     * @var ConfidenceValueEnum
+     */
     private $value;
 
-    public function __construct(DateTimeImmutable $date, ConfidenceValueEnum $value)
+    /**
+     * @var Sprint
+     */
+    private $sprint;
+
+    public function __construct(DateTimeImmutable $date, ConfidenceValueEnum $value, Sprint $sprint)
     {
         $this->id = Id::create();
         $this->date = $date;
         $this->value = $value;
+        $this->sprint = $sprint;
     }
 
     public function getId(): Id
@@ -49,5 +62,10 @@ class Confidence
     public function getValue(): ConfidenceValueEnum
     {
         return $this->value;
+    }
+
+    public function getSprint(): Sprint
+    {
+        return $this->sprint;
     }
 }

@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\Doctrine\Sprint;
 
-use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintRepositoryInterface;
+use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team\Team;
 use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\Id;
 
 final class SprintRepositoryDoctrineAdapter implements SprintRepositoryInterface
@@ -43,26 +43,39 @@ final class SprintRepositoryDoctrineAdapter implements SprintRepositoryInterface
     }
 
     /**
+     * @return Sprint[]|null
      * @throws EntityNotFoundException
      */
-    public function findActive(): Sprint
+    public function findAllByTeam(Id $teamId): ?array
     {
-        $today = new DateTimeImmutable('today');
+        $team = $this->getTeamById($teamId);
 
-        $sprintCollection = $queryBuilder = $this->em->createQueryBuilder()
+        return $this->em->getRepository(Sprint::class)->findByTeam($team);
+    }
+
+    /**
+     * @throws EntityNotFoundException
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findActiveByTeam(Id $teamId): Sprint
+    {
+        $team = $this->getTeamById($teamId);
+
+        $today = new \DateTimeImmutable('today');
+
+        $sprint = $queryBuilder = $this->em->createQueryBuilder()
             ->select('s')
             ->from(Sprint::class, 's')
             ->where('s.startDate <= :today')
             ->andWhere('s.endDate >= :today')
             ->setParameter('today', $today)
+            ->andWhere('s.team = :team')
+            ->setParameter('team', $team)
             ->getQuery()
-            ->getResult();
+            ->getSingleResult();
 
-        if (empty($sprintCollection)) {
-            throw new EntityNotFoundException();
-        }
-
-        return $sprintCollection[0];
+        return $sprint;
     }
 
     public function upsert(Sprint $sprint): void
@@ -90,13 +103,34 @@ final class SprintRepositoryDoctrineAdapter implements SprintRepositoryInterface
         return (int)$maxNumber;
     }
 
-    public function findAchieved(): ?array
+    /**
+     * @return Sprint[]|null
+     * @throws EntityNotFoundException
+     */
+    public function findAchievedByTeam(Id $teamId): ?array
     {
+        $team = $this->getTeamById($teamId);
+
         return $this->em->createQueryBuilder()
             ->select('s')
             ->from(Sprint::class, 's')
+            ->join( 's.team', 't')
             ->where('s.achieved = 1')
+            ->andWhere('t.id = :team')
+            ->setParameter('team', $team)
             ->getQuery()
             ->getArrayResult();
+    }
+
+    /**
+     * @throws EntityNotFoundException
+     */
+    private function getTeamById(Id $teamId): Team
+    {
+        if (!$team = $this->em->getRepository(Team::class)->find($teamId)) {
+            throw new EntityNotFoundException("Team $teamId not found.");
+        }
+
+        return $team;
     }
 }

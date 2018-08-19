@@ -4,16 +4,26 @@ Query:
         fields:
             sprintWidget:
                 type: Sprint
+                args:
+                    teamId:
+                        type: String!
                 resolve: >
                     @=service("League\\Tactician\\CommandBus").handle(
-                        newObject("Werkspot\\JiraDashboard\\SprintWidget\\Domain\\GetActiveSprintQuery")
+                        newObject("Werkspot\\JiraDashboard\\SprintWidget\\Domain\\GetActiveSprintByTeamQuery", [
+                            args["teamId"]
+                       ])
                     )
 
             confidenceWidget:
                 type: "[Confidence]"
+                args:
+                    sprintId:
+                        type: String!
                 resolve: >
                     @=service("League\\Tactician\\CommandBus").handle(
-                        newObject("Werkspot\\JiraDashboard\\ConfidenceWidget\\Domain\\GetConfidenceBySprintQuery")
+                        newObject("Werkspot\\JiraDashboard\\ConfidenceWidget\\Domain\\GetConfidenceBySprintQuery", [
+                            args["sprintId"]
+                        ])
                     )
 
             burndownWidget:
@@ -24,13 +34,18 @@ Query:
                 resolve: >
                     @=service("League\\Tactician\\CommandBus").handle(
                         newObject("Werkspot\\JiraDashboard\\BurndownWidget\\Domain\\GetRemainingPointsBySprintQuery", [
-                          args["sprintId"]
+                            args["sprintId"]
                         ])
                     )
 
             achievedSprintsWidget:
                 type: "AchievedSprints"
+                args:
+                    teamId:
+                        type: String!
                 resolve: >
                     @=service("League\\Tactician\\CommandBus").handle(
-                        newObject("Werkspot\\JiraDashboard\\AchievedSprintsWidget\\Domain\\GetAchievedSprintsQuery")
+                        newObject("Werkspot\\JiraDashboard\\AchievedSprintsWidget\\Domain\\GetAchievedSprintsQuery", [
+                            args["teamId"]
+                        ])
                     )

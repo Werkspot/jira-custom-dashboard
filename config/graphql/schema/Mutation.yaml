@@ -5,6 +5,8 @@ Mutation:
             addNewSprint:
                 type: Boolean
                 args:
+                    teamId:
+                        type: String!
                     startDate:
                         type: DateTime!
                     endDate:
@@ -12,6 +14,7 @@ Mutation:
                 resolve: >
                     @=service("League\\Tactician\\CommandBus").handle(
                         newObject("Werkspot\\JiraDashboard\\SprintWidget\\Domain\\AddNewSprintCommand", [
+                            args["teamId"],
                             args["startDate"],
                             args["endDate"]
                         ])
@@ -38,6 +41,8 @@ Mutation:
             saveConfidence:
                 type: Boolean
                 args:
+                    sprintId:
+                        type: String!
                     date:
                         type: DateTime!
                     value:
@@ -45,6 +50,7 @@ Mutation:
                 resolve: >
                     @=service("League\\Tactician\\CommandBus").handle(
                         newObject("Werkspot\\JiraDashboard\\ConfidenceWidget\\Domain\\SaveConfidenceCommand", [
+                            args["sprintId"],
                             args["date"],
                             args["value"]
                         ])

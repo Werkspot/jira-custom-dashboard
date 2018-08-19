@@ -9,6 +9,7 @@ use Werkspot\JiraDashboard\ConfidenceWidget\Domain\ConfidenceValueEnum;
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\ConfidenceWidget;
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\SaveConfidenceCommand;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintRepositoryInterface;
+use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\Id;
 
 class SaveConfidenceCommandHandler
 {
@@ -30,9 +31,12 @@ class SaveConfidenceCommandHandler
 
     public function handle(SaveConfidenceCommand $command): void
     {
+        $sprint = $this->sprintRepository->find(Id::create($command->getSprintId()));
+
         $confidence = new Confidence(
             $command->date(),
-            ConfidenceValueEnum::create($command->value())
+            ConfidenceValueEnum::create($command->value()),
+            $sprint
         );
 
         $confidenceWidget = new ConfidenceWidget($this->sprintRepository, $this->confidenceRepository);

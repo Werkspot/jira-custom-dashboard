@@ -13,7 +13,7 @@ use Werkspot\JiraDashboard\AchievedSprintsWidget\Domain\GetAchievedSprintsQuery;
 use Werkspot\JiraDashboard\AchievedSprintsWidget\Domain\SetSprintAsAchievedCommand;
 use Werkspot\JiraDashboard\AchievedSprintsWidget\Infrastructure\Symfony\Form\Type\SetActiveSprintResultType;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException;
-use Werkspot\JiraDashboard\SprintWidget\Domain\GetActiveSprintQuery;
+use Werkspot\JiraDashboard\SprintWidget\Domain\GetActiveSprintByTeamQuery;
 
 class AchievedSprintsWidgetController extends AbstractController
 {
@@ -54,7 +54,7 @@ class AchievedSprintsWidgetController extends AbstractController
         $activeSprint = null;
 
         try {
-            $getActiveSprintQuery = new GetActiveSprintQuery();
+            $getActiveSprintQuery = new GetActiveSprintByTeamQuery();
             $activeSprint = $this->commandBus->handle($getActiveSprintQuery);
         } catch (EntityNotFoundException $e) {
         }

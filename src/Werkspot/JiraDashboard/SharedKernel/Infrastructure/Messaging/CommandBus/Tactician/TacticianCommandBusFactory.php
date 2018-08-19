@@ -9,7 +9,6 @@ use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
 use League\Tactician\Handler\Locator\InMemoryLocator;
 use League\Tactician\Handler\MethodNameInflector\HandleInflector;
-use Werkspot\JiraDashboard\SharedKernel\Infrastructure\Messaging\CommandBus\Tactician\GraphQLMiddleware;
 use Werkspot\JiraDashboard\AchievedSprintsWidget\Application\GetAchievedSprintsQueryHandler;
 use Werkspot\JiraDashboard\AchievedSprintsWidget\Application\SetSprintAsAchievedCommandHandler;
 use Werkspot\JiraDashboard\AchievedSprintsWidget\Domain\GetAchievedSprintsQuery;
@@ -25,10 +24,11 @@ use Werkspot\JiraDashboard\ConfidenceWidget\Domain\ConfidenceRepositoryInterface
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\GetConfidenceBySprintQuery;
 use Werkspot\JiraDashboard\ConfidenceWidget\Domain\SaveConfidenceCommand;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintRepositoryInterface;
+use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team\TeamRepositoryInterface;
 use Werkspot\JiraDashboard\SprintWidget\Application\AddNewSprintCommandHandler;
-use Werkspot\JiraDashboard\SprintWidget\Application\GetActiveSprintQueryHandler;
+use Werkspot\JiraDashboard\SprintWidget\Application\GetActiveSprintByTeamQueryHandler;
 use Werkspot\JiraDashboard\SprintWidget\Domain\AddNewSprintCommand;
-use Werkspot\JiraDashboard\SprintWidget\Domain\GetActiveSprintQuery;
+use Werkspot\JiraDashboard\SprintWidget\Domain\GetActiveSprintByTeamQuery;
 
 final class TacticianCommandBusFactory
 {
@@ -36,6 +36,11 @@ final class TacticianCommandBusFactory
      * @var CommandBus
      */
     private $commandBus;
+
+    /**
+     * @var TeamRepositoryInterface
+     */
+    private $teamRepository;
 
     /**
      * @var SprintRepositoryInterface
@@ -58,11 +63,13 @@ final class TacticianCommandBusFactory
     private $remainingPointsRepository;
 
     public function __construct(
+        TeamRepositoryInterface $teamRepository,
         SprintRepositoryInterface $sprintRepository,
         ConfidenceRepositoryInterface $confidenceRepository,
         RemainingPointsRepositoryInterface $remainingPointsRepository,
         EmitterInterface $eventBus
     ) {
+        $this->teamRepository = $teamRepository;
         $this->sprintRepository = $sprintRepository;
         $this->confidenceRepository = $confidenceRepository;
         $this->remainingPointsRepository = $remainingPointsRepository;
@@ -76,8 +83,8 @@ final class TacticianCommandBusFactory
         $getConfidenceBySprintQueryHandler = new GetConfidenceBySprintQueryHandler($this->sprintRepository, $this->confidenceRepository);
         $saveConfidenceCommandHandler = new SaveConfidenceCommandHandler($this->sprintRepository, $this->confidenceRepository);
 
-        $addNewSprintCommandHandler = new AddNewSprintCommandHandler($this->sprintRepository);
-        $getActiveSprintQueryHandler = new GetActiveSprintQueryHandler($this->sprintRepository);
+        $addNewSprintCommandHandler = new AddNewSprintCommandHandler($this->sprintRepository, $this->teamRepository);
+        $getActiveSprintQueryHandler = new GetActiveSprintByTeamQueryHandler($this->sprintRepository, $this->teamRepository);
 
         $getAchievedSprintsQueryHandler = new GetAchievedSprintsQueryHandler($this->sprintRepository);
         $setSprintAsAchievedCommandHandler = new SetSprintAsAchievedCommandHandler($this->sprintRepository);
@@ -90,7 +97,7 @@ final class TacticianCommandBusFactory
         $locator->addHandler($saveConfidenceCommandHandler, SaveConfidenceCommand::class);
 
         $locator->addHandler($addNewSprintCommandHandler, AddNewSprintCommand::class);
-        $locator->addHandler($getActiveSprintQueryHandler, GetActiveSprintQuery::class);
+        $locator->addHandler($getActiveSprintQueryHandler, GetActiveSprintByTeamQuery::class);
 
         $locator->addHandler($getAchievedSprintsQueryHandler, GetAchievedSprintsQuery::class);
         $locator->addHandler($setSprintAsAchievedCommandHandler, SetSprintAsAchievedCommand::class);
@@ -103,6 +110,7 @@ final class TacticianCommandBusFactory
 
         $this->commandBus = new CommandBus([$graphqlMiddleware, $commandHandlerMiddleware]);
         $this->sprintRepository = $sprintRepository;
+        $this->teamRepository = $teamRepository;
     }
 
     /**

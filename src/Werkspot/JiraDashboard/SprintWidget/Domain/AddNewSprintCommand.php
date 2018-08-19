@@ -7,16 +7,31 @@ use DateTimeImmutable;
 
 class AddNewSprintCommand
 {
-    /** @var DateTimeImmutable */
+    /**
+     * @var string
+     */
+    private $teamId;
+
+    /**
+     * @var DateTimeImmutable
+     */
     private $startDate;
 
-    /** @var DateTimeImmutable */
+    /**
+     * @var DateTimeImmutable
+     */
     private $endDate;
 
-    public function __construct(DateTimeImmutable $startDate, DateTimeImmutable $endDate)
+    public function __construct(string $teamId, DateTimeImmutable $startDate, DateTimeImmutable $endDate)
     {
+        $this->teamId = $teamId;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
+    }
+
+    public function teamId(): string
+    {
+        return $this->teamId;
     }
 
     public function startDate(): DateTimeImmutable

@@ -25,10 +25,6 @@ class SetSprintAsAchievedCommandHandler
 
         $sprint = $this->sprintRepository->find($achievedCommand->sprintId());
 
-        if (!is_null($sprint)) {
-            $sprint->setAchieved($achievedCommand->isAchieved());
-        }
-
-        $achievedSprintsWidget->setSprintAsAchieved($sprint);
+        $achievedSprintsWidget->setSprintAsAchieved($sprint, $achievedCommand->isAchieved());
     }
 }

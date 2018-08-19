@@ -18,5 +18,14 @@
                 name="value"
                 type="integer"
         />
+        <many-to-one
+                field="sprint"
+                target-entity="Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint">
+            <cascade>
+                <cascade-persist/>
+                <cascade-remove/>
+            </cascade>
+            <join-column name="sprintId" referenced-column-name="id"/>
+        </many-to-one>
     </entity>
 </doctrine-mapping>

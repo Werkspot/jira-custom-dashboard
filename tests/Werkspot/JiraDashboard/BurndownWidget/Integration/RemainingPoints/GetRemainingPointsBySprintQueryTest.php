@@ -14,7 +14,10 @@ class GetRemainingPointsBySprintQueryTest extends IntegrationTestAbstract
      */
     public function getRemainingPointsByLastSprint_whenThereIsASprint_shouldReturnRemainingPointsCollectionOrderedByDate(): void
     {
-        $sprint = $this->sprintRepositoryDoctrineAdapter->findActive();
+        $allTeams = $this->teamRepositoryDoctrineAdapter->findAll();
+        $teamId = $allTeams[0]->getId();
+
+        $sprint = $this->sprintRepositoryDoctrineAdapter->findActiveByTeam($teamId);
 
         $getRemainingPointsBySprintQuery = new GetRemainingPointsBySprintQuery($sprint->getId()->id());
         $remainingPointsData = $this->commandBus->handle($getRemainingPointsBySprintQuery);

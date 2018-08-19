@@ -7,16 +7,31 @@ use DateTimeImmutable;
 
 class SaveConfidenceCommand
 {
-    /** @var DateTimeImmutable */
+    /**
+     * @var string
+     */
+    private $sprintId;
+
+    /**
+     * @var DateTimeImmutable
+     */
     private $date;
 
-    /** @var int */
+    /**
+     * @var int
+     */
     private $value;
 
-    public function __construct(DateTimeImmutable $date, int $value)
+    public function __construct(string $sprintId, DateTimeImmutable $date, int $value)
     {
+        $this->sprintId = $sprintId;
         $this->date = $date;
         $this->value = $value;
+    }
+
+    public function getSprintId(): string
+    {
+        return $this->sprintId;
     }
 
     public function date(): DateTimeImmutable

@@ -30,10 +30,8 @@ final class ConfidenceRepositoryDoctrineAdapter implements ConfidenceRepositoryI
         $queryBuilder = $this->em->createQueryBuilder()
             ->select('c')
             ->from(Confidence::class, 'c')
-            ->where('c.date >= :startDate')
-            ->andWhere('c.date <= :endDate')
-            ->setParameter('startDate', $sprint->getStartDate())
-            ->setParameter('endDate', $sprint->getEndDate())
+            ->where('c.sprint = :sprint')
+            ->setParameter('sprint', $sprint)
             ->orderBy('c.date', 'ASC')
             ->getQuery();
 

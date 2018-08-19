@@ -15,7 +15,10 @@ class SetSprintAsAchievedCommandTest extends IntegrationTestAbstract
      */
     public function setSprintAsAchieved_whenDataIsValid_shouldSetThatSprintAsAchieved()
     {
-        $sprint = $this->sprintRepositoryDoctrineAdapter->findActive();
+        $allTeams = $this->teamRepositoryDoctrineAdapter->findAll();
+        $teamId = $allTeams[0]->getId();
+
+        $sprint = $this->sprintRepositoryDoctrineAdapter->findActiveByTeam($teamId);
 
         $this->assertEquals(false, $sprint->isAchieved());
 

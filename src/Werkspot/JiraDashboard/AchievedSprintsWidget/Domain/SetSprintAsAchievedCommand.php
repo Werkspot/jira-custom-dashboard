@@ -11,10 +11,10 @@ class SetSprintAsAchievedCommand
      * @var Id
      */
     private $sprintId;
+
     /**
      * @var bool
      */
-
     private $achieved;
 
     public function __construct(Id $sprintId, bool $achieved)

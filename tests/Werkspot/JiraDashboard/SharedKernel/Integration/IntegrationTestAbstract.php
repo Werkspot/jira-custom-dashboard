@@ -14,6 +14,7 @@ use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintRepositoryInte
 use Werkspot\JiraDashboard\SharedKernel\Infrastructure\Messaging\CommandBus\Tactician\TacticianCommandBusFactory;
 use Werkspot\JiraDashboard\SharedKernel\Infrastructure\Messaging\EventBus\League\LeagueEventBusFactory;
 use Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\Doctrine\Sprint\SprintRepositoryDoctrineAdapter;
+use Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\Doctrine\Team\TeamRepositoryDoctrineAdapter;
 use Werkspot\Tests\JiraDashboard\SharedKernel\DoctrineAwareTestTrait;
 
 class IntegrationTestAbstract extends TestCase
@@ -21,14 +22,19 @@ class IntegrationTestAbstract extends TestCase
     use DoctrineAwareTestTrait;
 
     /**
-     * @var ConfidenceRepositoryInterface
+     * @var TeamRepositoryDoctrineAdapter
      */
-    protected $confidenceRepositoryDoctrineAdapter;
+    protected $teamRepositoryDoctrineAdapter;
 
     /**
      * @var SprintRepositoryInterface
      */
     protected $sprintRepositoryDoctrineAdapter;
+
+    /**
+     * @var ConfidenceRepositoryInterface
+     */
+    protected $confidenceRepositoryDoctrineAdapter;
 
     /**
      * @var RemainingPointsRepositoryInterface
@@ -56,6 +62,7 @@ class IntegrationTestAbstract extends TestCase
 
         $this->fixturesLoader();
 
+        $this->teamRepositoryDoctrineAdapter = new TeamRepositoryDoctrineAdapter($this->entityManager);
         $this->sprintRepositoryDoctrineAdapter = new SprintRepositoryDoctrineAdapter($this->entityManager);
         $this->confidenceRepositoryDoctrineAdapter = new ConfidenceRepositoryDoctrineAdapter($this->entityManager);
         $this->remainingPointsRepositoryDoctrineAdapter = new RemainingPointsRepositoryDoctrineAdapter($this->entityManager);
@@ -75,6 +82,7 @@ class IntegrationTestAbstract extends TestCase
     private function setupCommandBus(): void
     {
         $commandBusFactory = new TacticianCommandBusFactory(
+            $this->teamRepositoryDoctrineAdapter,
             $this->sprintRepositoryDoctrineAdapter,
             $this->confidenceRepositoryDoctrineAdapter,
             $this->remainingPointsRepositoryDoctrineAdapter,

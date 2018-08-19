@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Werkspot\Tests\JiraDashboard\SharedKernel\Integration\Fixture;
 
-use DateTimeImmutable;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
@@ -24,8 +23,8 @@ class DoctrineSprintFixtureLoader extends AbstractFixture
             Id::create(),
             ShortText::create('Sprint 0'),
             $this->getReference(DoctrineTeamFixtureLoader::TEAM_NAME),
-            new DateTimeImmutable('today -4 days'),
-            new DateTimeImmutable('today +4 days'),
+            new \DateTimeImmutable('today -4 days'),
+            new \DateTimeImmutable('today +4 days'),
             PositiveNumber::create(0)
         );
 

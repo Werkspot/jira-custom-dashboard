@@ -16,12 +16,15 @@ class GetAchievedSprintsQueryTest extends IntegrationTestAbstract
      */
     public function getAchievedSprints_whenAtLeastOneSprintHasBeenAchieved_shouldReturnAListOfAchievedSprints()
     {
-        $getAchievedSprintsQuery = new GetAchievedSprintsQuery();
+        $allTeams = $this->teamRepositoryDoctrineAdapter->findAll();
+        $teamId = $allTeams[0]->getId();
+
+        $getAchievedSprintsQuery = new GetAchievedSprintsQuery($teamId->id());
         $achievedSprints = $this->commandBus->handle($getAchievedSprintsQuery);
 
         $this->assertEquals(0, $achievedSprints['achieved']->number());
 
-        $sprint = $this->sprintRepositoryDoctrineAdapter->findActive();
+        $sprint = $this->sprintRepositoryDoctrineAdapter->findActiveByTeam($teamId);
 
         $setSprintAsAchievedCommand = new SetSprintAsAchievedCommand($sprint->getId(), self::ACHIEVED);
         $this->commandBus->handle($setSprintAsAchievedCommand);

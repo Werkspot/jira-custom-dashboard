@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintRepositoryInterface;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Widget\WidgetInterface;
+use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\Id;
 use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\PositiveNumber;
 
 class AchievedSprintsWidget implements WidgetInterface
@@ -21,16 +22,20 @@ class AchievedSprintsWidget implements WidgetInterface
         $this->sprintRepository = $sprintRepository;
     }
 
-    public function getAchievedSprints(): AchievedSprints
+    public function getAchievedSprints(Id $teamId): AchievedSprints
     {
         return new AchievedSprints(
-            PositiveNumber::create(count($this->sprintRepository->findAchieved())), // @todo refactor to repository method
-            PositiveNumber::create(count($this->sprintRepository->findAll())) // @todo refactor to repository method
+            PositiveNumber::create(count($this->sprintRepository->findAchievedByTeam($teamId))), // @todo refactor to repository method
+            PositiveNumber::create(count($this->sprintRepository->findAllByTeam($teamId))) // @todo refactor to repository method
         );
     }
 
-    public function setSprintAsAchieved(Sprint $sprint): void
+    public function setSprintAsAchieved(?Sprint $sprint, bool $isAchieved): void
     {
+        if (!is_null($sprint)) {
+            $sprint->setAchieved($isAchieved);
+        }
+
         $this->sprintRepository->upsert($sprint);
     }
 
