@@ -29,4 +29,9 @@ class Team
     {
         return $this->name;
     }
+
+    public function setName(ShortText $name): void
+    {
+        $this->name = $name;
+    }
 }

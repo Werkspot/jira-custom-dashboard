@@ -17,4 +17,6 @@ interface TeamRepositoryInterface
      * @return Team[]|null
      */
     public function findAll(): ?array;
+
+    public function upsert(Team $team): void;
 }

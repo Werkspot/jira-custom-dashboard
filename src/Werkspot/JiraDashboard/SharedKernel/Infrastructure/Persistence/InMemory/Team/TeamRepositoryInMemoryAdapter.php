@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Werkspot\JiraDashboard\SharedKernel\Infrastructure\Persistence\InMemory\Team;
 
 use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException;
-use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
+use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\InvalidDateException;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team\Team;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team\TeamRepositoryInterface;
 use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\Id;
@@ -22,8 +22,6 @@ class TeamRepositoryInMemoryAdapter implements TeamRepositoryInterface
         foreach ($data as $team) {
             $this->inMemoryData[$team->getId()->id()] = $team;
         }
-
-        $this->sortInMemoryDataByDateAsc();
     }
 
     /**
@@ -48,10 +46,11 @@ class TeamRepositoryInMemoryAdapter implements TeamRepositoryInterface
         return $this->inMemoryData;
     }
 
-    private function sortInMemoryDataByDateAsc(): void
+    /**
+     * @throws InvalidDateException
+     */
+    public function upsert(Team $team): void
     {
-        uasort($this->inMemoryData, function (Sprint $firstSprint, Sprint $secondSprint) {
-            return $firstSprint->getStartDate() < $secondSprint->getEndDate();
-        });
+        $this->inMemoryData[$team->getId()->id()] = $team;
     }
 }
