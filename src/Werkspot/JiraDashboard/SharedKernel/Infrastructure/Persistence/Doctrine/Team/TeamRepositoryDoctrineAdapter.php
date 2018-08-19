@@ -40,4 +40,10 @@ final class TeamRepositoryDoctrineAdapter implements TeamRepositoryInterface
     {
         return $this->em->getRepository(Team::class)->findAll();
     }
+
+    public function upsert(Team $team): void
+    {
+        $this->em->persist($team);
+        $this->em->flush();
+    }
 }

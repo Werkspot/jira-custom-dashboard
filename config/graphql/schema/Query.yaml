@@ -2,6 +2,13 @@ Query:
     type: object
     config:
         fields:
+            teamWidget:
+                type: "[Team]"
+                resolve: >
+                    @=service("League\\Tactician\\CommandBus").handle(
+                        newObject("Werkspot\\JiraDashboard\\TeamWidget\\Domain\\GetTeamsQuery")
+                    )
+
             sprintWidget:
                 type: Sprint
                 args:

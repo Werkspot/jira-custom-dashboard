@@ -2,6 +2,18 @@ Mutation:
     type: object
     config:
         fields:
+            addTeam:
+                type: Boolean
+                args:
+                    teamName:
+                        type: String!
+                resolve: >
+                    @=service("League\\Tactician\\CommandBus").handle(
+                        newObject("Werkspot\\JiraDashboard\\TeamWidget\\Domain\\AddTeamCommand", [
+                            args["teamName"]
+                        ])
+                    )
+
             addNewSprint:
                 type: Boolean
                 args:
