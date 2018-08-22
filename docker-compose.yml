@@ -23,9 +23,6 @@ services:
       - APACHE_RUN_DIR=/var/run/apache2
       - APACHE_LOCK_DIR=/var/lock/apache2
       - APACHE_LOG_DIR=/var/log/apache2
-    ports:
-      - 80:80
-      - 443:443
     networks:
       jira_custom_dashboard-network:
         aliases:
@@ -37,8 +34,6 @@ services:
   mysql:
     container_name: mysql
     image: mysql:5.7
-    ports:
-      - 3306:3306
     networks:
       jira_custom_dashboard-network:
         aliases:
@@ -64,8 +59,6 @@ services:
   cli:
     build: docker/php-cli
     working_dir: /var/www/
-    ports:
-      - 9090:9090
     networks:
       jira_custom_dashboard-network:
         aliases:
