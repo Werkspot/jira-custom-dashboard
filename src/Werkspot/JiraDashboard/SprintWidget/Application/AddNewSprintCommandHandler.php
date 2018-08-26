@@ -34,7 +34,7 @@ class AddNewSprintCommandHandler
     {
         $team = $this->teamRepository->find(Id::create($command->teamId()));
 
-        $nextSprintNumber = $this->sprintRepository->getNextSprintNumber();
+        $nextSprintNumber = $this->sprintRepository->getNextSprintNumberByTeam($team);
         $title = ShortText::create('Sprint ' . $nextSprintNumber);
 
         $sprint = new Sprint(

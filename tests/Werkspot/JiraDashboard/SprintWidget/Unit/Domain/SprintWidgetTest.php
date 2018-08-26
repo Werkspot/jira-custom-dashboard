@@ -75,7 +75,7 @@ class SprintWidgetTest extends TestCase
 
         $this->sprintRepository = new SprintRepositoryInMemoryAdapter([]);
 
-        $newSprintNumber = $this->sprintRepository->getNextSprintNumber();
+        $newSprintNumber = $this->sprintRepository->getNextSprintNumberByTeam($team);
 
         $sprint = new Sprint(
             Id::create(),
@@ -111,7 +111,7 @@ class SprintWidgetTest extends TestCase
         $nextSprintStartDate = new \DateTimeImmutable('today + 4 days');
         $nextSprintEndDate   = new \DateTimeImmutable('today + 9 days');
 
-        $newSprintNumber = $this->sprintRepository->getNextSprintNumber();
+        $newSprintNumber = $this->sprintRepository->getNextSprintNumberByTeam($team);
 
         $sprint = new Sprint(
             Id::create(),

@@ -88,11 +88,13 @@ final class SprintRepositoryDoctrineAdapter implements SprintRepositoryInterface
     /**
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getNextSprintNumber(): int
+    public function getNextSprintNumberByTeam(Team $team): int
     {
         $maxNumber = $this->em->createQueryBuilder()
             ->select('MAX(s.number) + 1')
             ->from(Sprint::class, 's')
+            ->where('s.team = :team')
+            ->setParameter('team', $team)
             ->getQuery()
             ->getSingleScalarResult();
 

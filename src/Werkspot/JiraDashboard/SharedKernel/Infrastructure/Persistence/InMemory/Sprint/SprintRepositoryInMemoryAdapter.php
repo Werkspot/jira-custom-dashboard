@@ -7,6 +7,7 @@ use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException
 use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\InvalidDateException;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintRepositoryInterface;
+use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team\Team;
 use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\Id;
 
 class SprintRepositoryInMemoryAdapter implements SprintRepositoryInterface
@@ -93,9 +94,9 @@ class SprintRepositoryInMemoryAdapter implements SprintRepositoryInterface
         $this->sortInMemoryDataByDateAsc();
     }
 
-    public function getNextSprintNumber(): int
+    public function getNextSprintNumberByTeam(Team $team): int
     {
-        if ($lastPersisted = $this->getLastPersisted()) {
+        if ($lastPersisted = $this->getLastPersisted($team)) {
             return $lastPersisted->getNumber()->number() + 1;
         }
 
@@ -130,10 +131,14 @@ class SprintRepositoryInMemoryAdapter implements SprintRepositoryInterface
         });
     }
 
-    private function getLastPersisted(): ?Sprint
+    private function getLastPersisted(Team $team): ?Sprint
     {
-        uasort($this->inMemoryData, function (Sprint $firstSprint, Sprint $secondSprint) {
-            return $firstSprint->getNumber()->number() < $secondSprint->getNumber()->number();
+        uasort($this->inMemoryData, function (Sprint $firstSprint, Sprint $secondSprint) use ($team) {
+            if ($firstSprint->getTeam()->getId() == $team->getId()) {
+                return $firstSprint->getNumber()->number() < $secondSprint->getNumber()->number();
+            } else {
+                return false;
+            }
         });
 
         reset($this->inMemoryData);

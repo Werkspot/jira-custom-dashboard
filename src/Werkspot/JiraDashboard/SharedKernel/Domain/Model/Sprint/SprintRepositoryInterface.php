@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint;
 
 use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException;
+use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team\Team;
 use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\Id;
 
 interface SprintRepositoryInterface
@@ -30,7 +31,7 @@ interface SprintRepositoryInterface
 
     public function upsert(Sprint $sprint): void;
 
-    public function getNextSprintNumber(): int;
+    public function getNextSprintNumberByTeam(Team $team): int;
 
     /**
      * @return Sprint[]|null
