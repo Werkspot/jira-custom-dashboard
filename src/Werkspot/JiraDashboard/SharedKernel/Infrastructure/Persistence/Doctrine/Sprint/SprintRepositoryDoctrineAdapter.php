@@ -129,7 +129,7 @@ final class SprintRepositoryDoctrineAdapter implements SprintRepositoryInterface
             ->getArrayResult();
     }
 
-    public function findAllByTeamOrderByNumber(): ?array
+    public function findAllByTeamOrderByNumber(Id $teamId): ?array
     {
         // TODO: Implement findAllByTeamOrderByNumber() method.
     }

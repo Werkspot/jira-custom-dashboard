@@ -39,5 +39,7 @@ interface SprintRepositoryInterface
      */
     public function findAchievedByTeam(Id $teamId): ?array;
 
-    public function findAllByTeamOrderByNumber(): ?array;
+    public function findAllOrderByNumber(): ?array;
+
+    public function findAllByTeamOrderByNumber(Id $teamId): ?array;
 }

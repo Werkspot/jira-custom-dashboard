@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintRepositoryInterface;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Widget\WidgetInterface;
+use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\Id;
 
 class CapacityVelocityWidget implements WidgetInterface
 {
@@ -24,14 +25,16 @@ class CapacityVelocityWidget implements WidgetInterface
     {
         // we need to get capacity data ordered by sprint number
         // we need to get velocity data ordered by sprint number
+        //$capacityCollection = $this->getCapacityOrderedBySprintNumber($teamId);
+        //$velocityCollection = $this->getVelocityOrderedBySprintNumber($teamId);
 
         return new Response('Capacity Velocity Widget');
     }
 
 
-    public function getCapacityOrderedBySprintNumber(): ?array
+    public function getCapacityOrderedBySprintNumber(Id $teamId): ?array
     {
-        $allSprints = $this->sprintRepository->findAllOrderByNumber();
+        $allSprints = $this->sprintRepository->findAllByTeamOrderByNumber($teamId);
 
         $capacityCollection = [];
         /** @var Sprint $item */
@@ -43,15 +46,23 @@ class CapacityVelocityWidget implements WidgetInterface
 
     }
 
-    public function getVelocityOrderedBySprintNumber()
+    public function getVelocityOrderedBySprintNumber(Id $teamId): ?array
+    {
+        $allSprints = $this->sprintRepository->findAllByTeamOrderByNumber($teamId);
+
+        $velocityCollection = [];
+        /** @var Sprint $item */
+        foreach ($allSprints as $item) {
+            $velocityCollection[] = [$item->getNumber()->number() => $item->getVelocity()];
+        }
+
+        return $velocityCollection;
+    }
+
+    public function setSprintCapacity(Sprint $sprint): void
     {
 
     }
-
-//    public function setSprintCapacity(Sprint $sprint): void
-//    {
-//
-//    }
 
     public function setSprintVelocity(Sprint $sprint): void
     {
