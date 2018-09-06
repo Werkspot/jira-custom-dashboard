@@ -5,18 +5,13 @@ services:
     ports:
       - 80:80
       - 443:443
-    environment:
-      - APP_DOMAIN=vhost-app-name
-      - APP_DOC_ROOT=/var/www/public
-      - APACHE_SERVERNAME=apache-servername
+    volumes:
+      - .:/var/www/jiraboard
   mysql:
     ports:
       - 3306:3306
     environment:
-      - MYSQL_ROOT_PASSWORD=root-passwd
-      - MYSQL_DATABASE=db-name
-      - MYSQL_USER=db-user
-      - MYSQL_PASSWORD=db-user-passwd
-  cli:
-    ports:
-      - 9090:9090
+    - MYSQL_ROOT_PASSWORD=root-passwd
+    - MYSQL_DATABASE=db-name
+    - MYSQL_USER=db-user
+    - MYSQL_PASSWORD=db-user-passwd

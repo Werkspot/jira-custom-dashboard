@@ -34,13 +34,9 @@
     
         docker-compose up -d
         
-##### 4. Install the composer dependencies:
-
-        docker-compose run composer install
+##### 4. Create the database schema:        
         
-##### 5. Create the database schema:        
-        
-        docker-compose run cli bin/console doctrine:schema:create
+        docker-compose run apache bin/console doctrine:schema:create
         
 
 ## Run the tests
@@ -51,7 +47,7 @@
         
 - Run all the tests (with coverage):
 
-        docker-compose run cli vendor/bin/phpunit --coverage-html var/coverage tests/Werkspot/JiraDashboard
+        docker-compose run apache vendor/bin/phpunit --coverage-html var/coverage tests/Werkspot/JiraDashboard
 
 ## Run the webapp
 
