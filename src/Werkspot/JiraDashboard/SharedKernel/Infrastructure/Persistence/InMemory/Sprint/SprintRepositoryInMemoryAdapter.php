@@ -131,6 +131,11 @@ class SprintRepositoryInMemoryAdapter implements SprintRepositoryInterface
         return $this->inMemoryData;
     }
 
+    public function findAllByTeamOrderByNumber(): ?array
+    {
+        // TODO: Implement findAllByTeamOrderByNumber() method.
+    }
+
     private function sortInMemoryDataByDateAsc(): void
     {
         uasort($this->inMemoryData, function (Sprint $firstSprint, Sprint $secondSprint) {

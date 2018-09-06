@@ -22,7 +22,7 @@ class GetRemainingPointsBySprintQueryTest extends IntegrationTestAbstract
         $getRemainingPointsBySprintQuery = new GetRemainingPointsBySprintQuery($sprint->getId()->id());
         $remainingPointsData = $this->commandBus->handle($getRemainingPointsBySprintQuery);
 
-        $this->assertCount(6, $remainingPointsData);
+        $this->assertCount(5, $remainingPointsData);
         /** @var RemainingPoints $remainingPointsDataOne */
         $remainingPointsDataOne = $remainingPointsData[0];
         /** @var RemainingPoints $remainingPointsDataTwo */

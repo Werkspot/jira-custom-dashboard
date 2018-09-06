@@ -64,7 +64,7 @@ final class SprintRepositoryDoctrineAdapter implements SprintRepositoryInterface
 
         $today = new \DateTimeImmutable('today');
 
-        $sprint = $queryBuilder = $this->em->createQueryBuilder()
+        $sprint = $this->em->createQueryBuilder()
             ->select('s')
             ->from(Sprint::class, 's')
             ->where('s.startDate <= :today')
@@ -127,6 +127,11 @@ final class SprintRepositoryDoctrineAdapter implements SprintRepositoryInterface
             ->setParameter('team', $team)
             ->getQuery()
             ->getArrayResult();
+    }
+
+    public function findAllByTeamOrderByNumber(): ?array
+    {
+        // TODO: Implement findAllByTeamOrderByNumber() method.
     }
 
     /**

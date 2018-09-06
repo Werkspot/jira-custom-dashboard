@@ -19,7 +19,7 @@ class GetConfidenceBySprintQueryTest extends IntegrationTestAbstract
         $getConfidenceBySprintQuery = new GetConfidenceBySprintQuery($sprintId->id());
         $confidenceData = $this->commandBus->handle($getConfidenceBySprintQuery);
 
-        $this->assertCount(6, $confidenceData);
+        $this->assertCount(5, $confidenceData);
         $this->assertTrue($confidenceData[0]['date'] < $confidenceData[1]['date']);
     }
 }
