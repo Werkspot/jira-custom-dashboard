@@ -13,12 +13,24 @@ networks:
         - subnet: 172.72.0.0/24
 
 services:
-  apache:
-    build: .
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile-nginx
     networks:
       jira_custom_dashboard-network:
         aliases:
-          - apache
+        - nginx
+
+  php:
+    build:
+      context: .
+      dockerfile: ./Dockerfile-php
+    networks:
+      jira_custom_dashboard-network:
+        aliases:
+          - php
+          - backend-php
 
   mysql:
     container_name: mysql

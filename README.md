@@ -36,7 +36,7 @@
         
 ##### 4. Create the database schema:        
         
-        docker-compose run apache bin/console doctrine:schema:create
+        docker-compose run php bin/console doctrine:schema:create
         
 
 ## Run the tests
@@ -47,7 +47,7 @@
         
 - Run all the tests (with coverage):
 
-        docker-compose run apache vendor/bin/phpunit --coverage-html var/coverage tests/Werkspot/JiraDashboard
+        docker-compose run php vendor/bin/phpunit --coverage-html var/coverage tests/Werkspot/JiraDashboard
 
 ## Run the webapp
 
