@@ -20,6 +20,15 @@ class CapacityVelocityWidget implements WidgetInterface
         $this->sprintRepository = $sprintRepository;
     }
 
+    public function render(): Response
+    {
+        // we need to get capacity data ordered by sprint number
+        // we need to get velocity data ordered by sprint number
+
+        return new Response('Capacity Velocity Widget');
+    }
+
+
     public function getCapacityOrderedBySprintNumber(): ?array
     {
         $allSprints = $this->sprintRepository->findAllOrderByNumber();
@@ -39,18 +48,15 @@ class CapacityVelocityWidget implements WidgetInterface
 
     }
 
-    public function setSprintCapacity(Sprint $sprint): void
-    {
-
-    }
+//    public function setSprintCapacity(Sprint $sprint): void
+//    {
+//
+//    }
 
     public function setSprintVelocity(Sprint $sprint): void
     {
 
     }
 
-    public function render(): Response
-    {
-        return new Response('Capacity Velocity Widget');
-    }
+
 }
