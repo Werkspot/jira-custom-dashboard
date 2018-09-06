@@ -31,6 +31,14 @@
                 type="PositiveNumber"
         />
         <field
+                name="capacity"
+                type="float"
+        />
+        <field
+                name="velocity"
+                type="PositiveNumber"
+        />
+        <field
                 name="achieved"
                 type="boolean"
         />
