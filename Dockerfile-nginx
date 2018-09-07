@@ -1,0 +1,9 @@
+FROM nginx:1.15-alpine
+
+RUN rm /etc/nginx/conf.d/* \
+    && mkdir -p /var/www/jiraboard/public \
+    && chmod 0777 /var/www/jiraboard/public
+
+COPY nginx-site.conf /etc/nginx/conf.d/jira-dashboard.conf
+
+WORKDIR /var/www/jiraboard

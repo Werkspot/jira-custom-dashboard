@@ -1,0 +1,25 @@
+FROM php:7.2-fpm-alpine
+# TODO: This can be split-up into a php-fpm image and nginx image later.
+
+MAINTAINER Jeroen van den Heuvel <jeroen.van.den.heuvel>
+
+RUN apk add --no-cache --virtual .runtime-dependencies \
+        git \
+        unzip \
+    && docker-php-ext-install \
+        pdo_mysql
+
+RUN mkdir /var/www/jiraboard
+
+WORKDIR /var/www/jiraboard
+
+COPY composer.* ./
+
+RUN curl -o composer.phar https://getcomposer.org/composer.phar \
+    && php composer.phar install --no-scripts \
+    && rm composer.phar \
+    && mkdir var \
+    && chmod 0777 var
+
+COPY .env.dist ./.env
+COPY . ./
