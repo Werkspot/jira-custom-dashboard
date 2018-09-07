@@ -30,8 +30,10 @@ use Werkspot\JiraDashboard\SprintWidget\Application\GetActiveSprintByTeamQueryHa
 use Werkspot\JiraDashboard\SprintWidget\Domain\AddNewSprintCommand;
 use Werkspot\JiraDashboard\SprintWidget\Domain\GetActiveSprintByTeamQuery;
 use Werkspot\JiraDashboard\TeamWidget\Application\AddTeamCommandHandler;
+use Werkspot\JiraDashboard\TeamWidget\Application\GetSprintsQueryHandler;
 use Werkspot\JiraDashboard\TeamWidget\Application\GetTeamsQueryHandler;
 use Werkspot\JiraDashboard\TeamWidget\Domain\AddTeamCommand;
+use Werkspot\JiraDashboard\TeamWidget\Domain\GetSprintsQuery;
 use Werkspot\JiraDashboard\TeamWidget\Domain\GetTeamsQuery;
 
 final class TacticianCommandBusFactory
@@ -84,8 +86,9 @@ final class TacticianCommandBusFactory
         $inflector = new HandleInflector();
 
         // register commands/queries
-        $getTeamsQueryHandler = new GetTeamsQueryHandler($this->teamRepository);
-        $addTeamCommandHandler = new AddTeamCommandHandler($this->teamRepository);
+        $getTeamsQueryHandler = new GetTeamsQueryHandler($this->teamRepository, $this->sprintRepository);
+        $getSprintsQueryHandler = new GetSprintsQueryHandler($this->teamRepository, $this->sprintRepository);
+        $addTeamCommandHandler = new AddTeamCommandHandler($this->teamRepository, $this->sprintRepository);
 
         $getConfidenceBySprintQueryHandler = new GetConfidenceBySprintQueryHandler($this->sprintRepository, $this->confidenceRepository);
         $saveConfidenceCommandHandler = new SaveConfidenceCommandHandler($this->sprintRepository, $this->confidenceRepository);
@@ -102,6 +105,7 @@ final class TacticianCommandBusFactory
         $locator = new InMemoryLocator();
 
         $locator->addHandler($getTeamsQueryHandler, GetTeamsQuery::class);
+        $locator->addHandler($getSprintsQueryHandler, GetSprintsQuery::class);
         $locator->addHandler($addTeamCommandHandler, AddTeamCommand::class);
 
         $locator->addHandler($getConfidenceBySprintQueryHandler, GetConfidenceBySprintQuery::class);

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Werkspot\JiraDashboard\TeamWidget\Application;
 
+use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintRepositoryInterface;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team\Team;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team\TeamRepositoryInterface;
 use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\Id;
@@ -17,9 +18,15 @@ class AddTeamCommandHandler
      */
     private $teamRepository;
 
-    public function __construct(TeamRepositoryInterface $teamRepository)
+    /**
+     * @var SprintRepositoryInterface
+     */
+    private $sprintRepository;
+
+    public function __construct(TeamRepositoryInterface $teamRepository, SprintRepositoryInterface $sprintRepository)
     {
         $this->teamRepository = $teamRepository;
+        $this->sprintRepository = $sprintRepository;
     }
 
     public function handle(AddTeamCommand $command): void
@@ -28,7 +35,7 @@ class AddTeamCommandHandler
 
         $team = new Team(Id::create(), $teamName);
 
-        $teamWidget = new TeamWidget($this->teamRepository);
+        $teamWidget = new TeamWidget($this->teamRepository, $this->sprintRepository);
         $teamWidget->addTeam($team);
     }
 }

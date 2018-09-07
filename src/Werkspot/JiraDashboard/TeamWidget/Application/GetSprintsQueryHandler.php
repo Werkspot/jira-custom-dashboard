@@ -6,10 +6,11 @@ namespace Werkspot\JiraDashboard\TeamWidget\Application;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\SprintRepositoryInterface;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team\Team;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team\TeamRepositoryInterface;
-use Werkspot\JiraDashboard\TeamWidget\Domain\GetTeamsQuery;
+use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\Id;
+use Werkspot\JiraDashboard\TeamWidget\Domain\GetSprintsQuery;
 use Werkspot\JiraDashboard\TeamWidget\Domain\TeamWidget;
 
-class GetTeamsQueryHandler
+class GetSprintsQueryHandler
 {
     /**
      * @var TeamRepositoryInterface
@@ -30,10 +31,14 @@ class GetTeamsQueryHandler
     /**
      * @return Team[]
      */
-    public function handle(GetTeamsQuery $getTeamsQuery): array
+    public function handle(GetSprintsQuery $getSprintsQuery): array
     {
         $teamWidget = new TeamWidget($this->teamRepository, $this->sprintRepository);
 
-        return $teamWidget->getTeams();
+        $teamIdValue = $getSprintsQuery->getTeamId();
+
+        $team = $this->teamRepository->find(Id::create($teamIdValue));
+
+        return $teamWidget->getSprints($team);
     }
 }

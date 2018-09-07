@@ -8,6 +8,12 @@ Query:
                     @=service("League\\Tactician\\CommandBus").handle(
                         newObject("Werkspot\\JiraDashboard\\TeamWidget\\Domain\\GetTeamsQuery")
                     )
+            teamWidgetSprints:
+                type: "[Sprint]"
+                resolve: >
+                    @=service("League\\Tactician\\CommandBus").handle(
+                        newObject("Werkspot\\JiraDashboard\\TeamWidget\\Domain\\GetSprintsQuery")
+                    )
 
             sprintWidget:
                 type: Sprint
