@@ -10,9 +10,14 @@ Query:
                     )
             teamWidgetSprints:
                 type: "[Sprint]"
+                args:
+                    teamId:
+                        type: String!
                 resolve: >
                     @=service("League\\Tactician\\CommandBus").handle(
-                        newObject("Werkspot\\JiraDashboard\\TeamWidget\\Domain\\GetSprintsQuery")
+                        newObject("Werkspot\\JiraDashboard\\TeamWidget\\Domain\\GetSprintsQuery", [
+                            args["teamId"]
+                       ])
                     )
 
             sprintWidget:
