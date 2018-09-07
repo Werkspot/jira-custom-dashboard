@@ -54,13 +54,15 @@ class SprintRepositoryInMemoryAdapter implements SprintRepositoryInterface
      */
     public function findAllByTeam(Id $teamId): ?array
     {
-        $sprintArray = array_filter($this->inMemoryData, function (Sprint $sprint) use ($teamId) {
-            if ($sprint->getTeam()->getId() == $teamId) {
-                return $sprint;
-            }
+        $sprintArray = array_values(
+            array_filter($this->inMemoryData, function (Sprint $sprint) use ($teamId) {
+                if ($sprint->getTeam()->getId() == $teamId) {
+                    return $sprint;
+                }
 
-            return false;
-        });
+                return false;
+            })
+        );
 
         return $sprintArray;
     }
