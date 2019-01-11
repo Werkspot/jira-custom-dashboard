@@ -6,7 +6,7 @@ namespace Werkspot\Tests\JiraDashboard\BurndownWidget\Unit\Domain;
 use PHPUnit\Framework\TestCase;
 use Werkspot\JiraDashboard\BurndownWidget\Domain\BurndownWidget;
 use Werkspot\JiraDashboard\BurndownWidget\Domain\RemainingPoints;
-use Werkspot\JiraDashboard\BurndownWidget\Infrastructure\Persistence\InMemory\RemainingPoints\RemainingPointsRepositoryInMemoryAdapter;
+use Werkspot\JiraDashboard\BurndownWidget\Infrastructure\Persistence\InMemory\RemainingPoints\BugCounterRepositoryInMemoryAdapter;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Team\Team;
 use Werkspot\JiraDashboard\SharedKernel\Domain\ValueObject\Id;
@@ -124,9 +124,9 @@ class BurndownWidgetTest extends TestCase
     /**
      * @throws \Exception
      */
-    private function getRemainingPointsRepository(Sprint $sprint): RemainingPointsRepositoryInMemoryAdapter
+    private function getRemainingPointsRepository(Sprint $sprint): BugCounterRepositoryInMemoryAdapter
     {
-        $remainingPointsRepository = new RemainingPointsRepositoryInMemoryAdapter([
+        $remainingPointsRepository = new BugCounterRepositoryInMemoryAdapter([
             new RemainingPoints($sprint, new \DateTimeImmutable('today - 10 days'), PositiveNumber::create(30)),
             new RemainingPoints($sprint, new \DateTimeImmutable('today - 9 days'), PositiveNumber::create(25)),
             new RemainingPoints($sprint, new \DateTimeImmutable('today - 8 days'), PositiveNumber::create(24)),

@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Werkspot\JiraDashboard\SprintWidget\Domain;
 
+use League\Event\EmitterInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Exception\EntityNotFoundException;
 use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Sprint\Sprint;
@@ -12,11 +14,19 @@ use Werkspot\JiraDashboard\SharedKernel\Domain\Model\Widget\WidgetInterface;
 
 final class SprintWidget implements WidgetInterface
 {
-    /** @var SprintRepositoryInterface */
+    /**
+     * @var EmitterInterface
+     */
+    private $emitter;
+
+    /**
+     * @var SprintRepositoryInterface
+     */
     private $sprintRepository;
 
-    public function __construct(SprintRepositoryInterface $sprintRepository)
+    public function __construct(EmitterInterface $emitter, SprintRepositoryInterface $sprintRepository)
     {
+        $this->emitter = $emitter;
         $this->sprintRepository = $sprintRepository;
     }
 
@@ -31,6 +41,8 @@ final class SprintWidget implements WidgetInterface
     public function addNewSprint(Sprint $sprint): void
     {
         $this->sprintRepository->upsert($sprint);
+
+        $this->emitter->emit(new SprintCreatedEvent(Uuid::uuid4()->toString(), $sprint));
     }
 
     public function render(): Response
